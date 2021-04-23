@@ -1,0 +1,231 @@
+// Dimensions
+$rem: 1rem;
+$pixel: 1px;
+
+// Création des padding et border-top
+$list_ratio_spacer: 0.25, 0.5, 1, 1.5, 3, 5;
+$spacer: $rem;
+
+@for $i from 1 through 6 {
+    // .pl-#{$i} {
+    //     padding-left: ($spacer * nth($list_ratio_spacer, $i)) !important;
+    // }
+    // .pr-#{$i} {
+    //     padding-right: ($spacer * nth($list_ratio_spacer, $i)) !important;
+    // }
+
+    // pt & pb existe déjà jusqu'à 5
+    @if $i > 5 {
+        .ps-#{$i} {
+            padding-left: ($spacer * nth($list_ratio_spacer, $i)) !important;
+        }
+        .pe-#{$i} {
+            padding-right: ($spacer * nth($list_ratio_spacer, $i)) !important;
+        }
+        .pt-#{$i} {
+            padding-top: ($spacer * nth($list_ratio_spacer, $i)) !important;
+        }
+        .pb-#{$i} {
+            padding-bottom: ($spacer * nth($list_ratio_spacer, $i)) !important;
+        }
+    }
+
+    .st-#{$i} {
+        border-top: ($pixel * $i) solid #00000020;
+    }
+
+    // Number lignes before cut the text
+    .nl2cut-#{$i} {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: $i;
+        -webkit-box-orient: vertical;
+    }
+}
+
+// Création des width en pourcentage
+$list_bp_width: 500px, 576px, 768px, 992px, 1200px, 1400px;
+$list_bp_name: xs, sm, md, lg, xl, xxl;
+$list_pourcent: 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 100;
+$inc_height: 50;
+
+@for $i from 1 through 10 {
+    .card-img-#{$inc_height*$i} {
+        height: $inc_height * $i * $pixel;
+        object-fit: cover;
+    }
+}
+
+@each $pourcent in $list_pourcent {
+    .w-#{$pourcent} {
+        width: ($pourcent) * 1% !important;
+    }
+}
+
+@each $bp_width in $list_bp_width {
+    $bp_name_i: index($list_bp_width, $bp_width);
+    $bp_name: nth($list_bp_name, $bp_name_i);
+
+    @media (min-width: ($bp_width)) {
+        @each $pourcent in $list_pourcent {
+            .w-#{$bp_name}-#{$pourcent} {
+                width: ($pourcent) * 1% !important;
+            }
+        }
+        .w-#{$bp_name}-auto {
+            width: auto !important;
+        }
+
+        .border-#{$bp_name} {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        @for $i from 1 through 10 {
+            .card-img-#{$bp_name}-#{$inc_height*$i} {
+                height: $inc_height * $i * $pixel;
+                object-fit: cover;
+            }
+        }
+    }
+}
+
+// Modifie les styles bg-##, text-## et btn-##
+$list_colors: #2d1d18, #461604, #cfbc96, #d3be8b, #b3965e, #423423, #776768, #5c4524, #a76b30, #b7864a, #b11d2c;
+$list_colors_fonced: true, true, false, false, false, true, true, true, false, false, true;
+$list_inversed_colors: #ffc107, #ffc107, #cfbc96, #2d1d18, #b3965e, #423423, #776768, #5c4524, #a76b30, #b7864a, #fff;
+$list_names: primary, secondary, tertiary, quaternary, quinary, senary, septenary, octonary, nonary, denary, danger;
+@each $color in $list_colors {
+    $bp_name_i: index($list_colors, $color);
+    $bp_name: nth($list_names, $bp_name_i);
+    $invcolor: nth($list_inversed_colors, $bp_name_i);
+    $foncedcolor: nth($list_colors_fonced, $bp_name_i);
+
+    .bg-#{$bp_name} {
+        background-color: $color !important;
+    }
+
+    .text-#{$bp_name} {
+        color: $color !important;
+    }
+
+    .border-#{$bp_name} {
+        border-color: $color !important;
+    }
+
+    .text-inv-#{$bp_name} {
+        color: $invcolor !important;
+    }
+
+    .btn-#{$bp_name} {
+        color: $invcolor !important;
+        background-color: $color !important;
+        border-color: $color !important;
+
+        &:hover,
+        &:focus {
+            @if $foncedcolor {
+                background-color: lighten($color, 5%) !important;
+            } @else {
+                background-color: darken($color, 5%) !important;
+            }
+        }
+    }
+}
+
+// NOTE Pour les tests, à supprimer une fois les couleurs choisies
+$list_colors: #2d1d18, #461604, #cfbc96, #d3be8b, #b3965e, #423423, #776768, #5c4524, #a76b30, #b7864a;
+$list_inversed_colors: #ffc107, #ffc107, #cfbc96, #d3be8b, #b3965e, #423423, #776768, #5c4524, #a76b30, #b7864a;
+$list_names: primary, secondary, tertiary, quaternary, quinary, senary, septenary, octonary, nonary, denary;
+@each $color in $list_colors {
+    $bp_name_i: index($list_colors, $color);
+    $bp_name: nth($list_names, $bp_name_i);
+    $invcolor: nth($list_inversed_colors, $bp_name_i);
+
+    .bg-test-#{$bp_name} {
+        background-color: $color !important;
+    }
+
+    .text-test-#{$bp_name} {
+        color: $color !important;
+    }
+
+    .btn-test-#{$bp_name} {
+        color: $invcolor !important;
+        background-color: $color !important;
+        border-color: $color !important;
+    }
+}
+
+// Code supplémentaire
+body,
+.bg-image {
+    background-image: linear-gradient(to bottom, rgba(78, 78, 76, 0.5), rgba(158, 158, 204, 0.5)),
+        url('../../images/bgbody.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.page-title {
+    text-shadow: black 2px 2px 2px;
+    color: #fff;
+}
+
+.hh-100 {
+    min-height: 100% !important;
+    height: 100% !important;
+}
+
+@media (min-width: 240px) {
+    .d-xxs-none {
+        display: none !important;
+    }
+
+    .d-xxs-inline {
+        display: inline !important;
+    }
+}
+
+@media (min-width: 300px) {
+    .d-xss-none {
+        display: none !important;
+    }
+
+    .d-xss-inline {
+        display: inline !important;
+    }
+
+    .w-xss-50 {
+        width: 50% !important;
+    }
+
+    .form-select-quantity {
+        width: 140px !important;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 575px) {
+    .col-xs-6 {
+        flex: 0 0 auto;
+        width: (100%/2);
+    }
+    .order-xs-2 {
+        order: 2 !important;
+    }
+    .order-xs-3 {
+        order: 3 !important;
+    }
+}
+
+.form-floating > .form-select ~ label {
+    opacity: 0.65;
+    transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
+}
+.form-floating > .form-select {
+    padding: 1rem 0.75rem;
+    padding-top: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    height: calc(2.7rem + 2px);
+}

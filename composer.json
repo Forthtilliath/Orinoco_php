@@ -1,0 +1,24 @@
+{
+    "name": "forth/orinoco_will_lastversion",
+    "description": "Site projet 5 Webdev formation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Forth",
+            "email": "33458877+Forthtilliath@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "dev_php/src/"
+        }
+    },
+    "require": {
+        "altorouter/altorouter": "^2.0",
+        "symfony/var-dumper": "^5.2",
+        "filp/whoops": "^2.12"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6"
+    }
+}

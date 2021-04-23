@@ -1,0 +1,33 @@
+body,
+.bg-image {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(78, 78, 76, 0.5)), to(rgba(158, 158, 204, 0.5))), url("../../images/bgbody.jpg");
+  background-image: linear-gradient(to bottom, rgba(78, 78, 76, 0.5), rgba(158, 158, 204, 0.5)), url("../../images/bgbody.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.page-title {
+  text-shadow: black 2px 2px 2px;
+  color: #fff;
+}
+
+.hh-100 {
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+.form-floating > .form-select ~ label {
+  opacity: 0.65;
+  -webkit-transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
+          transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
+}
+
+.form-floating > .form-select {
+  padding: 1rem 0.75rem;
+  padding-top: 1rem !important;
+  padding-bottom: 0.5rem !important;
+  height: calc(2.7rem + 2px);
+}
+/*# sourceMappingURL=main.css.map */
