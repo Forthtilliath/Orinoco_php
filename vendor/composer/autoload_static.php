@@ -56,7 +56,7 @@ class ComposerStaticInitd22b9d35e5ac49859fa02cd355f9b1fc
         ),
         'App\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/dev_php/src',
+            0 => __DIR__ . '/../..' . '/dev/src',
         ),
     );
 

@@ -8,9 +8,10 @@
     <link rel="shortcut icon" href="images/favicon.ico" />
     <!-- Bootstrap v5 -->
     <!-- <link rel="stylesheet" href="assets/css/libs/bootstrap-v5.0.min.css" /> -->
-    <link rel="stylesheet" href="assets/css/libs/bootstrap.css" />
+    <link rel="stylesheet" href="assets/css/libs/bootstrap-compiled.css" />
     <link rel="stylesheet" href="assets/css/libs/bootstrap-icons.css" />
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/forth.css" />
+    <!-- <link rel="stylesheet" href="assets/css/main.css" /> -->
 
     <title><?= $pageTitle ?? 'Orinoco' ?></title>
     <meta name="description" content="<?= $pageDescription ?? '' ?>" />

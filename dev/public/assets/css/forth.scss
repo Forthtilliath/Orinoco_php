@@ -7,14 +7,7 @@ $list_ratio_spacer: 0.25, 0.5, 1, 1.5, 3, 5;
 $spacer: $rem;
 
 @for $i from 1 through 6 {
-    // .pl-#{$i} {
-    //     padding-left: ($spacer * nth($list_ratio_spacer, $i)) !important;
-    // }
-    // .pr-#{$i} {
-    //     padding-right: ($spacer * nth($list_ratio_spacer, $i)) !important;
-    // }
-
-    // pt & pb existe déjà jusqu'à 5
+    // padding existe déjà jusqu'à 5
     @if $i > 5 {
         .ps-#{$i} {
             padding-left: ($spacer * nth($list_ratio_spacer, $i)) !important;

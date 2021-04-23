@@ -9,7 +9,8 @@
         "hello": "node dev/hello.js",
         "app": "gulp app",
         "build": "gulp build",
-        "dist": "gulp dist"
+        "dist": "gulp dist",
+        "comp autoload": "composer dump-autoload"
     },
     "author": "Forth",
     "license": "ISC",

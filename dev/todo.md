@@ -6,7 +6,6 @@
 - Page panier
   - Faire fonctionner tous les boutons
   - Nombre d'articles à calculer
-  - Refaire le bouton supprimer en responsive
 
 - All pages
   - Chargement de la page
