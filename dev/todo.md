@@ -14,11 +14,11 @@
   - [ ] Automatiser les calculs de la quantité max par le stock
 
 ## CSS
-  - [ ] Compiler moi-même le bootstrap : [Bootstrap Customise Optimize](https://getbootstrap.com/docs/5.0/customize/optimize/) - [jQuery plugins v3.4](https://getbootstrap.com/docs/3.4/customize/)
+  - [x] Compiler moi-même le bootstrap : [Bootstrap Customise Optimize](https://getbootstrap.com/docs/5.0/customize/optimize/) - [jQuery plugins v3.4](https://getbootstrap.com/docs/3.4/customize/)
 
 ## Dossier
-  - [ ] Faire le tri des fichiers
-  - [ ] Créer une page test pour tester la génération du fichier css de bootstrap
+  - [x] Faire le tri des fichiers
+  - [x] Créer une page test pour tester la génération du fichier css de bootstrap
   - [ ] Générer un fichier config par extension pour plus de clarté
 
 ## Tutos :
