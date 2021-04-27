@@ -50,6 +50,7 @@
         "d": "^1.0.1",
         "gulp-file-include": "^2.3.0",
         "gulp-useref": "^5.0.0",
+        "node-sass": "^5.0.0",
         "prettier": "^2.2.1"
     }
 }

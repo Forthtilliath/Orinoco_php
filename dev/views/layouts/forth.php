@@ -7,11 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="images/favicon.ico" />
     <!-- Bootstrap v5 -->
-    <!-- <link rel="stylesheet" href="assets/css/libs/bootstrap-v5.0.min.css" /> -->
-    <link rel="stylesheet" href="assets/css/libs/bootstrap-compiled.css" />
     <link rel="stylesheet" href="assets/css/libs/bootstrap-icons.css" />
-    <link rel="stylesheet" href="assets/css/forth.css" />
-    <!-- <link rel="stylesheet" href="assets/css/main.css" /> -->
+    <link rel="stylesheet" href="assets/css/main.min.css" />
 
     <title><?= $pageTitle ?? 'Orinoco' ?></title>
     <meta name="description" content="<?= $pageDescription ?? '' ?>" />
@@ -21,8 +18,8 @@
     <nav class="navbar fixed-top navbar-light bg-primary px-2">
         <div class="container-fluid">
             <a class="navbar-brand" href="./" aria-label="Accueil">
-                <img class="d-block d-xss-none" src="images/logo.png" width="auto" height="auto" alt="Logo" />
-                <img class="d-none d-xss-inline" src="images/logo_w_text.png" width="auto" height="auto" alt="Logo" />
+                <img class="d-inline d-330-none" src="images/logo.png" width="auto" height="auto" alt="Logo" />
+                <img class="d-none d-330-inline" src="images/logo_w_text.png" width="auto" height="auto" alt="Logo" />
             </a>
             <a class="navbar-brand" href="./panier">
                 <button type="button" class="btn btn-quaternary" id="bt_panier" aria-label="Panier"><i class="bi bi-basket"></i><span class="d-none d-sm-inline ps-3">Panier</span></button>
@@ -34,7 +31,7 @@
         <?= $pageContent ?>
     </div>
 
-    <footer class="footer mt-auto py-3 bg-primary text-inv-primary">
+    <footer class="footer mt-auto py-3 bg-primary text-senary">
         <div class="container text-center">
             <div>&Oslash;rinoco &copy; 2021 Forth</div>
             <div>Tout droits réservés</div>

@@ -67,20 +67,8 @@ $colors: (
 // scss-docs-end colors-map
 
 // scss-docs-start theme-color-variables
-// forth-ajout-start
-// $primary:       $blue !default;
-// $secondary:     $gray-600 !default;
-$primary:       #2d1d18 !default;
-$secondary:     #461604 !default;
-$tertiary:      #cfbc96 !default;
-$quaternary:    #d3be8b !default;
-$quinary:       #b3965e !default;
-$senary:        #423423 !default;
-$septenary:     #776768 !default;
-$octonary:      #5c4524 !default;
-$nonary:        #a76b30 !default;
-$denary:        #b7864a !default;
-// forth-ajout-end
+$primary:       $blue !default;
+$secondary:     $gray-600 !default;
 $success:       $green !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
@@ -93,16 +81,6 @@ $dark:          $gray-900 !default;
 $theme-colors: (
   "primary":    $primary,
   "secondary":  $secondary,
-  // forth-ajout-start
-  "tertiary":   $tertiary,
-  "quaternary": $quaternary,
-  "quinary":    $quinary,
-  "senary":     $senary,
-  "septenary":  $septenary,
-  "octonary":   $octonary,
-  "nonary":     $nonary,
-  "denary":     $denary,
-  // forth-ajout-end
   "success":    $success,
   "info":       $info,
   "warning":    $warning,
@@ -330,12 +308,7 @@ $paragraph-margin-bottom:   1rem !default;
 
 // scss-docs-start grid-breakpoints
 $grid-breakpoints: (
-  // forth-ajout-start
-  xxxs: 0,
-  xxs: 300px,
-  xs: 500px,
-  //xs: 0,
-  // forth-ajout-end
+  xs: 0,
   sm: 576px,
   md: 768px,
   lg: 992px,

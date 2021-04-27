@@ -1,3 +1,6 @@
+// @import "variable_overrides";
+//@import "../../../bootstrap/scss/";
+
 // Dimensions
 $rem: 1rem;
 $pixel: 1px;
@@ -8,7 +11,7 @@ $spacer: $rem;
 
 @for $i from 1 through 6 {
     // padding existe déjà jusqu'à 5
-    @if $i > 5 {
+    /*@if $i > 5 {
         .ps-#{$i} {
             padding-left: ($spacer * nth($list_ratio_spacer, $i)) !important;
         }
@@ -21,11 +24,11 @@ $spacer: $rem;
         .pb-#{$i} {
             padding-bottom: ($spacer * nth($list_ratio_spacer, $i)) !important;
         }
-    }
+    }*/
 
-    .st-#{$i} {
+    /*.st-#{$i} {
         border-top: ($pixel * $i) solid #00000020;
-    }
+    }*/
 
     // Number lignes before cut the text
     .nl2cut-#{$i} {
@@ -71,7 +74,7 @@ $inc_height: 50;
         }
 
         .border-#{$bp_name} {
-            border: 1px solid #dee2e6 !important;
+            border: 1px solid #00000020 !important;
         }
 
         @for $i from 1 through 10 {

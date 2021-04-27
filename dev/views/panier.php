@@ -9,43 +9,46 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 <section id="list_alerts"></section>
 
 <section class="container" id="list_cards">
-    <?php for ($i = 0; $i < 1; $i++) : ?>
-        <exp-article class="row mb-3 g-md-1" id="card_0">
-            <input type="hidden" value="" name="id" id="card_0_id" />
-            <div class="col-md-3 col-lg-2 bg-tertiary p-0 border-md border-quinary"><img src="images/loader.gif" id="card_0_image" class="card-img-top card-img-250 card-img-md-150" alt="..."></div>
+    <exp-article class="row mb-3 g-md-1" id="card_0">
+        <input type="hidden" value="" name="id" id="card_0_id" />
+        <div class="col-md-3 col-lg-2 bg-tertiary p-0 border-md"><img src="images/loader.gif" id="card_0_image" class="card-img-top card-img-250 card-img-md-150 object-fit-cover" alt="..."></div>
 
-            <div class="col-xs-6 col-sm-6 col-md-9 col-lg bg-tertiary p-xs-3 border-md border-quinary border-start-0 order-1">
-                <div class="card-body d-flex flex-column h-100 justify-content-center align-items-center align-items-center align-items-md-start">
-                    <h5 class="card-title"><a href="./" class="text-decoration-none text-dark"><i class="bi bi-link"></i> <span id="card_0_title"></span></a></h5>
-                    <p class="card-text text-right">Lentille : <span id="card_0_lenses"></span></p>
+        <div class="col-xs-6 col-md-9 col-lg bg-tertiary p-xs-3 border-md border-start-0 order-1">
+            <div class="card-body d-flex flex-column h-100 justify-content-center align-items-center align-items-center align-items-md-start">
+                <h5 class="card-title"><a href="./" class="text-decoration-none text-dark"><i class="bi bi-link"></i> <span id="card_0_title"></span></a></h5>
+                <p class="card-text text-right">Lentille : <span id="card_0_lenses"></span></p>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-md-4 col-lg-2 bg-tertiary p-md-3 border-start-0 border-md order-2 order-xs-3 order-sm-3 order-md-2">
+            <div class="pb-3 pt-md-3 text-center">
+                <div class="card-text text-right pb-1">Prix unitaire</div>
+                <div id="card_0_price" class="badge bg-primary text-wrap" style="width: 6rem;font-size:1em">1 657 €</div>
+            </div>
+        </div>
+
+        <div class="col-xs-6 col-md-4 col-lg-3 col-xl-2 bg-tertiary p-3 border-start-0 border-md text-center order-3 order-xs-2 order-sm-2 order-md-3">
+            <div class="align-items-center d-flex flex-column h-100 justify-content-center">
+                <div class="form-floating w-100 form-select-quantity">
+                    <select is="exp-select" class="bg-quaternary form-select text-primary border-primary" id="card_0_quantity"></select>
+                    <label class="text-primary" for="card_0_quantity">Quantité</label>
+                </div>
+                <div class="w-100">
+                    <button class="btn btn-danger w-100 px-3 mt-2 form-button-remove" id="card_0_remove">
+                        <i class="bi bi-trash pe-2 d-none d-xxs-inline"></i>
+                        <span>Supprimer</span>
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 bg-tertiary p-md-3 border-start-0 border-md border-quinary order-2 order-xs-3 order-sm-3 order-md-2">
-                <div class="pb-3 pt-md-3 text-center">
-                    <div class="card-text text-right pb-1">Prix unitaire</div>
-                    <div id="card_0_price" class="badge bg-primary text-wrap" style="width: 6rem;font-size:1em">1 657 €</div>
-                </div>
+        <div class="col-xs-6 col-md-4 col-lg-2 bg-tertiary p-md-3 border-start-0 border-md order-4">
+            <div class="pb-3 pt-md-3 text-center">
+                <div class="card-text text-right pb-1">Sous-total</div>
+                <div id="card_0_subtotal" class="badge bg-primary text-wrap" style="width: 6rem;font-size:1em"></div>
             </div>
-
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 bg-tertiary p-3 border-start-0 border-md border-quinary text-center order-3 order-xs-2 order-sm-2 order-md-3">
-                <div class="align-items-center d-flex flex-column h-100 justify-content-center">
-                    <div class="form-floating w-100 form-select-quantity">
-                        <select is="exp-select" class="bg-denary form-select text-primary border-primary" id="card_0_quantity"></select>
-                        <label class="text-primary" for="card_0_quantity">Quantité</label>
-                    </div>
-                    <div><button class="btn btn-danger w-auto w-md-100 px-3 mt-2" id="card_0_remove"><i class="bi bi-trash pe-3 d-none d-xxs-inline"></i><span>Supprimer</span></button></div>
-                </div>
-            </div>
-
-            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2 bg-tertiary p-md-3 border-start-0 border-md border-quinary order-4">
-                <div class="pb-3 pt-md-3 text-center">
-                    <div class="card-text text-right pb-1">Sous-total</div>
-                    <div id="card_0_subtotal" class="badge bg-primary text-wrap" style="width: 6rem;font-size:1em"></div>
-                </div>
-            </div>
-        </exp-article>
-    <?php endfor ?>
+        </div>
+    </exp-article>
 </section>
 <section class="container">
     <div class="row mb-3 g-md-1">

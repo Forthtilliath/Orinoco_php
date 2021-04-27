@@ -1,3 +1,7 @@
+@import 'variable_overrides';
+@import '../../../bootstrap/scss/index.scss';
+
+// Image de fond
 body,
 .bg-image {
     background-image: linear-gradient(to bottom, rgba(78, 78, 76, 0.5), rgba(158, 158, 204, 0.5)),
@@ -8,23 +12,71 @@ body,
     background-attachment: fixed;
 }
 
+// Titre en haut de chaque page
 .page-title {
     text-shadow: black 2px 2px 2px;
     color: #fff;
 }
 
-.hh-100 {
-    min-height: 100% !important;
-    height: 100% !important;
-}
+// .hh-100 {
+//     min-height: 100% !important;
+//     height: 100% !important;
+// }
 
-.form-floating > .form-select ~ label {
+// Réduit la hauteur du menu select avec un label implémenté
+/*.form-floating > .form-select ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
-}
+}*/
 .form-floating > .form-select {
     padding: 1rem 0.75rem;
     padding-top: 1rem !important;
     padding-bottom: 0.5rem !important;
     height: calc(2.7rem + 2px);
+
+    & ~ label {
+        opacity: 0.65;
+        transform: scale(0.85) translateY(-0.9rem) translateX(0.15rem);
+    }
+}
+
+$pixel: 1px;
+
+// Ajoute des classes pour limiter l'affichage d'un texte par son nombre de lignes
+@for $i from 1 through 6 {
+    // Génère une classe qui permet de couper un texte au bout d'un certain nombre de lignes
+    .nl2cut-#{$i} {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: $i;
+        -webkit-box-orient: vertical;
+    }
+}
+
+// Génère des classes pour la taille des images
+$inc_height: 50;
+@for $i from 1 through 10 {
+    .card-img-#{$inc_height*$i} {
+        height: $inc_height * $i * $pixel;
+        object-fit: cover;
+    }
+}
+
+// Adapte la taille du menu select du panier
+@media (min-width: 300px) {
+    .form-select-quantity,
+    .form-button-remove {
+        width: 140px !important;
+    }
+}
+
+@media (min-width: 330px) {
+    .d-330-none {
+        display: none !important;
+    }
+
+    .d-330-inline {
+        display: inline !important;
+    }
 }

@@ -36,7 +36,7 @@ class Router
      */
     public function isDefaultLayout(): bool
     {
-        return (strcmp($this->layout, 'default') === 0);
+        return (strcmp($this->layout, 'forth') === 0);
     }
 
     /**
