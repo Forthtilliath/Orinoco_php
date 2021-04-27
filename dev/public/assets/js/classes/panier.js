@@ -37,6 +37,7 @@ class Panier {
         this.nameCookie = nameCookie;
         this.tabProduits = this.loadPanier();
         this.total = 0;
+        this.nbProduits = 0;
         this.options = options;
         this.quantityMax = 5; // TODO mettre une quantité max de 5 article present dans le panier
         this.api = api;
@@ -170,6 +171,7 @@ class Panier {
                     }
                 }
             }
+            this.nbProduits += this.tabProduits[i].quantity;
 
             let subTotal = quantityInSelect * this.tabProduits[i].price.reverseNumberFormat();
             this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
@@ -178,11 +180,13 @@ class Panier {
             selectQuantity.addEventListener('change', this.editQuantityProduit);
             let buttonRemove = this.api.getElement('btRemove', id);
             buttonRemove.addEventListener('click', (e) => {
+                console.log("bt remov");
                 // Sans cela, la page se réactualise en cliquant sur le bouton supprimer
                 e.preventDefault();
             });
         }
 
+        this.api.getElement('nbarticles').textContent = this.nbProduits;
         this.api.getElement('total').textContent = this.total.numberFormat();
     };
 
@@ -191,10 +195,10 @@ class Panier {
      * @param {Event} e
      */
     editQuantityProduit = (e) => {
-        let articleID = e.target.numberID();
-
-        // Récupère le numéro de l'article via l'id du button
-        let id = 'cards_' + articleID;
+        // Récupère le numéro de l'article via le numéro du button
+        let articleID = e.target.getAttribute('id').numberID();
+        // Récupère l'id de l'article via le numéro
+        let id = this.api.getElementId('article', articleID); // 'cards_{{i}}'
 
         // Récupère la position de l'article dans le panier à l'aide de son id et de la lentille
         let pos = this.getPosition(
@@ -202,8 +206,14 @@ class Panier {
             this.api.getElement('lentilles', id).textContent,
         );
 
-        // Supprime l'élément à la position pos (le 1 signifie 1 élément supprimé)
+        // Retire l'ancienne quantité
+        this.nbProduits -= this.tabProduits[pos].quantity;
+        // Met à jour la quantité dans le panier
         this.tabProduits[pos].quantity = parseInt(this.api.getElement('quantity', id).value);
+        // Ajoute la nouvelle quantité
+        this.nbProduits += this.tabProduits[pos].quantity;
+        // Mise à jour du nombre de produits
+        this.api.getElement('nbarticles').textContent = this.nbProduits;
 
         // Retire l'ancien sous-total du total
         this.total -= this.api.getElement('sousTotal', id).textContent.reverseNumberFormat();
@@ -217,24 +227,30 @@ class Panier {
 
         // Met à jour le panier
         this.setCookie();
-    };
+    };;
 
     /**
      * Supprime un élément du panier
      * @param {HTMLElement} target Element à l'origine de l'appel de la méthode
      */
     removeProduit = (target) => {
-        //let bt = this.lastEvent.action == 'remove' ? this.lastEvent.target : null;
-        let articleID = target.numberID();
+        console.log('remove');
+        let articleID = target.getAttribute('id').numberID();
 
         // Récupère le numéro de l'article via l'id du button
-        let id = 'cards_' + articleID;
+        let id = this.api.getElementId('article', articleID); // 'cards_{{i}}'
 
         // Récupère la position de l'article dans le panier à l'aide de son id et de la lentille
         let pos = this.getPosition(
             this.api.getElement('idProduit', id).value,
             this.api.getElement('lentilles', id).textContent,
         );
+
+        // Retire la quantité du produit à supprimer
+        this.nbProduits -= this.tabProduits[pos].quantity;
+        // Mise à jour du nombre de produits
+        this.api.getElement('nbarticles').textContent = this.nbProduits;
+
         // Supprime l'élément à la position pos (le 1 signifie 1 élément supprimé)
         this.tabProduits.splice(pos, 1);
 
@@ -254,7 +270,7 @@ class Panier {
         }
         // Met à jour la page s'il n'y a plus d'éléments dans le panier
         this.setDisplayPanier();
-    };
+    };;
 
     setPanier = (e) => {
         // Stop l'event du lien
@@ -310,7 +326,7 @@ class Panier {
                     "Le produit que vous souhaitez ajouté n'est plus en stock.",
                 );
             } else {
-                let prevQty = this.tabProduits[pos]['quantity'];;
+                let prevQty = this.tabProduits[pos]['quantity'];
                 this.tabProduits[pos]['quantity'] += parseInt(quantity.value); // 6 = 4 + 2
                 if (this.tabProduits[pos]['quantity'] > 5 /** produit.Stock */) {
                     // Affiche un msg
@@ -374,8 +390,8 @@ class Panier {
     };
 
     /**
-     * 
-     * @returns 
+     *
+     * @returns
      */
     getListProductsForOrder = () => {
         let tab = [];

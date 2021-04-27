@@ -16,12 +16,13 @@ window.onload = () => {
         // Stocke le bouton Supprimer sur lequel l'utilisateur a cliqué
         bt_supprimer_target = e.relatedTarget;
         // Récupère l'id de l'élément
-        let id = monApi.getElementId('article', bt_supprimer_target.numberID());
+        let id = monApi.getElementId('article', bt_supprimer_target.getAttribute('id').numberID());
         // Récupère les éléments du modal
-        let article = $(e.target).find('#modal-body-article')[0]; //le find permet de recherche parmis les enfants de e.target(le modal)
-        let lentilles = $(e.target).find('#modal-body-lentilles')[0];
+        let article = $(e.target).find('#modal-body-article'); //le find permet de recherche parmis les enfants de e.target(le modal)
+        let lentilles = $(e.target).find('#modal-body-lentilles');
         // Modifie le contenue du modal
         article.textContent = monApi.getElement('nom', id).textContent;
+        console.log(article.textContent);
         lentilles.textContent = monApi.getElement('lentilles', id).textContent;
     });
 
@@ -35,14 +36,6 @@ window.onload = () => {
     /***************************************************
      ** Modal- Confirmation de commande                *
      **************************************************/
-    /**
-     * TODO List
-     * [ ] validation des champs
-     * [ ] redirection apres validation des champs depuis le btn du modal
-     * [ ] voir pour la génération de l'id de commande
-     * [ ] X
-     * [ ] X
-     */
 
     // Declaration des id provenant des inputs de order
     /*let modalName = document.querySelector(`#order_last_name`);

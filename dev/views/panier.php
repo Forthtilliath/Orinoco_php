@@ -34,7 +34,7 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
                     <label class="text-primary" for="card_0_quantity">Quantité</label>
                 </div>
                 <div class="w-100">
-                    <button class="btn btn-danger w-100 px-3 mt-2 form-button-remove" id="card_0_remove">
+                    <button class="btn btn-danger w-100 px-3 mt-2 form-button-remove" id="card_0_remove" data-bs-toggle="modal" data-bs-target="#modalConfirmRemove">
                         <i class="bi bi-trash pe-2 d-none d-xxs-inline"></i>
                         <span>Supprimer</span>
                     </button>
@@ -69,12 +69,12 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 
 <!-- Modal Bouton Supprimer -->
 <section id="list_modals">
-    <div class="modal fade" id="modalConfirmRemove" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmRemoveLabel" aria-hidden="true">
+    <div class="modal fade" id="modalConfirmRemove" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalConfirmRemoveLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalConfirmRemoveLabel">Supprimer un article</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -84,8 +84,8 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
                     <span id="modal-body-lentilles" class="font-italic font-weight-bold"></span> de votre panier ?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, je garde l'article</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="modalConfirmRemoveValid">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non, je garde l'article</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="modalConfirmRemoveValid">
                         Oui, je supprime l'article
                     </button>
                 </div>

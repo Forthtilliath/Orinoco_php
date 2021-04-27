@@ -150,6 +150,7 @@ class Api {
                 sousTotal: '#{{id}} #{{id}}_subtotal',
                 btRemove: '#{{id}} #{{id}}_remove',
                 total: '#cards_total',
+                nbarticles: '#cards_nbarticles',
                 // Ajouts
                 links: '#{{id}} a', // Liens index
             },

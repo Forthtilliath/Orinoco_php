@@ -1,6 +1,7 @@
 input[type=checkbox] {
     width:0px;
-    margin-right:25px;
+    margin-right:20px;
+    margin-bottom: 0.6em;
 }
 
 input[type=checkbox]:before {
@@ -16,5 +17,4 @@ input[type=checkbox]:before {
 
 input[type=checkbox]:checked:before {
     background-color:rgb(35, 177, 7);
-    font-size: 15px;
 }

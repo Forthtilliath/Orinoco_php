@@ -5,8 +5,8 @@
 ## Page produit
 
 ## Page panier
-  - [ ] Faire fonctionner tous les boutons
-  - [ ] Nombre d'articles à calculer
+  - [x] Faire fonctionner tous les boutons
+  - [x] Nombre d'articles à calculer 
 
 ## All pages
   - [ ] Chargement de la page

@@ -42,6 +42,9 @@ $quaternary: #b7864a;
 $quinary: #b3965e;
 $senary: #ffc107;
 $danger: #b11d2c;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #ffc107;
 
 $theme-colors: (
     primary: $primary,
@@ -50,7 +53,10 @@ $theme-colors: (
     quaternary: $quaternary,
     quinary: $quinary,
     senary: $senary,
+    success: $success,
     danger: $danger,
+    info: $info,
+    warning: $warning,
 );
 
 $border-color: $quinary;
