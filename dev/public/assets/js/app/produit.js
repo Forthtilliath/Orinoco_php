@@ -1,11 +1,11 @@
-window.onload = () => {
+// window.onload = () => {
     // Création de l'objet Api avec le cookie 'panier'
-    let monApi = new Api('panier', 'assets/js/datas/cameras.json', 'http://localhost:3000/api/cameras/');
-    let monPanier = monApi.getPanier();
+    // let monApi = new Api('panier', 'assets/js/datas/cameras.json', 'http://localhost:3000/api/cameras/');
+    // let monPanier = monApi.getPanier();
 
-    const editCard = async (i, camera) => {
+    const editCard = async (camera) => {
         // Id de l'article (dans le code)
-        let id = monApi.getElementId('article', i); // 'cards_{{i}}'
+        let id = monApi.getElementId('article', 0); // 'cards_{{i}}'
 
         let img = monApi.getElement('image', id);
         // Récupération des données en mettant la fonction + le nom attribué dans l'api
@@ -21,15 +21,13 @@ window.onload = () => {
 
         // Ajout de l'evenement sur le bouton Ajouter au panier
         monApi.getElement('form', id).addEventListener('submit', monPanier.setPanier);
-    };;
+    };
 
-    // le i permet d avoir l'indice de l article.
-    let i = 0;
     // la fonction loadPage a ces données mise dans la fonction camera.
-    const loadPage = (cameras) => {
+    const showCard = (cameras) => {
         // Si un seul élément
         if (monApi.ListeProduits.length == 1) {
-            editCard(i, monApi.ListeProduits[0]);
+            editCard(monApi.ListeProduits[0]);
         } else {
             // Produit non trouvé
             document.querySelector('#message-error').show('');
@@ -40,34 +38,66 @@ window.onload = () => {
     };
 
     let datas = {};
+
+    function loadDatasFromLocal() {
+        console.log("Liste des produits",monApi.ListeProduits);
+        console.log("Id du produit",monApi.idProduitToShow);
+        monApi.ListeProduits.some((e) => e.id === monApi.idProduitToShow);
+        console.log(monApi.ListeProduits.some((e) => e.id === monApi.idProduitToShow));
+        if (monApi.ListeProduits.length > 0) {
+            $id = monApi.idProduitToShow;
+        }
+    };
+
+    function loadDatasFromServer() {
+
+    }
+
     const loadDatas = async () => {
         // Récupère le param get pour l'id de l'objet afin d'avoir une fiche produit
         //let $id = getQueryString('id'); // NOTE Définit dans le php
+        const datas = monApi.isLocal() ? loadDatasFromLocal() : loadDatasFromServer();
 
         //if (SERVER_LOCAL) {
-        if (monApi.isLocal()) {
-            // NOTE Version avec le fichier json
-            datas = await monApi.getProducts();
-            if (typeof $id === 'string') {
-                datas.forEach((val) => {
-                    if (val['_id'] == $id) {
-                        datas = val;
-                        return;
-                    }
-                });
-            }
-        } else {
-            // NOTE Version avec le lien localhost
-            if (typeof $id === 'string') {
-                //monApi.setUrl('http://localhost:3000/api/cameras/' + $id);
-                monApi.addIdToUrl($id);
-            }
-            datas = await monApi.getProducts();
-        }
+        // if (monApi.isLocal()) {
+        //     loadDatasFromLocal();
+
+        //     // NOTE Version avec le fichier json
+        //     console.log(monApi.ListeProduits);
+        //     datas = await monApi.getProductsFromJson();
+        //     $id = monApi.idProduitToShow;
+        //     console.log('$id',$id);
+        //     if (typeof $id === 'string') {
+        //         datas.forEach((val) => {
+        //             if (val['_id'] == $id) {
+        //                 datas = val;
+        //                 return;
+        //             }
+        //         });
+        //     }
+        // } else {
+        //     // NOTE Version avec le lien localhost
+        //     if (typeof $id === 'string') {
+        //         //monApi.setUrl('http://localhost:3000/api/cameras/' + $id);
+        //         monApi.addIdToUrl($id);
+        //     }
+        //     datas = await monApi.getProductsFromJson();
+        // }
         //monApi.addProduits('camera', datas);
-        monApi.addProduits('camera', [datas]);
-        loadPage(datas);
+        //monApi.addProduits('camera', [datas]);
+        showCard(datas);
     };
 
-    loadDatas();
-};
+    // loadDatas()
+    //     .then(() => {
+    //         console.log('Connected');
+    //     })
+    //     .catch((error) => {
+    //         console.error('Erreur', error.status, ':', error.statusText);
+    //         console.error('URL :', error.responseURL);
+    //     });
+// };
+// if (typeof monApi !== 'undefined') {
+//     dispatchEvent(new Event('load'));
+// }
+

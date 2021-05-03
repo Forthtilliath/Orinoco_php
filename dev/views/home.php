@@ -45,7 +45,7 @@ $pageDescription = "";
         <exp-article class="col" id="card_0">
             <div class="card bg-tertiary">
                 <input type="hidden" value="" name="id" id="card_0_id" />
-                <a href="">
+                <a href="" data-js-link="product" data-js-product-id="">
                     <img src="images/loader.gif" id="card_0_image" class="card-img-top card-img-200 card-img-lg-250 card-img-xl-300 object-fit-cover" alt="...">
                 </a>
                 <div class="card-body">
@@ -76,7 +76,7 @@ $pageDescription = "";
                 </div>
                 <div class="card-body border-top border-quinary">
                     <div class="text-center">
-                        <a class="btn btn-primary text-senary w-100 w-xl-auto px-4" href="">Voir le produit</a>
+                        <a class="btn btn-primary text-senary w-100 w-xl-auto px-4" href="" data-js-link="product" data-js-product-id="">Voir le produit</a>
                     </div>
                 </div>
             </div>
@@ -107,5 +107,5 @@ $pageDescription = "";
 </section>
 
 <?php ob_start(); ?>
-<script src="./assets/js/app/home.js"></script>
+<script src="/assets/js/app/home.js" id="scriptPage"></script>
 <?php $pageScripts = ob_get_clean(); ?>

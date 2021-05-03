@@ -150,6 +150,7 @@ class Panier {
             this.api.getElement('image', id).src = this.api.localServer
                 ? this.tabProduits[i].img.replace('http://localhost:3000/', '')
                 : this.tabProduits[i].img;
+            // TODO Si image existe, ajouter la classe object-fit-cover (object-fit-none)
             this.api.getElement('nom', id).textContent = this.tabProduits[i].name;
             this.api.getElement('linknom', id).href = this.api.goToProduct(this.tabProduits[i].id);
 
@@ -180,7 +181,7 @@ class Panier {
             selectQuantity.addEventListener('change', this.editQuantityProduit);
             let buttonRemove = this.api.getElement('btRemove', id);
             buttonRemove.addEventListener('click', (e) => {
-                console.log("bt remov");
+                console.log('bt remov');
                 // Sans cela, la page se réactualise en cliquant sur le bouton supprimer
                 e.preventDefault();
             });

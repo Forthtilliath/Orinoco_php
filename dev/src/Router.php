@@ -14,12 +14,16 @@ class Router
      */
     private $router;
 
-    public function __construct(string $viewPath, ?string $layout = 'default')
+    public function __construct(?string $viewPath = '', ?string $layout = 'default')
     {
         $this->viewPath = $viewPath;
         $this->router = new \AltoRouter();
         $this->layout = $layout;
         $this->addMatches();
+    }
+
+    public function setViewPath(string $viewPath) {
+        $this->viewPath = $viewPath;
     }
 
     /**
@@ -36,7 +40,7 @@ class Router
      */
     public function isDefaultLayout(): bool
     {
-        return (strcmp($this->layout, 'forth') === 0);
+        return (strcmp($this->layout, 'default') === 0);
     }
 
     /**
@@ -45,6 +49,20 @@ class Router
     public function get(string $url, string $view, ?string $name = null): self
     {
         $this->router->map('GET', $url, $view, $name);
+        return $this;
+    }
+
+    /**
+     * Charge les routes à partir d'un json
+     * @param string $url URL du fichier json
+     */
+    public function load(string $url): self {
+        $datas = file_get_contents($url); 
+        $objDatas = json_decode($datas);
+        $this->setViewPath($objDatas->base);
+        foreach($objDatas->routes as $route ) {
+            $this->get($route->pattern, $route->path, $route->name);
+        }
         return $this;
     }
 

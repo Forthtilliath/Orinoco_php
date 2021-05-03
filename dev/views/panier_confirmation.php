@@ -27,6 +27,6 @@ $pageMessageDescription = '';
 </section>
 
 <?php ob_start(); ?>
-<script src="./assets/js/app_will/order-confirmation.js"></script>
+<script src="/assets/js/app/order-confirmation.js"></script>
 <?php $pageScripts = ob_get_clean();
 ?>

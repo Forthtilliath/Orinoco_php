@@ -11,11 +11,11 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 <section class="container" id="list_cards">
     <exp-article class="row mb-3 g-md-1" id="card_0">
         <input type="hidden" value="" name="id" id="card_0_id" />
-        <div class="col-md-3 col-lg-2 bg-tertiary p-0 border-md"><img src="images/loader.gif" id="card_0_image" class="card-img-top card-img-250 card-img-md-150 object-fit-cover" alt="..."></div>
+        <div class="col-md-3 col-lg-2 bg-tertiary p-0 border-md"><img src="images/spinning-circles.svg" id="card_0_image" class="card-img-top card-img-250 card-img-md-150 object-fit-cover" alt="..."></div>
 
         <div class="col-xs-6 col-md-9 col-lg bg-tertiary p-xs-3 border-md border-start-0 order-1">
             <div class="card-body d-flex flex-column h-100 justify-content-center align-items-center align-items-center align-items-md-start">
-                <h5 class="card-title"><a href="./" class="text-decoration-none text-dark"><i class="bi bi-link"></i> <span id="card_0_title"></span></a></h5>
+                <h5 class="card-title"><a href="/" class="text-decoration-none text-dark"><i class="bi bi-link"></i> <span id="card_0_title"></span></a></h5>
                 <p class="card-text text-right">Lentille : <span id="card_0_lenses"></span></p>
             </div>
         </div>
@@ -74,9 +74,7 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalConfirmRemoveLabel">Supprimer un article</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalConfirmRemoveBody">
                     Souhaitez-vous retirer l'article
@@ -95,5 +93,5 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 </section>
 
 <?php ob_start(); ?>
-<script src="./assets/js/app/order.js"></script>
+<script src="/assets/js/app/order.js" id="scriptPage"></script>
 <?php $pageScripts = ob_get_clean(); ?>

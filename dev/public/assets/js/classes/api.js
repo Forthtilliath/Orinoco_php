@@ -39,6 +39,24 @@ class Api {
          * @type {number} Durée de l'alerte
          */
         this.delaiAlert = 5000;
+
+        this.idProduitToShow = '';
+        this.jsonLoaded = false;
+        this.domLoaded = false;
+
+        this.listScripts = [];
+
+        this.router = new Router();
+
+        this.createListeners();
+    }
+
+    addScript(url) {
+        if (!this.listScripts.includes(url)) {
+            this.listScripts.push(url);
+            return true;
+        }
+        return false;
     }
 
     get ListeProduits() {
@@ -65,32 +83,84 @@ class Api {
         return this.localServer;
     }
 
-    /**
-     * Ajoute un produit à la liste des produits de l'api
-     * @param {string} _type Type de produits (camera, furniture, teddy)
-     * @param {any[]} lesProduits Tableau contenant l'ensemble des produits
-     */
-    addProduits = (type, lesProduits) => {
-        for (let unProduit of lesProduits) {
-            this.listeProduits.push(
-                new Produit(
-                    type,
-                    unProduit._id,
-                    unProduit.name,
-                    unProduit.description,
-                    unProduit.price / 100,
-                    unProduit.lenses,
-                    unProduit.imageUrl,
-                ),
-            );
+    isAllLoaded() {
+        return this.domLoaded && this.jsonLoaded && this.router.loaded;
+    }
+
+    createListeners() {
+        // $('a').on('click', this.changePage);
+        // Lien vers un produit
+        //$('a[data-js-link="product"]').on('click', this.changePage2);
+    }
+
+    changePage2 = (e) => {
+        e.preventDefault();
+        console.log('ChangePage2', e.currentTarget.getAttribute('data-js-product-id'));
+        this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id');
+        console.log('this.idProduitToShow', this.idProduitToShow);
+        this.changePage(e);
+    }
+
+    changePage = (e) => {
+        // Stop les changements de page
+        e.preventDefault();
+        console.log('Changement de page',e.currentTarget);
+
+        let url = e.currentTarget.href;
+        // Si meme page, on fait rien
+        if (url === window.location.href) {
+            // console.log('Meme page, donc pas de changement.');
+            // return;
+            // location.reload();
         }
+
+        let lien = $(e.currentTarget).attr('href');
+        var jqxhr = $.get(lien, (data) => {
+            // Récupère le contenu de la page et je l'insère dans la page actuelle
+            $('#pageContent').html($(data).filter('#pageContent').html());
+
+            // Changer url sans reload
+            history.pushState(null, 'page 2', lien);
+
+            // Changer le script
+            let scriptUrl = $(data).filter('#scriptPage').attr('src');
+            
+            if( this.addScript(scriptUrl) ) {
+                $.getScript(scriptUrl)
+                    .done(function (script, textStatus) {
+                        // console.log(script);
+                        console.log(`Chargement du script '${scriptUrl}' terminé avec un statut ${textStatus}`);
+                    })
+                    .fail(function (jqxhr, settings, exception) {
+                        console.warn('Something went wrong' + exception);
+                    });
+            }
+        });
+        jqxhr
+            .done(function () {
+                //alert( "second success" );
+            })
+            .fail(function () {
+                //alert( "error" );
+            })
+            .always(function () {
+                //alert( "finished" );
+            });
+    }
+
+    loadDatas = async () => {
+        // console.log('api', 'loadData()');
+        // Récupération des données de l'api pour les mettre dans la fonction loadPage
+        let datas = await this.getProductsFromJson();
+        this.addCameras(datas);
     };
 
     /**
      * Récupère les articles via l'url choisit dans l'api
      * @returns {Promise} Promesse contenant le tableau des articles
      */
-    getProducts = () => {
+    getProductsFromJson = () => {
+        // console.log(this.url);
         return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
             request.onreadystatechange = function () {
@@ -107,6 +177,25 @@ class Api {
             request.open('get', this.url, true);
             request.send();
         });
+    };
+
+    /**
+     * Ajoute un produit à la liste des produits de l'api
+     * @param {any[]} lesProduits Tableau contenant l'ensemble des produits
+     */
+    addCameras = (lesProduits) => {
+        for (let uneCamera of lesProduits) {
+            this.listeProduits.push(
+                new Camera(
+                    uneCamera._id,
+                    uneCamera.name,
+                    uneCamera.description,
+                    uneCamera.price / 100,
+                    uneCamera.imageUrl,
+                    uneCamera.lenses,
+                ),
+            );
+        }
     };
 
     /**
@@ -131,8 +220,8 @@ class Api {
             elemsParentId: '#list_cards',
             // Id distingant les éléments entre eux
             elemsIds: 'card_{{i}}',
-            elemsForms: '#{{id}} #{{id}}_form',
-            elemsMessage: '#{{id}} #{{id}}_select-msg',
+            // elemsForms: '#{{id}} #{{id}}_form',
+            // elemsMessage: '#{{id}} #{{id}}_select-msg',
             elemAlerts: '#list_alerts',
             elemsBasket: {
                 linknom: '#{{id}} h5 > a',
@@ -152,7 +241,10 @@ class Api {
                 total: '#cards_total',
                 nbarticles: '#cards_nbarticles',
                 // Ajouts
-                links: '#{{id}} a', // Liens index
+                lienProduit: '#{{id}} a', // Liens vers un produit
+                //
+                form: '#{{id}} #{{id}}_form',
+                message: '#{{id}} #{{id}}_select-msg',
             },
         };
     };
@@ -214,15 +306,15 @@ class Api {
             case 'parent':
                 id = this.options.elemsParentId;
                 break;
-            case 'form':
-                id = this.options.elemsForms.replaceAll('{{id}}', value);
-                break;
+            // case 'form':
+            //     id = this.options.elemsForms.replaceAll('{{id}}', value);
+            //     break;
             case 'article':
                 id = this.options.elemsIds.replaceAll('{{i}}', value);
                 break;
-            case 'message':
-                id = this.options.elemsMessage.replaceAll('{{id}}', value);
-                break;
+            // case 'message':
+            //     id = this.options.elemsMessage.replaceAll('{{id}}', value);
+            //     break;
             default:
                 id = this.options.elemsBasket[elementID].replaceAll('{{id}}', value);
         }

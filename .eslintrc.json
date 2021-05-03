@@ -50,6 +50,7 @@
         "no-unsafe-finally"         : "error",                                                    // Interdit les cassures de code dans 'finally'
         "valid-typeof"              : ["error", { "requireStringLiterals": true }],               // Comparer les types avec des chaines de type
         "no-unsafe-negation"        : ["error", { "enforceForOrderingRelations": true }],         // Interdit les ! devant des conditions flous
-        "no-eq-null"                : "error"                                                     // Comparaison avec null via === ou !==
+        "no-eq-null"                : "error",                                                    // Comparaison avec null via === ou !==
+        "sort-keys"                 : "error"                                                     // Oblige à trier les propriétés des objets par order alphabétique
     }
 }

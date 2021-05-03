@@ -42,7 +42,7 @@ $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
                     </div>
                     <div class="card-body border-top border-quinary">
                         <div class="text-center">
-                            <a class="btn btn-primary text-senary w-100 w-sm-auto px-4" href="./">Retourner voir tous les articles</a>
+                            <a class="btn btn-primary text-senary w-100 w-sm-auto px-4" href="/">Retourner voir tous les articles</a>
                         </div>
                     </div>
                 </div>
@@ -54,6 +54,7 @@ $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
 <?php ob_start(); ?>
 <script>
     let $id = '<?= $params['id']; ?>';
+    monApi.idProduitToShow = '<?= $params['id']; ?>';
 </script>
-<script src="./assets/js/app/produit.js"></script>
+<script src="/assets/js/app/produit.js" id="scriptPage"></script>
 <?php $pageScripts = ob_get_clean(); ?>

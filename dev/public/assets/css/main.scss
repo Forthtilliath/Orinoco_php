@@ -55,13 +55,13 @@ $pixel: 1px;
 }
 
 // Génère des classes pour la taille des images
-$inc_height: 50;
-@for $i from 1 through 10 {
-    .card-img-#{$inc_height*$i} {
-        height: $inc_height * $i * $pixel;
-        object-fit: cover;
-    }
-}
+// $inc_height: 50;
+// @for $i from 1 through 10 {
+//     .card-img-#{$inc_height*$i} {
+//         height: $inc_height * $i * $pixel;
+//         object-fit: cover;
+//     }
+// }
 
 // Adapte la taille du menu select du panier
 @media (min-width: 300px) {
