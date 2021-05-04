@@ -27,6 +27,9 @@
   - [ ] Hover du bouton panier qui affiche le contenu
   - [ ] Image loader à modifier (vérifier si image existe ou pas)
 
+## JS
+    - [ ] Finir le fichier prototype.js
+
 ## CSS
   - [x] Compiler moi-même le bootstrap : [Bootstrap Customise Optimize](https://getbootstrap.com/docs/5.0/customize/optimize/) - [jQuery plugins v3.4](https://getbootstrap.com/docs/3.4/customize/)
 

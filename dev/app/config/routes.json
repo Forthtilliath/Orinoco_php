@@ -21,6 +21,12 @@
             "mainFunction": "showCard"
         },
         {
+            "name": "produittest",
+            "pattern": "/produit/[id:id]/[a:slug]/[i:num]",
+            "path": "produit",
+            "mainFunction": "showCard"
+        },
+        {
             "name": "panier",
             "pattern": "/panier",
             "path": "panier",

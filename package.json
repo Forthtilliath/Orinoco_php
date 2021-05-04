@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "serv": "node dev/server.js",
+    "serv": "nodemon dev/server.js",
     "launch php": "php -S localhost:8000 -t dev/public",
     "app": "gulp app",
     "build": "gulp build",

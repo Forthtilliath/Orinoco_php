@@ -9,7 +9,10 @@ class Api {
          * Liste des options contenant l'id des éléments du panier
          */
         this.options = this.loadOptions();
-        // Créer le panier pour l'application
+        /**
+         * Créer le panier pour l'application
+         * @type {Panier}
+         */
         this.panier = new Panier(cookieName, this.getOptions(), this);
         /**
          * @type {Produit[]} Liste de l'ensemble des produits
@@ -86,23 +89,22 @@ class Api {
     }
 
     createListeners() {
-        // $('a').on('click', this.changePage);
+        $('a:not([data-js-link="product"])').on('click', this.changePage);
         // Lien vers un produit
         //$('a[data-js-link="product"]').on('click', this.changePage2);
     }
 
     changePage2 = (e) => {
         e.preventDefault();
-        console.log('ChangePage2', e.currentTarget.getAttribute('data-js-product-id'));
         this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id');
         console.log('this.idProduitToShow', this.idProduitToShow);
         this.changePage(e);
-    }
+    };
 
     changePage = (e) => {
         // Stop les changements de page
         e.preventDefault();
-        console.log('Changement de page',e.currentTarget);
+        console.log('Changement de page', e.currentTarget);
 
         let url = e.currentTarget.href;
         // Si meme page, on fait rien
@@ -113,38 +115,59 @@ class Api {
         }
 
         let lien = $(e.currentTarget).attr('href');
-        var jqxhr = $.get(lien, (data) => {
+        // Vérifier si la page est déjà en stock ou pas
+        let routeName = monApi.router.getPageName(lien);
+        console.log('routeName',routeName);
+        let page = this.router.getPage(routeName);
+        console.log('page', page);
+
+        if (page === null) {
+            var jqxhr = $.get(lien, (data) => {
+                // Récupère le contenu de la page et je l'insère dans la page actuelle
+                $('#pageContent').html($(data).filter('#pageContent').html());
+
+                // Changer url sans reload
+                history.pushState(null, 'page 2', lien);
+
+                console.log('function', monApi.router.getMainFunction(routeName));
+                executeFunctionByName(monApi.router.getMainFunction(routeName), window);
+                monApi.router.addPage(routeName, $('#pageContent').html());
+
+                // Changer le script
+                /*let scriptUrl = $(data).filter('#scriptPage').attr('src');
+                
+                if( this.addScript(scriptUrl) ) {
+                    $.getScript(scriptUrl)
+                        .done(function (script, textStatus) {
+                            // console.log(script);
+                            console.log(`Chargement du script '${scriptUrl}' terminé avec un statut ${textStatus}`);
+                        })
+                        .fail(function (jqxhr, settings, exception) {
+                            console.warn('Something went wrong' + exception);
+                        });
+                }*/
+            });
+            jqxhr
+                .done(function () {
+                    //alert( "second success" );
+                })
+                .fail(function () {
+                    //alert( "error" );
+                })
+                .always(function () {
+                    //alert( "finished" );
+                });
+        } else {
+            console.log('else');
             // Récupère le contenu de la page et je l'insère dans la page actuelle
-            $('#pageContent').html($(data).filter('#pageContent').html());
+            $('#pageContent').html(page.Html);
 
             // Changer url sans reload
             history.pushState(null, 'page 2', lien);
 
-            // Changer le script
-            let scriptUrl = $(data).filter('#scriptPage').attr('src');
-            
-            if( this.addScript(scriptUrl) ) {
-                $.getScript(scriptUrl)
-                    .done(function (script, textStatus) {
-                        // console.log(script);
-                        console.log(`Chargement du script '${scriptUrl}' terminé avec un statut ${textStatus}`);
-                    })
-                    .fail(function (jqxhr, settings, exception) {
-                        console.warn('Something went wrong' + exception);
-                    });
-            }
-        });
-        jqxhr
-            .done(function () {
-                //alert( "second success" );
-            })
-            .fail(function () {
-                //alert( "error" );
-            })
-            .always(function () {
-                //alert( "finished" );
-            });
-    }
+            // executeFunctionByName(monApi.router.getMainFunction(routeName), this);
+        }
+    };
 
     loadDatas = async () => {
         // console.log('api', 'loadData()');

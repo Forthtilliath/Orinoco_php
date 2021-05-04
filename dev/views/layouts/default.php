@@ -57,10 +57,9 @@
         </div>
     </footer>
 
-    <!-- Script-->
+    <!-- Début scripts -->
     <script src="/assets/js/libs/jquery.min.js"></script>
     <script src="/assets/js/libs/bootstrap-v5.0.min.js"></script>
-    <!-- <script src="/assets/js/libs/router.js"></script> -->
     <script src="/assets/js/classes/extends/html.js"></script>
     <script src="/assets/js/classes/extends/types.js"></script>
     <script src="/assets/js/classes/prototypes.js"></script>
@@ -74,58 +73,8 @@
     <script src="/assets/js/app/home.js"></script>
     <script src="/assets/js/app/produit.js"></script>
     <script src="/assets/js/app/panier.js"></script>
-    <!-- <?= $pageScripts ?? '' ?> -->
-    <script>
-        let monApi = new Api('panier', '/assets/js/datas/cameras.json', 'http://localhost:3000/api/cameras/');
-        let monPanier = monApi.getPanier();
-        monApi.addScript($('#scriptPage').attr('src'));
-        // console.log("Liste des scripts", monApi.listScripts);
-
-        window.onload = async () => {
-
-            /**
-             * Promesse pour Json données
-             * Promesse pour Json routes
-             * Call page
-             */
-            await monApi.loadDatas()
-                .then(() => {
-                    console.log('Connected');
-
-                    if (monApi.isAllLoaded()) {
-                        console.log('Tout chargé');
-                        let routeName = monApi.router.getCurrentPageName();
-                        let page = monApi.router.getPage(routeName);
-                        monApi.router.addPage(routeName, $('#pageContent').html());
-                        executeFunctionByName(monApi.router.getMainFunction(routeName), this);
-                    } else {
-                        console.error("Pas tout chargé 1");
-                    }
-                })
-                .catch((error) => {
-                    console.error('Erreur', error.status, ':', error.statusText);
-                    console.error('URL :', error.responseURL);
-                    monApi.jsonLoaded = false;
-                });
-        }
-
-        /**
-         * Charge le json  
-         *      Fini => met jsonLoaded à true
-         *      Vérifie si domLoaded est à true
-         *          Si oui
-         *              Appel une fonction qui lancera le script de la pageContent
-         *                  Elle doit avoir le meme nom pour toutes les pages 
-         *          Sinon, on fait rien
-         * Vérifie que le dom a chargé
-         *      Fini => met domLoaded à true
-         *      Vérifie si jsonLoaded est à true
-         *          Si oui
-         *              Appel une fonction qui lancera le script de la pageContent
-         *                  Elle doit avoir le meme nom pour toutes les pages 
-         *          Sinon, on fait rien
-         */
-    </script>
+    <script src="/assets/js/app/default.js"></script>
+    <!-- Fin scripts -->
 </body>
 
 </html>
