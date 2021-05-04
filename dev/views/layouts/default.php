@@ -81,41 +81,32 @@
         monApi.addScript($('#scriptPage').attr('src'));
         // console.log("Liste des scripts", monApi.listScripts);
 
-        function whenLoaded() {
-            let routeName = monApi.router.getCurrentPageName();
-            let page = monApi.router.getPage(routeName);
-            monApi.router.addPage(routeName, $('#pageContent').html());
-            executeFunctionByName(monApi.router.getMainFunction(routeName), this);
-        }
+        window.onload = async () => {
 
-        monApi.loadDatas()
-            .then(() => {
-                console.log('Connected');
-                monApi.jsonLoaded = true;
+            /**
+             * Promesse pour Json données
+             * Promesse pour Json routes
+             * Call page
+             */
+            await monApi.loadDatas()
+                .then(() => {
+                    console.log('Connected');
 
-                // if (monApi.domLoaded) {
-                if (monApi.isAllLoaded()) {
-                    console.log("Tout chargé 1");
-                    whenLoaded();
-                } else {
-                    console.error("Pas tout chargé 1");
-                }
-            })
-            .catch((error) => {
-                console.error('Erreur', error.status, ':', error.statusText);
-                console.error('URL :', error.responseURL);
-                monApi.jsonLoaded = false;
-            });
-        window.onload = () => {
-            monApi.domLoaded = true;
-
-            // if (monApi.jsonLoaded) {
-            if (monApi.isAllLoaded()) {
-                console.log("Tout chargé 2", monApi.ListeProduits);
-                whenLoaded();
-            } else {
-                console.error("Pas tout chargé 2");
-            }
+                    if (monApi.isAllLoaded()) {
+                        console.log('Tout chargé');
+                        let routeName = monApi.router.getCurrentPageName();
+                        let page = monApi.router.getPage(routeName);
+                        monApi.router.addPage(routeName, $('#pageContent').html());
+                        executeFunctionByName(monApi.router.getMainFunction(routeName), this);
+                    } else {
+                        console.error("Pas tout chargé 1");
+                    }
+                })
+                .catch((error) => {
+                    console.error('Erreur', error.status, ':', error.statusText);
+                    console.error('URL :', error.responseURL);
+                    monApi.jsonLoaded = false;
+                });
         }
 
         /**

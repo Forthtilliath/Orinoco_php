@@ -8,6 +8,8 @@ class Router {
         this.router = {};
         this.loaded = false;
         this.loadRoutes();
+        
+        console.log('Router loaded');
     }
 
     loadRoutes() {

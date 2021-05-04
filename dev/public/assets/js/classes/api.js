@@ -41,8 +41,6 @@ class Api {
         this.delaiAlert = 5000;
 
         this.idProduitToShow = '';
-        this.jsonLoaded = false;
-        this.domLoaded = false;
 
         this.listScripts = [];
 
@@ -84,7 +82,7 @@ class Api {
     }
 
     isAllLoaded() {
-        return this.domLoaded && this.jsonLoaded && this.router.loaded;
+        return this.router.loaded;
     }
 
     createListeners() {
