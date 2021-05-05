@@ -11,21 +11,22 @@
   - [ ] Panier vide
 
 ## All pages
-  - [ ] Chargement de la page
-  - [ ] Faire en sorte de ne pas full recharge la page à chaque changement de page
-    - [ ] Page index
-      - [ ] Ne charger le json qu'une seule fois
-      - [ ] Eviter des doublons d'articles
-    - [ ] Page produit
-      - [ ] Récupérer l'id du produit
-    - [ ] Page panier
-      - [ ] Savoir pourquoi des doublons arrivent
+  - [x] Chargement de la page
+  - [x] Faire en sorte de ne pas full recharge la page à chaque changement de page
+    - [x] Page index
+      - [x] Ne charger le json qu'une seule fois
+      - [x] Eviter des doublons d'articles
+    - [x] Page produit
+      - [x] Récupérer l'id du produit
+    - [x] Page panier
+      - [x] Savoir pourquoi des doublons arrivent
       - [ ] Trier panier
     - [ ] Images : new Images() au chargement de la page
     - [ ] Maj title & description
   - [ ] Automatiser les calculs de la quantité max par le stock
   - [ ] Hover du bouton panier qui affiche le contenu
   - [ ] Image loader à modifier (vérifier si image existe ou pas)
+  - [x] Enregistrer les pages !!!
 
 ## JS
     - [ ] Finir le fichier prototype.js

@@ -152,7 +152,10 @@ class Panier {
                 : this.tabProduits[i].img;
             // TODO Si image existe, ajouter la classe object-fit-cover (object-fit-none)
             this.api.getElement('nom', id).textContent = this.tabProduits[i].name;
-            this.api.getElement('linknom', id).href = this.api.goToProduct(this.tabProduits[i].id);
+            // this.api.getElement('linknom', id).href = this.api.goToProduct(this.tabProduits[i].id);
+            this.api.getElement('lienProduit', id).href = this.api.goToProduct(this.tabProduits[i].id);
+            this.api.getElement('lienProduit', id).setAttribute('data-js-product-id', this.tabProduits[i].id);
+            this.api.getElement('lienProduit', id).addEventListener('click', this.api.clickLienProduit);
 
             let selectQuantity = this.api.getElement('quantity', id);
             // Récupère la quantité choisit, sachant qu'elle est cappé à quantityMax
@@ -228,7 +231,7 @@ class Panier {
 
         // Met à jour le panier
         this.setCookie();
-    };;
+    };
 
     /**
      * Supprime un élément du panier
@@ -271,7 +274,7 @@ class Panier {
         }
         // Met à jour la page s'il n'y a plus d'éléments dans le panier
         this.setDisplayPanier();
-    };;
+    };
 
     setPanier = (e) => {
         // Stop l'event du lien

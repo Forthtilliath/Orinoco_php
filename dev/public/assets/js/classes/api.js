@@ -29,7 +29,7 @@ class Api {
         /**
          * @type {boolean} Permet de savoir quelle URL utiliser sur l'API
          */
-        this.localServer = true;
+        this.localServer = false;
         /**
          * @type {string} URL du fichier de données
          */
@@ -58,6 +58,10 @@ class Api {
             return true;
         }
         return false;
+    }
+
+    getProduit(id) {
+        return this.listeProduits.filter((produit) => produit.Id == id);
     }
 
     get ListeProduits() {
@@ -89,91 +93,54 @@ class Api {
     }
 
     createListeners() {
-        $('a:not([data-js-link="product"])').on('click', this.changePage);
+        $('a:not([data-js-link="product"])').on('click', this.clickLien);
         // Lien vers un produit
-        //$('a[data-js-link="product"]').on('click', this.changePage2);
+        $('a').on('click', (e) => e.preventDefault());
     }
 
-    changePage2 = (e) => {
+    clickLienProduit = (e) => {
         e.preventDefault();
         this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id');
-        console.log('this.idProduitToShow', this.idProduitToShow);
-        this.changePage(e);
+        // console.log('this.idProduitToShow', this.idProduitToShow);
+        this.clickLien(e);
     };
 
-    changePage = (e) => {
+    clickLien = (e) => {
         // Stop les changements de page
         e.preventDefault();
-        console.log('Changement de page', e.currentTarget);
-
-        let url = e.currentTarget.href;
-        // Si meme page, on fait rien
-        if (url === window.location.href) {
-            // console.log('Meme page, donc pas de changement.');
-            // return;
-            // location.reload();
-        }
 
         let lien = $(e.currentTarget).attr('href');
         // Vérifier si la page est déjà en stock ou pas
-        let routeName = monApi.router.getPageName(lien);
-        console.log('routeName',routeName);
-        let page = this.router.getPage(routeName);
-        console.log('page', page);
-
-        if (page === null) {
-            var jqxhr = $.get(lien, (data) => {
-                // Récupère le contenu de la page et je l'insère dans la page actuelle
-                $('#pageContent').html($(data).filter('#pageContent').html());
-
-                // Changer url sans reload
-                history.pushState(null, 'page 2', lien);
-
-                console.log('function', monApi.router.getMainFunction(routeName));
-                executeFunctionByName(monApi.router.getMainFunction(routeName), window);
-                monApi.router.addPage(routeName, $('#pageContent').html());
-
-                // Changer le script
-                /*let scriptUrl = $(data).filter('#scriptPage').attr('src');
-                
-                if( this.addScript(scriptUrl) ) {
-                    $.getScript(scriptUrl)
-                        .done(function (script, textStatus) {
-                            // console.log(script);
-                            console.log(`Chargement du script '${scriptUrl}' terminé avec un statut ${textStatus}`);
-                        })
-                        .fail(function (jqxhr, settings, exception) {
-                            console.warn('Something went wrong' + exception);
-                        });
-                }*/
-            });
-            jqxhr
-                .done(function () {
-                    //alert( "second success" );
-                })
-                .fail(function () {
-                    //alert( "error" );
-                })
-                .always(function () {
-                    //alert( "finished" );
-                });
-        } else {
-            console.log('else');
-            // Récupère le contenu de la page et je l'insère dans la page actuelle
-            $('#pageContent').html(page.Html);
-
-            // Changer url sans reload
-            history.pushState(null, 'page 2', lien);
-
-            // executeFunctionByName(monApi.router.getMainFunction(routeName), this);
-        }
+        monApi.router.changePage(lien);
     };
 
-    loadDatas = async () => {
-        // console.log('api', 'loadData()');
-        // Récupération des données de l'api pour les mettre dans la fonction loadPage
-        let datas = await this.getProductsFromJson();
-        this.addCameras(datas);
+    // loadDatas = async () => {
+    //     // Récupération des données de l'api pour les mettre dans la fonction loadPage
+    //     let datas = await this.getProductsFromJson();
+    //     this.addCameras(datas);
+    // };
+
+    // loadDatas = async () => {
+    //     await this.getProductsFromJson()
+    //         .then((datas) => {
+    //             this.addCameras(datas);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // };
+
+    loadDatas = () => {
+        return new Promise(async (resolve, reject) => {
+            await this.getProductsFromJson()
+                .then((datas) => {
+                    this.addCameras(datas);
+                    resolve();
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     };
 
     /**
@@ -181,7 +148,6 @@ class Api {
      * @returns {Promise} Promesse contenant le tableau des articles
      */
     getProductsFromJson = () => {
-        // console.log(this.url);
         return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
             request.onreadystatechange = function () {
@@ -343,7 +309,7 @@ class Api {
     };
 
     goToProduct = (id) => {
-        return `/produit:${id}`;
+        return `/produit/${id}`;
     };
 
     /**

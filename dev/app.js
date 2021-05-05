@@ -19,7 +19,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use(express.static('images'));
 
 app.use(express.urlencoded({ extended: true }));

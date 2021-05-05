@@ -5,6 +5,9 @@
  * @returns Le résultat de la fonction
  */
 function executeFunctionByName(functionName, context = window /*, args */) {
+    if (functionName === '') {
+        return;
+    }
     var args = Array.prototype.slice.call(arguments, 2);
     var namespaces = functionName.split('.');
     var func = namespaces.pop();

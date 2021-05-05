@@ -5,7 +5,7 @@ $pageMessageTitle = 'Voici votre article';
 $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
 ?>
 
-<h1 class="text-center page-title">Orinoco<span class="d-none d-xss-inline"> - Affichage d'un produit</span></h1>
+<h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Affichage d'un produit</span></h1>
 <section id="list_alerts"></section>
 <section class="container-md">
     <div class="mt-3">
@@ -50,11 +50,3 @@ $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
         </div>
     </div>
 </section>
-
-<?php ob_start(); ?>
-<script>
-    let $id = '<?= $params['id']; ?>';
-    monApi.idProduitToShow = '<?= $params['id']; ?>';
-</script>
-<script src="/assets/js/app/produit.js" id="scriptPage"></script>
-<?php $pageScripts = ob_get_clean(); ?>

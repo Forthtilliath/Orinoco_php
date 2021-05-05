@@ -2,24 +2,23 @@ let monApi = new Api('panier', '/assets/js/datas/cameras.json', 'http://localhos
 // Initialisation du chargement des routes
 let monRouter = monApi.router.loadRoutes();
 let monPanier = monApi.getPanier();
-monApi.addScript($('#scriptPage').attr('src'));
-// console.log("Liste des scripts", monApi.listScripts);
 
 window.onload = () => {
     // Chargement du fichier json contenant les données des produits
     monApi
         .loadDatas()
-        .then(async () => {
+        .then(() => {
             // Une fois les données des produits et des routes chargées
             monRouter.done(() => {
                 let routeName = monApi.router.getCurrentPageName();
-                executeFunctionByName(monApi.router.getMainFunction(routeName), this);
-                monApi.router.addPage(routeName, $('#pageContent').html());
+                if (routeName !== undefined) {
+                    executeFunctionByName(monApi.router.getMainFunction(routeName), window);
+                } else {
+                    history.pushState(null, routeName, '/404');
+                }
             });
         })
         .catch((error) => {
-            console.error('Erreur', error.status, ':', error.statusText);
-            console.error('URL :', error.responseURL);
-            monApi.jsonLoaded = false;
+            monApi.router.changePage('/404/json', error.responseURL);
         });
 };

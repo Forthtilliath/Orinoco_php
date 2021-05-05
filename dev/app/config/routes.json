@@ -10,19 +10,7 @@
         },
         {
             "name": "produit",
-            "pattern": "/produit:[id:id]",
-            "path": "produit",
-            "mainFunction": "showCard"
-        },
-        {
-            "name": "produit2",
             "pattern": "/produit/[id:id]",
-            "path": "produit",
-            "mainFunction": "showCard"
-        },
-        {
-            "name": "produittest",
-            "pattern": "/produit/[id:id]/[a:slug]/[i:num]",
             "path": "produit",
             "mainFunction": "showCard"
         },
@@ -37,6 +25,18 @@
             "pattern": "/order",
             "path": "panier_confirmation",
             "mainFunction": ""
+        },
+        {
+            "name": "404",
+            "pattern": "/404",
+            "path": "404",
+            "mainFunction": ""
+        },
+        {
+            "name": "404_json",
+            "pattern": "/404/json",
+            "path": "404_json",
+            "mainFunction": "putUrl"
         }
     ]
 }

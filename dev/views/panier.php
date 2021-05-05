@@ -15,19 +15,19 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 
         <div class="col-xs-6 col-md-9 col-lg bg-tertiary p-xs-3 border-md border-start-0 order-1">
             <div class="card-body d-flex flex-column h-100 justify-content-center align-items-center align-items-center align-items-md-start">
-                <h5 class="card-title"><a href="/" class="text-decoration-none text-dark"><i class="bi bi-link"></i> <span id="card_0_title"></span></a></h5>
+                <h5 class="card-title"><a href="/" class="text-decoration-none text-dark" data-js-link="product" data-js-product-id=""><i class="bi bi-link"></i> <span id="card_0_title"></span></a></h5>
                 <p class="card-text text-right">Lentille : <span id="card_0_lenses"></span></p>
             </div>
         </div>
 
-        <div class="col-xs-6 col-md-4 col-lg-2 bg-tertiary p-md-3 border-start-0 border-md order-2 order-xs-3 order-sm-3 order-md-2">
+        <div class="col-xs-6 col-md-4 col-lg-2 bg-tertiary p-md-3 border-start-0 border-md order-2 order-xs-3 order-md-2">
             <div class="pb-3 pt-md-3 text-center">
                 <div class="card-text text-right pb-1">Prix unitaire</div>
                 <div id="card_0_price" class="badge bg-primary text-wrap" style="width: 6rem;font-size:1em">1 657 €</div>
             </div>
         </div>
 
-        <div class="col-xs-6 col-md-4 col-lg-3 col-xl-2 bg-tertiary p-3 border-start-0 border-md text-center order-3 order-xs-2 order-sm-2 order-md-3">
+        <div class="col-xs-6 col-md-4 col-lg-3 col-xl-2 bg-tertiary p-3 border-start-0 border-md text-center order-3 order-xs-2 order-md-3">
             <div class="align-items-center d-flex flex-column h-100 justify-content-center">
                 <div class="form-floating w-100 form-select-quantity">
                     <select is="exp-select" class="bg-quaternary form-select text-primary border-primary" id="card_0_quantity"></select>

@@ -1,8 +1,3 @@
-// window.onload = () => {
-// Création de l'objet Api avec le cookie 'panier'
-//let monApi = new Api('panier', 'assets/js/datas/cameras.json', 'http://localhost:3000/api/cameras/');
-//let monPanier = monApi.getPanier();
-
 const createCard = async (i, camera) => {
     let id = monApi.getElementId('article', i); // 'cards_{{i}}'
 
@@ -36,18 +31,17 @@ const createCard = async (i, camera) => {
     if (i == 0) monApi.getElement('quantity', id).addOptions(getArrayWithValues(1, camera.Stock));
     monApi.getElement('prix', id).textContent = camera.Prix.numberFormat();
     monApi.getElements('lienProduit', id).forEach((element) => {
-        //element.href = '/produit:' + camera.Id;
-        element.href = '/produit/' + camera.Id;
+        element.href = monApi.goToProduct(camera.Id);
         element.setAttribute('data-js-product-id', camera.Id);
-        element.addEventListener('click', monApi.changePage2);
+        element.addEventListener('click', monApi.clickLienProduit);
     });
 
     // Ajout de l'evenement sur le bouton Ajouter au panier
     monApi.getElement('form', id).addEventListener('submit', monPanier.setPanier);
 };
 
-let i = 0;
 const showCards = () => {
+    let i = 0;
     // Vérifier si le json est chargé
     if (monApi.ListeProduits.length > 0) {
         for (let unProduit of monApi.ListeProduits) {
@@ -59,29 +53,5 @@ const showCards = () => {
         console.error('Erreur');
     }
 };
-// showCards();
+
 window['showCards'] = showCards;
-
-// const loadDatas = async () => {
-//     // Récupération des données de l'api pour les mettre dans la fonction loadPage
-//     let datas = await monApi.getProductsFromJson();
-//     monApi.addProduits('camera', datas);
-//     showCards();
-// };
-
-// if (monApi.ListeProduits.length > 0) {
-//     showCards();
-// } else {
-//     loadDatas()
-//         .then(() => {
-//             console.log('Connected');
-//         })
-//         .catch((error) => {
-//             console.error('Erreur', error.status, ':', error.statusText);
-//             console.error('URL :', error.responseURL);
-//         });
-// }
-// };
-// if (typeof monApi !== 'undefined') {
-//     dispatchEvent(new Event('load'));
-// }

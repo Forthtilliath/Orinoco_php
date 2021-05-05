@@ -3,7 +3,7 @@ $pageTitle = "Orinoco - Le e-commerce moins cher que gratuit !";
 $pageDescription = "";
 ?>
 
-<h1 class="text-center page-title">Orinoco<span class="d-none d-xss-inline"> - Le e-commerce moins cher que gratuit</span></h1>
+<h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Le e-commerce moins cher que gratuit</span></h1>
 <section id="list_alerts">
     <!--<div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Holy guacamole!</strong> You should check in on some of those fields below.
@@ -105,7 +105,3 @@ $pageDescription = "";
         </nav>
     <?php endif ?>
 </section>
-
-<?php ob_start(); ?>
-<script src="/assets/js/app/home.js" id="scriptPage"></script>
-<?php $pageScripts = ob_get_clean(); ?>

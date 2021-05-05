@@ -1,9 +1,5 @@
 class Router {
     constructor() {
-        /**
-         * @type {Page[]}
-         */
-        this.tabPages = [];
         this.router = {};
         //this.loadRoutes();
     }
@@ -15,35 +11,25 @@ class Router {
             .always(() => {});
     }
 
-    addPage(name, html, js) {
-        this.tabPages.push(new Page(name, html));
-    }
-
-    getPage(name) {
-        for (let page of this.tabPages) {
-            if (page.Name === name) return page;
-        }
-        return null;
-    }
-
     getPageName(uri) {
         // NOTE Fonctionne pas pour produit (regex)
         for (let route of this.router.routes) {
             // TODO Regex avec pattern
             // if (route.pattern === uri) return route.name;
             // /produit/[id:id]
-            let rbracket = new RegExp(/\[(\w+:\w+)\]/g);
+            let rbracket = new RegExp(/(?<param>\[(?<id>\w+:\w+)\])/g);
             let pattern = route.pattern;
 
-            let m, res, regex, newpattern = pattern;
-            console.log('""""""""""""""""""""""""""""""""""""""');
-            console.log('    pattern', pattern);
+            let m,
+                res,
+                regex,
+                newpattern = pattern;
             while ((m = rbracket.exec(pattern)) !== null) {
                 // This is necessary to avoid infinite loops with zero-width matches
                 if (m.index === rbracket.lastIndex) {
                     rbracket.lastIndex++;
                 }
-                res = m[1].split(':');
+                res = m['groups']['id'].split(':');
                 switch (res[0]) {
                     case 'id':
                         regex = '[a-z0-9]{24}';
@@ -59,10 +45,8 @@ class Router {
                 }
                 newpattern = newpattern.replace(m[0], regex);
             }
-            newpattern = '^' + newpattern + '$';
-            console.log('new pattern', newpattern);
-            if (new RegExp(newpattern,'m').test(uri)) {
-                console.log("La route de merde correspond !!!");
+            // newpattern = '^' + newpattern + '$';
+            if (new RegExp(`^${newpattern}$`, 'm').test(uri)) {
                 return route.name;
             }
         }
@@ -73,7 +57,6 @@ class Router {
     }
 
     getUri() {
-        console.log('uri', location.pathname + location.search);
         return location.pathname + location.search;
     }
 
@@ -88,19 +71,28 @@ class Router {
         }
         return null;
     }
-}
 
-class Page {
-    constructor(name, html) {
-        this.name = name;
-        this.html = html;
-    }
+    changePage(lien, ...args) {
+        
+        let routeName = this.getPageName(lien);
+        var jqxhr = $.get(lien, (data) => {
+            // Récupère le contenu de la page et je l'insère dans la page actuelle
+            $('#pageContent').html($(data).filter('#pageContent').html());
 
-    get Name() {
-        return this.name;
-    }
+            // Changer url sans reload
+            history.pushState(null, 'page 2', lien);
 
-    get Html() {
-        return this.html;
+            executeFunctionByName(this.getMainFunction(routeName), window, args);
+        });
+        jqxhr
+            .done(function () {
+                //alert( "second success" );
+            })
+            .fail(function () {
+                //alert( "error" );
+            })
+            .always(function () {
+                //alert( "finished" );
+            });
     }
 }
