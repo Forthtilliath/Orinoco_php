@@ -1,8 +1,6 @@
 <?php
 $pageTitle = 'Orinoco - Page produit - Le e-commerce moins cher que gratuit !';
-$pageDescription = '';
-$pageMessageTitle = 'Voici votre article';
-$pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
+$pageDescription = 'Produit desc';
 ?>
 
 <h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Affichage d'un produit</span></h1>
@@ -50,3 +48,10 @@ $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
         </div>
     </div>
 </section>
+
+<script>
+    $page = {
+        title: '<?= $pageTitle ?>',
+        description: '<?= $pageDescription ?>'
+    };
+</script>

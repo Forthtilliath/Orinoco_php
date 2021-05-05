@@ -73,16 +73,19 @@ class Router {
     }
 
     changePage(lien, ...args) {
-        
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
         let routeName = this.getPageName(lien);
         var jqxhr = $.get(lien, (data) => {
-            // Récupère le contenu de la page et je l'insère dans la page actuelle
+            // Récupère le contenu de la page et l'insère dans la page actuelle
             $('#pageContent').html($(data).filter('#pageContent').html());
 
             // Changer url sans reload
-            history.pushState(null, 'page 2', lien);
+            history.pushState(null, routeName, lien);
+            document.title = $page.title;
+            $('meta[name="description"]').attr('content', $page.description);
 
             executeFunctionByName(this.getMainFunction(routeName), window, args);
+            $('#pageContent a').on('click', monApi.clickLien);
         });
         jqxhr
             .done(function () {

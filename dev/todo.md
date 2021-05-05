@@ -22,7 +22,7 @@
       - [x] Savoir pourquoi des doublons arrivent
       - [ ] Trier panier
     - [ ] Images : new Images() au chargement de la page
-    - [ ] Maj title & description
+    - [x] Maj title & description
   - [ ] Automatiser les calculs de la quantité max par le stock
   - [ ] Hover du bouton panier qui affiche le contenu
   - [ ] Image loader à modifier (vérifier si image existe ou pas)

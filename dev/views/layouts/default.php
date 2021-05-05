@@ -21,8 +21,8 @@
                 <img class="d-inline d-330-none" src="/images/logo.png" width="auto" height="auto" alt="Logo" />
                 <img class="d-none d-330-inline" src="/images/logo_w_text.png" width="auto" height="auto" alt="Logo" />
             </a>
-            <a class="navbar-brand" href="/panier">
-                <button type="button" class="btn btn-quaternary" id="bt_panier" aria-label="Panier"><i class="bi bi-basket"></i><span class="d-none d-sm-inline ps-3">Panier</span></button>
+            <a class="navbar-brand" href="/panier" aria-label="Panier">
+                <button type="button" class="btn btn-quaternary" id="bt_panier"><i class="bi bi-basket"></i><span class="d-none d-sm-inline ps-3">Panier</span></button>
             </a>
         </div>
     </nav>

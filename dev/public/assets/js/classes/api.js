@@ -93,21 +93,22 @@ class Api {
     }
 
     createListeners() {
-        $('a:not([data-js-link="product"])').on('click', this.clickLien);
+        // $('a:not([data-js-link="product"])').on('click', this.clickLien);
         // Lien vers un produit
-        $('a').on('click', (e) => e.preventDefault());
+        $('a').on('click', this.clickLien);
     }
 
-    clickLienProduit = (e) => {
-        e.preventDefault();
-        this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id');
-        // console.log('this.idProduitToShow', this.idProduitToShow);
-        this.clickLien(e);
-    };
+    // clickLienProduit = (e) => {
+    //     e.preventDefault();
+    //     this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id');
+    //     // console.log('this.idProduitToShow', this.idProduitToShow);
+    //     this.clickLien(e);
+    // };
 
     clickLien = (e) => {
         // Stop les changements de page
         e.preventDefault();
+        this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id') ?? '';
 
         let lien = $(e.currentTarget).attr('href');
         // Vérifier si la page est déjà en stock ou pas

@@ -33,7 +33,7 @@ const createCard = async (i, camera) => {
     monApi.getElements('lienProduit', id).forEach((element) => {
         element.href = monApi.goToProduct(camera.Id);
         element.setAttribute('data-js-product-id', camera.Id);
-        element.addEventListener('click', monApi.clickLienProduit);
+        // element.addEventListener('click', monApi.clickLienProduit);
     });
 
     // Ajout de l'evenement sur le bouton Ajouter au panier

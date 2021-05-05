@@ -28,16 +28,7 @@
         // Si un seul élément
         let id = monApi.router.getUri().split('/').splice(-1)[0];
         let produit = monApi.getProduit(id);
-        console.log('produit',produit);
-        // if (monApi.ListeProduits.length == 1) {
-        //     editCard(monApi.ListeProduits[0]);
-        // } else {
-        //     // Produit non trouvé
-        //     document.querySelector('#message-error').show('');
-        //     document.querySelector('#cards_0').hide();
-        //     document.querySelector('#message-valid').hide();
-        //     redirigeVersHome();
-        // }
+        
         if (produit instanceof Array) {
             editCard(produit[0]);
         

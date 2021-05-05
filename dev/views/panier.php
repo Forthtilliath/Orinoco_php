@@ -92,6 +92,9 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
     </div>
 </section>
 
-<?php ob_start(); ?>
-<script src="/assets/js/app/order.js" id="scriptPage"></script>
-<?php $pageScripts = ob_get_clean(); ?>
+<script>
+    $page = {
+        title: '<?= $pageTitle ?>',
+        description: '<?= $pageDescription ?>'
+    };
+</script>

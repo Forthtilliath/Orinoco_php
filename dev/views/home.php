@@ -105,3 +105,10 @@ $pageDescription = "";
         </nav>
     <?php endif ?>
 </section>
+
+<script>
+    $page = {
+        title: '<?= $pageTitle ?>',
+        description: '<?= $pageDescription ?>'
+    };
+</script>

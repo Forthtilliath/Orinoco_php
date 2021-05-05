@@ -13,8 +13,9 @@ window.onload = () => {
                 let routeName = monApi.router.getCurrentPageName();
                 if (routeName !== undefined) {
                     executeFunctionByName(monApi.router.getMainFunction(routeName), window);
+                    $('#pageContent a').on('click', monApi.clickLien);
                 } else {
-                    history.pushState(null, routeName, '/404');
+                    monApi.router.changePage('/404');
                 }
             });
         })
