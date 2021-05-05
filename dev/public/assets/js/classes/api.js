@@ -61,7 +61,7 @@ class Api {
     }
 
     getProduit(id) {
-        return this.listeProduits.filter((produit) => produit.Id == id);
+        return this.listeProduits.filter((produit) => produit.Id == id)[0];
     }
 
     get ListeProduits() {
@@ -92,18 +92,12 @@ class Api {
         return this.router.loaded;
     }
 
+    /**
+     * Ajoute des events sur les liens présents dans la page par défaut
+     */
     createListeners() {
-        // $('a:not([data-js-link="product"])').on('click', this.clickLien);
-        // Lien vers un produit
-        $('a').on('click', this.clickLien);
+        $('nav a').on('click', this.clickLien);
     }
-
-    // clickLienProduit = (e) => {
-    //     e.preventDefault();
-    //     this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id');
-    //     // console.log('this.idProduitToShow', this.idProduitToShow);
-    //     this.clickLien(e);
-    // };
 
     clickLien = (e) => {
         // Stop les changements de page
@@ -114,22 +108,6 @@ class Api {
         // Vérifier si la page est déjà en stock ou pas
         monApi.router.changePage(lien);
     };
-
-    // loadDatas = async () => {
-    //     // Récupération des données de l'api pour les mettre dans la fonction loadPage
-    //     let datas = await this.getProductsFromJson();
-    //     this.addCameras(datas);
-    // };
-
-    // loadDatas = async () => {
-    //     await this.getProductsFromJson()
-    //         .then((datas) => {
-    //             this.addCameras(datas);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // };
 
     loadDatas = () => {
         return new Promise(async (resolve, reject) => {
@@ -193,23 +171,13 @@ class Api {
     loadOptions = () => {
         return {
             // les élèments a voir quand le panier contient un article
-            /*elemsBasketFull: [
-                'order-title',
-                'order-total',
-                'order-modal-container',
-                'order-alert-contentfull',
-                'order-alert-title',
-            ],*/
-            elemsBasketFull: [],
+            elemsBasketFull: ['#list_cards','#show_total'],
             // Les éléments à masquer lorsque le panier est vide
-            //elemsBasketEmpty: ['basket-empty', 'order-alert-contentempty'],
-            elemsBasketEmpty: [],
+            elemsBasketEmpty: ['#panier_vide'],
             // L'élément parent des éléments
             elemsParentId: '#list_cards',
             // Id distingant les éléments entre eux
             elemsIds: 'card_{{i}}',
-            // elemsForms: '#{{id}} #{{id}}_form',
-            // elemsMessage: '#{{id}} #{{id}}_select-msg',
             elemAlerts: '#list_alerts',
             elemsBasket: {
                 linknom: '#{{id}} h5 > a',

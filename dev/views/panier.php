@@ -5,10 +5,28 @@ $pageMessageTitle = 'Dernière Etape !';
 $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à faire.';
 ?>
 
-<h1 class="text-center page-title">Orinoco<span class="d-none d-xss-inline"> - Affichage du panier</span></h1>
+<h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Affichage du panier</span></h1>
 <section id="list_alerts"></section>
 
-<section class="container" id="list_cards">
+<section class="container d-none" id="panier_vide">
+    <div class="justify-content-center">
+        <div class="row justify-content-center mt-4">
+            <div class="card mb-4" style="width: 100%">
+                <img src="/images/basket.png" class="card-img-top" alt="" />
+                <div class="card-body">
+                    <h2 class="card-title text-center" id="product-name">Votre panier est vide !</h2>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <a href="index.html" class="btn btn-info mt-1" id="">Retour à la boutique</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container d-none" id="list_cards">
     <exp-article class="row mb-3 g-md-1" id="card_0">
         <input type="hidden" value="" name="id" id="card_0_id" />
         <div class="col-md-3 col-lg-2 bg-tertiary p-0 border-md"><img src="images/spinning-circles.svg" id="card_0_image" class="card-img-top card-img-250 card-img-md-150 object-fit-cover" alt="..."></div>
@@ -50,13 +68,13 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
         </div>
     </exp-article>
 </section>
-<section class="container">
+<section class="container d-none" id="show_total">
     <div class="row mb-3 g-md-1">
         <div class="d-none d-lg-block col-lg p-3"></div>
         <div class="col-sm-6 col-lg-4 bg-tertiary p-lg-3 border border-quinary text-center">
             <div class="card-body text-center">
                 <div class="card-text text-right fs-5 pb-1">Nombre d'articles</div>
-                <div id="cards_nbarticles" class="badge bg-secondary text-wrap fs-5" style="width: 6rem">15</div>
+                <div id="cards_nbarticles" class="badge bg-secondary text-wrap fs-5" style="width: 6rem"></div>
             </div>
         </div>
         <div class="col-sm-6 col-lg-2 bg-tertiary p-lg-3 border border-quinary text-center">
@@ -78,8 +96,8 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
                 </div>
                 <div class="modal-body" id="modalConfirmRemoveBody">
                     Souhaitez-vous retirer l'article
-                    <span id="modal-body-article" class="font-italic font-weight-bold"></span> avec la lentille
-                    <span id="modal-body-lentilles" class="font-italic font-weight-bold"></span> de votre panier ?
+                    <span id="modal-body-article" class="fw-bold"></span> avec la lentille
+                    <span id="modal-body-lentilles" class="fw-bold"></span> de votre panier ?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non, je garde l'article</button>

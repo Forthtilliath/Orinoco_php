@@ -22,11 +22,12 @@ Object.assign(String.prototype, {
 
     /**
      * Vérifie si la chaine est un nombre
-     * @param {String} value Vaeur à tester
+     * @param {String} value Valeur à tester
      * @returns
      */
-    isNumber(value) {
-        return !isNaN(value) && !isNaN(parseFloat(value));
+    isNumber() {
+        console.log(this);
+        return !isNaN(this) && !isNaN(parseFloat(this));
     },
 
     /**

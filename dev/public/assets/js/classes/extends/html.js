@@ -182,6 +182,23 @@ class HTMLSelectElementExtends extends HTMLSelectElement {
         }
         return error;
     }
+
+    /**
+     * Vérifie si la chaine est un nombre
+     * @param {String} value Valeur à tester
+     * @returns
+     */
+    isNumber() {
+        return !isNaN(this.value) && !isNaN(parseFloat(this.value));
+    }
+
+    isPositiveNumber() {
+        return this.isNumber() && this.value > 0;
+    }
+
+    isPositiveNumberAndMax(max) {
+        return this.isPositiveNumber() && this.value <= max;
+    }
 }
 
 // Ajoute un nouvel type d'élément dans le DOM : exp-article correspond à la

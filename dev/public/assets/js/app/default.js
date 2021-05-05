@@ -20,6 +20,7 @@ window.onload = () => {
             });
         })
         .catch((error) => {
-            monApi.router.changePage('/404/json', error.responseURL);
+            if( error.status === 404)
+                monApi.router.changePage('/404/json', error.responseURL);
         });
 };

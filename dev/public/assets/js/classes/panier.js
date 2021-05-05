@@ -1,31 +1,4 @@
 /**
- * TODO List
- * [x] Ajouter dans le panier depuis la page produit
- * [x] Bouton supprimer : Supprime un élément du panier
- *  [x] Si plus d'article, set styles
- * [x] Ajout dans le panier :
- *  [x] Vérifier si qté & lentilles non vide
- *  [x] Si produit existe déjà avec même lentille
- * [x] Set quantité => set panier
- *  [x] réaliser les sous totaux dynamique
- *  [x] realiser le total dynamique
- * [x] realiser la boucle pour les cartes dans la page order afficher et dupliquer
- * [x] Si panier vide
- *  [x] disable la partie form  ou le boutton a voir suivant style de page
- *  [x] Masquer article par défaut
- * [ ] Vérifier les qté avant envoi
- * [v] Adapter les id de la page produit avec home
- * [x] Ajouter une span de notification d'ajout de l'article ds le panier
- * [x] Ajouter un modal de suppression du panier
- * [x] Lien en cliquant sur le nom du produit sur le panier
- * [ ] Page index & produit
- *  [x] Prendre en compte un système de stock (5 maxi par article)
- *  [ ] Au chargement, adapter le menu select à la quantité restante disponible
- *  [ ] Lorsqu'un article est ajouté au panier => modifie le menu select
- *  [x] Afficher un message si Out of stock
- */
-
-/**
  *
  */
 class Panier {
@@ -64,11 +37,13 @@ class Panier {
 
     /** Ajoute un écouteur pour savoir si le storage a ét modifié */
     createListener = () => {
-        window.addEventListener('storage', () => {
+        // window.addEventListener('storage', () => {
+        document.addEventListener('localDataStorage', () => {
+            console.log('event');
             this.resetPanier();
             this.setDisplayPanier();
             this.display();
-        });
+        }, false);
     };
 
     /**
@@ -111,14 +86,14 @@ class Panier {
         let elemsToShow = []; // Tableau des éléments que l'on souhaite afficher
         let elemsToHide = []; // Tableau des éléments que l'on souhaite masquer
         if (this.tabProduits.length > 0) {
-            elemsToShow = this.options.elemsBasketFull;
-            elemsToHide = this.options.elemsBasketEmpty;
+            elemsToShow = this.api.options.elemsBasketFull;
+            elemsToHide = this.api.options.elemsBasketEmpty;
         } else {
-            elemsToShow = this.options.elemsBasketEmpty;
-            elemsToHide = this.options.elemsBasketFull;
+            elemsToShow = this.api.options.elemsBasketEmpty;
+            elemsToHide = this.api.options.elemsBasketFull;
         }
-        elemsToShow.forEach((elem) => document.getElementById(elem).show());
-        elemsToHide.forEach((elem) => document.getElementById(elem).hide());
+        $(elemsToShow.join(',')).removeClass('d-none').addClass('d-block');
+        $(elemsToHide.join(',')).removeClass('d-block').addClass('d-none');
     };
 
     /**
@@ -131,7 +106,7 @@ class Panier {
             // Si y'a plus d'un élément, on clone le premier élément
             if (i == 0) {
                 // On affiche le premier élément (le seul disponible dans le html)
-                this.api.getElement('article', 0, '#').show();
+                // this.api.getElement('article', 0, '#').show();
             } else {
                 // Clone le premier card
                 let card = this.api.getElement('article', 0, '#').cloneNode(true);
@@ -177,7 +152,7 @@ class Panier {
             }
             this.nbProduits += this.tabProduits[i].quantity;
 
-            let subTotal = quantityInSelect * this.tabProduits[i].price.reverseNumberFormat();
+            let subTotal = quantityInSelect * this.tabProduits[i].price;
             this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
             this.total += subTotal;
 
@@ -222,7 +197,7 @@ class Panier {
         // Retire l'ancien sous-total du total
         this.total -= this.api.getElement('sousTotal', id).textContent.reverseNumberFormat();
         // Calcul le nouveau sous-total
-        let subTotal = this.tabProduits[pos].quantity * this.tabProduits[pos].price.reverseNumberFormat();
+        let subTotal = this.tabProduits[pos].quantity * this.tabProduits[pos].price;
         this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
         // Calcul le nouveau total
         this.total += subTotal;
@@ -280,38 +255,23 @@ class Panier {
         // Stop l'event du lien
         e.preventDefault();
 
-        let form = e.target;
-        console.log(form);
-
-        //let bt = this.lastEvent.action == 'remove' ? this.lastEvent.target : null;
-        //let articleID = form.numberID();
-        let articleID = form.getAttribute('id').numberID();
-        console.log(articleID);
-        console.log(this);
-        console.log(this.api.getElementId('article', articleID));
-
         // Récupère le numéro de l'article via l'id du button
-        let id = this.api.getElementId('article', articleID);
+        let id = this.api.getElementId('article', e.target.getAttribute('id').numberID());
 
         // Vérifie si une lentille et une quantité ont été sélectionnées
         let idArt = this.api.getElement('idProduit', id);
         let lenses = this.api.getElement('lentilles', id);
         let quantity = this.api.getElement('quantity', id);
-        let name = this.api.getElement('nom', id);
-        let price = this.api.getElement('prix', id);
-        let img = this.api.getElement('image', id);
-        let canvas = this.api.getElement('canvas', id);
-        let error = false;
 
-        // On vérifie qu'une lentille a été sélectionnée
-        // TODO Check value in array
-        error = lenses.checkSelectValue('');
+        let produit = this.api.getProduit(idArt.value);
 
-        // On vérifie qu'une quantité a été sélectionnée
-        error = quantity.checkSelectValue(0);
+        if (typeof produit === 'undefined' ) {
+            this.api.createAlert('danger', 'Identifiant du produit introuvable !', 'Une erreur est survenue. Veuillez nous excuser pour la gêne occasionnée.');
+            return false;
+        }
 
         // Si aucun des deux, on affiche une erreur et on stop l'ajout dans le panier
-        if (error) {
+        if (!produit.Lentilles.includes(lenses.value) || !quantity.isPositiveNumberAndMax(produit.Stock)) {
             this.api.createAlert('danger', 'Valeur incorrecte !', 'Veuillez sélectionner une valeur correcte.');
             return false;
         }
@@ -323,20 +283,18 @@ class Panier {
         let pos = this.getPosition(idArt.value, lenses.value);
         // Si l'article est déjà dans le panier
         if (pos >= 0) {
-            if (this.tabProduits[pos]['quantity'] == 5) {
+            if (this.tabProduits[pos]['quantity'] == produit.Stock) {
                 this.api.createAlert(
                     'danger',
                     'Rupture de stock !',
-                    "Le produit que vous souhaitez ajouté n'est plus en stock.",
+                    "Le produit que vous souhaitez ajouter n'est plus en stock.",
                 );
             } else {
-                let prevQty = this.tabProduits[pos]['quantity'];
                 this.tabProduits[pos]['quantity'] += parseInt(quantity.value); // 6 = 4 + 2
-                if (this.tabProduits[pos]['quantity'] > 5 /** produit.Stock */) {
-                    // Affiche un msg
-                    let n = parseInt(quantity.value) - this.tabProduits[pos]['quantity'] + 5;
+                if (this.tabProduits[pos]['quantity'] > produit.Stock) {
+                    let n = parseInt(quantity.value) - this.tabProduits[pos]['quantity'] + produit.Stock;
                     let a = n == 1 ? 'a' : 'ont';
-                    this.tabProduits[pos]['quantity'] = 5;
+                    this.tabProduits[pos]['quantity'] = produit.Stock;
                     this.api.createAlert(
                         'warning',
                         'Stock insuffisant !',
@@ -354,15 +312,12 @@ class Panier {
             }
         } else {
             // Création d'un objet pour stocker les éléments du panier
-            let imgsrc;
-            if (canvas === null) imgsrc = img.getAttribute('src');
-            else imgsrc = canvas.getAttribute('data-src');
             // prettier-ignore
             let donneesPanier = {
                 id      : idArt.value,
-                img     : imgsrc,
-                name    : name.textContent,
-                price   : price.textContent,
+                img     : produit.Image,
+                name    : produit.Nom,
+                price   : produit.Prix,
                 quantity: parseInt(quantity.value),
                 lenses  : lenses.value,
             };
