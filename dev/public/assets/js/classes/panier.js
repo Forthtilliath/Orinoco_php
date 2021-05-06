@@ -38,12 +38,16 @@ class Panier {
     /** Ajoute un écouteur pour savoir si le storage a ét modifié */
     createListener = () => {
         // window.addEventListener('storage', () => {
-        document.addEventListener('localDataStorage', () => {
-            console.log('event');
-            this.resetPanier();
-            this.setDisplayPanier();
-            this.display();
-        }, false);
+        document.addEventListener(
+            'localDataStorage',
+            () => {
+                console.log('event');
+                this.resetPanier();
+                this.setDisplayPanier();
+                this.display();
+            },
+            false,
+        );
     };
 
     /**
@@ -121,7 +125,7 @@ class Panier {
 
             this.api.getElement('idProduit', id).value = this.tabProduits[i].id;
             this.api.getElement('lentilles', id).textContent = this.tabProduits[i].lenses;
-            this.api.getElement('prix', id).textContent = this.tabProduits[i].price;
+            this.api.getElement('prix', id).textContent = this.tabProduits[i].price.numberFormat();
             this.api.getElement('image', id).src = this.api.localServer
                 ? this.tabProduits[i].img.replace('http://localhost:3000/', '')
                 : this.tabProduits[i].img;
@@ -265,8 +269,12 @@ class Panier {
 
         let produit = this.api.getProduit(idArt.value);
 
-        if (typeof produit === 'undefined' ) {
-            this.api.createAlert('danger', 'Identifiant du produit introuvable !', 'Une erreur est survenue. Veuillez nous excuser pour la gêne occasionnée.');
+        if (typeof produit === 'undefined') {
+            this.api.createAlert(
+                'danger',
+                'Identifiant du produit introuvable !',
+                'Une erreur est survenue. Veuillez nous excuser pour la gêne occasionnée.',
+            );
             return false;
         }
 
@@ -332,8 +340,15 @@ class Panier {
                 `Le${s} produit${s} ${a} été correctement ajouté dans le panier.`,
             );
         }
+        this.tabProduits.sort(this.sortProductsById);
         // Met à jour le panier
         this.setCookie();
+    };
+
+    sortProductsById = (a, b) => {
+        let idProduitA = a.id;
+        let idProduitB = b.id;
+        return idProduitA < idProduitB ? -1 : idProduitA > idProduitB ? 1 : 0;
     };
 
     /**

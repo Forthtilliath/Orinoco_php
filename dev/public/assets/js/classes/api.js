@@ -97,16 +97,20 @@ class Api {
      */
     createListeners() {
         $('nav a').on('click', this.clickLien);
+
+        $('#bt_panier').on('mouseenter', () => {
+            console.log('hover');
+        });
+
+        $('#bt_panier').on('mouseleave', () => {
+            console.log('out');
+        });
     }
 
     clickLien = (e) => {
-        // Stop les changements de page
         e.preventDefault();
         this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id') ?? '';
-
-        let lien = $(e.currentTarget).attr('href');
-        // Vérifier si la page est déjà en stock ou pas
-        monApi.router.changePage(lien);
+        monApi.router.changePage($(e.currentTarget).attr('href'));
     };
 
     loadDatas = () => {
@@ -171,7 +175,7 @@ class Api {
     loadOptions = () => {
         return {
             // les élèments a voir quand le panier contient un article
-            elemsBasketFull: ['#list_cards','#show_total'],
+            elemsBasketFull: ['#list_cards', '#show_total'],
             // Les éléments à masquer lorsque le panier est vide
             elemsBasketEmpty: ['#panier_vide'],
             // L'élément parent des éléments

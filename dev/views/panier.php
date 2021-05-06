@@ -11,13 +11,13 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 <section class="container d-none" id="panier_vide">
     <div class="justify-content-center">
         <div class="row justify-content-center mt-4">
-            <div class="card mb-4" style="width: 100%">
+            <div class="col-md-6 card mb-4 bg-tertiary">
                 <img src="/images/basket.png" class="card-img-top" alt="" />
                 <div class="card-body">
                     <h2 class="card-title text-center" id="product-name">Votre panier est vide !</h2>
                     <div class="row">
                         <div class="col-12 text-center">
-                            <a href="index.html" class="btn btn-info mt-1" id="">Retour à la boutique</a>
+                            <a href="/" class="btn btn-info mt-1 bg-quaternary text-primary border-primary" id="">Retour à la boutique</a>
                         </div>
                     </div>
                 </div>

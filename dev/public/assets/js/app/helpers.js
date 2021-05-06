@@ -97,11 +97,3 @@ const getThumbnail = (original, newHeight) => {
 
     return canvas;
 };
-
-/**
- * Rédirige l'utilisateur vers la page d'accueil après un certain délai.
- * @param {number} time La durée, exprimée en millisecondes, à attendre avant que l'utilisateur soit redirigé (par défault: 5s)
- */
-const redirigeVersHome = (delai = 5000) => {
-    setTimeout(() => (window.location = 'index.html'), delai);
-};

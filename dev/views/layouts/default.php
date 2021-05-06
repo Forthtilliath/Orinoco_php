@@ -62,7 +62,7 @@
     <script src="/assets/js/libs/bootstrap-v5.0.min.js"></script>
     <script src="/assets/js/classes/extends/html.js"></script>
     <script src="/assets/js/classes/extends/types.js"></script>
-    <script src="/assets/js/classes/prototypes.js"></script>
+    <script src="/assets/js/classes/extends/storage.js"></script>
     <script src="/assets/js/classes/api.js"></script>
     <script src="/assets/js/classes/router.js"></script>
     <script src="/assets/js/classes/indexedDB.js"></script>
