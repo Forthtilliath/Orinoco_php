@@ -9,6 +9,7 @@
   - [x] Nombre d'articles à calculer 
   - [x] Style bouton supprimer
   - [x] Panier vide
+  - [ ] Check calcul nb produit
 
 ## All pages
   - [x] Chargement de la page
@@ -27,6 +28,9 @@
   - [ ] Hover du bouton panier qui affiche le contenu
   - [ ] Image loader à modifier (vérifier si image existe ou pas)
   - [x] Enregistrer les pages !!!
+  - [ ] Bouton panier
+    - [ ] Rendre dynamique la quantité de produits
+    - [ ] 
 
 ## JS
     - [-] Finir le fichier prototype.js

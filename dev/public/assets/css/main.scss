@@ -80,3 +80,26 @@ $pixel: 1px;
         display: inline !important;
     }
 }
+
+header #bt_panier::before {
+    position: fixed;
+    top: 20px;
+    right: 56px;
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin: auto;
+    font-size: 10px;
+    color: #fff;
+    text-align: center;
+    content: attr(data-items);
+    background-color: #2d1d18;
+    border-radius: 10px;
+    border: 1px solid #2d1d18;
+    -webkit-transform: translateX(16px);
+    transform: translateX(16px);
+
+    @media (min-width: 576px) {
+        right: 117px;
+    }
+}

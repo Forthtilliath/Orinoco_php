@@ -4,6 +4,7 @@ let monRouter = monApi.router.loadRoutes();
 let monPanier = monApi.getPanier();
 
 window.onload = () => {
+    monPanier.loadMiniBascket();
     // Chargement du fichier json contenant les données des produits
     monApi
         .loadDatas()
@@ -20,7 +21,8 @@ window.onload = () => {
             });
         })
         .catch((error) => {
-            if( error.status === 404)
-                monApi.router.changePage('/404/json', error.responseURL);
+            if (error.status === 404) monApi.router.changePage('/404/json', error.responseURL);
         });
+
+    $('#bt_panier').attr('data-items', monPanier.NbProduits);
 };

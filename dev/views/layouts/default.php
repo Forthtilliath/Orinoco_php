@@ -12,20 +12,64 @@
 
     <title><?= $pageTitle ?? 'Orinoco' ?></title>
     <meta name="description" content="<?= $pageDescription ?? '' ?>" />
+
+    <style>
+        #cart-dropdown {
+            background-color: #181a1b;
+            box-shadow: rgb(82 88 92) 0px 0px 5px;
+        }
+
+        #mini-bascket {
+            position: fixed;
+            z-index: 1031;
+            width: 300px;
+            top: 55px;
+            right: 5px;
+            border-radius: 2px;
+            box-shadow: 0 0 5px hsl(0deg 0% 60%);
+            transition: -webkit-transform .2s ease-in;
+            transition: transform .2s ease-in;
+            transition: transform .2s ease-in, -webkit-transform .2s ease-in;
+            -webkit-transform: scale(0);
+            transform: scale(0);
+            -webkit-transform-origin: top right;
+            transform-origin: top right;
+        }
+
+        #mini-bascket.show {
+            transform: scale(1);
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column h-100">
-    <nav class="navbar fixed-top navbar-light bg-primary px-2">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/" aria-label="Accueil">
-                <img class="d-inline d-330-none" src="/images/logo.png" width="auto" height="auto" alt="Logo" />
-                <img class="d-none d-330-inline" src="/images/logo_w_text.png" width="auto" height="auto" alt="Logo" />
-            </a>
-            <a class="navbar-brand" href="/panier" aria-label="Panier">
-                <button type="button" class="btn btn-quaternary" id="bt_panier"><i class="bi bi-basket"></i><span class="d-none d-sm-inline ps-3">Panier</span></button>
+    <header>
+        <nav class="navbar fixed-top navbar-light bg-primary px-2">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/" aria-label="Accueil">
+                    <img class="d-inline d-330-none" src="/images/logo.png" width="auto" height="auto" alt="Logo" />
+                    <img class="d-none d-330-inline" src="/images/logo_w_text.png" width="auto" height="auto" alt="Logo" />
+                </a>
+
+                <a class="navbar-brand" href="/panier" aria-label="Panier" id="link_panier">
+                    <button type="button" class="btn btn-quaternary" id="bt_panier" data-items=""><i class="bi bi-basket"></i><span class="d-none d-sm-inline ps-3">Panier</span></button>
+                </a>
+            </div>
+        </nav>
+    </header>
+    <!-- https://www.alphapole.com/ -->
+    <div id="mini-bascket" class="bg-tertiary border border-primary">
+        <div class="d-flex justify-content-between px-2 py-1 border-1 border-bottom"><span>Mon panier</span> <span><span id="mini-bascket-nbproduits"></span> article(s)</span></div>
+
+        <ul class="px-2 list-unstyled mb-1 overflow-auto" style="max-height:500px"></ul>
+
+        <div class="px-3 pb-1">
+            <div class="d-flex justify-content-between px-2 py-1 fw-bold"><span>Sous-total</span> <span id="mini-bascket-total"></span></div>
+            <a class="" href="/panier" aria-label="Panier" id="link_panier">
+                <button type="button" class="btn btn-quaternary my-1 w-100 border-primary"><i class="bi bi-basket"></i><span class="ps-3">Voir le panier</span></button>
             </a>
         </div>
-    </nav>
+    </div>
 
     <div class="container-fluid p-4 pt-6 bg-image" id="pageContent">
         <?= $pageContent ?>

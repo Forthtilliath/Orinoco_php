@@ -10,11 +10,39 @@ class Panier {
         this.nameCookie = nameCookie;
         this.tabProduits = this.loadPanier();
         this.total = 0;
-        this.nbProduits = 0;
+        this.nbProduits = this.calcNbProduits();
         this.options = options;
         this.quantityMax = 5; // TODO mettre une quantité max de 5 article present dans le panier
         this.api = api;
         this.timeout = null;
+    }
+
+    calcNbProduits() {
+        // return this.tabProduits.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), 0);
+        // return this.tabProduits.reduce((a, b) => {
+        //     console.log(a);
+        //     ({ quantity: a.quantity + b.quantity })
+        // }, 0);
+
+        let sum = 0;
+        for (let produit of this.tabProduits) {
+            sum += produit.quantity;
+        }
+        return sum;
+    }
+
+    get NbProduits() {
+        // return this.tabProduits.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), 0);
+        // return this.tabProduits.reduce((a, b) => {
+        //     console.log(a);
+        //     ({ quantity: a.quantity + b.quantity })
+        // }, 0);
+
+        let sum = 0;
+        for (let produit of this.tabProduits) {
+            sum += produit.quantity;
+        }
+        return sum;
     }
 
     /**
@@ -154,7 +182,6 @@ class Panier {
                     }
                 }
             }
-            this.nbProduits += this.tabProduits[i].quantity;
 
             let subTotal = quantityInSelect * this.tabProduits[i].price;
             this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
@@ -208,6 +235,8 @@ class Panier {
         // Mise a jour du total
         this.api.getElement('total', id).textContent = this.total.numberFormat();
 
+        $('#bt_panier').attr('data-items', this.nbProduits);
+
         // Met à jour le panier
         this.setCookie();
     };
@@ -238,6 +267,7 @@ class Panier {
         this.tabProduits.splice(pos, 1);
 
         // Mise a jour du prix à la supression par la soustraction du sous-total au total
+        // this.api.getProduit(idArt.value);
         this.total -= this.api.getElement('sousTotal', id).textContent.reverseNumberFormat();
         this.api.getElement('total', id).textContent = this.total.numberFormat();
 
@@ -252,6 +282,7 @@ class Panier {
             this.api.getElement('article', articleID, '#').remove();
         }
         // Met à jour la page s'il n'y a plus d'éléments dans le panier
+        $('#bt_panier').attr('data-items', this.nbProduits);
         this.setDisplayPanier();
     };
 
@@ -308,6 +339,8 @@ class Panier {
                         'Stock insuffisant !',
                         `Seulement ${n} ${a} été ajouté dans le panier.`,
                     );
+                    this.nbProduits += n;
+                    this.total += n * produit.Prix;
                 } else {
                     let s = parseInt(quantity.value) == 1 ? '' : 's';
                     let a = parseInt(quantity.value) == 1 ? 'a' : 'ont';
@@ -316,6 +349,8 @@ class Panier {
                         `Produit${s} ajouté${s}`,
                         `Le${s} produit${s} ${a} été correctement ajouté dans le panier.`,
                     );
+                    this.nbProduits += parseInt(quantity.value);
+                    this.total += parseInt(quantity.value) * produit.Prix;
                 }
             }
         } else {
@@ -339,8 +374,11 @@ class Panier {
                 `Produit${s} ajouté${s}`,
                 `Le${s} produit${s} ${a} été correctement ajouté dans le panier.`,
             );
+            this.nbProduits += parseInt(quantity.value);
+            this.total += parseInt(quantity.value) * produit.Prix;
         }
         this.tabProduits.sort(this.sortProductsById);
+        $('#bt_panier').attr('data-items', this.nbProduits);
         // Met à jour le panier
         this.setCookie();
     };
@@ -378,5 +416,48 @@ class Panier {
             });
         }
         return tab;
+    };
+
+    loadMiniBascket = () => {
+        $('#mini-bascket ul li').remove();
+        for (let produit of this.tabProduits) {
+            console.log(produit);
+            $('#mini-bascket ul').append(
+                this.createElemMiniBascket(
+                    produit.name,
+                    produit.quantity,
+                    produit.lenses,
+                    produit.price.numberFormat(),
+                    produit.img,
+                    monApi.goToProduct(produit.id),
+                ),
+            );
+        }
+        // monApi.getElement('total')
+        $('#mini-bascket-nbproduits').text(monPanier.NbProduits);
+        $('#mini-bascket-total').text(monPanier.total.numberFormat());
+    };
+
+    createElemMiniBascket = (name, quantity, lentille, prix, srcimg, url) => {
+        return $('<li>')
+            .addClass('border-1 border-bottom pb-1 mt-1 w-100 d-table')
+            .append(
+                $('<img>')
+                    .attr({ width: 50, height: 50, src: srcimg })
+                    .addClass('h-auto d-table-cell me-2 align-middle object-fit-cover card-img-50'),
+                $('<div>')
+                    .addClass('d-table-cell w-100 align-middle')
+                    .append(
+                        $('<div>')
+                            .addClass('lh-sm fw-bold')
+                            .css({ fontSize: '0.8rem' })
+                            .append($('<a>').attr('href', url).text(name)),
+                        $('<div>')
+                            .addClass('lh-sm')
+                            .css({ fontSize: '0.8rem' })
+                            .text(`${lentille} - Quantité : ${quantity}`),
+                        $('<div>').text(prix),
+                    ),
+            );
     };
 }

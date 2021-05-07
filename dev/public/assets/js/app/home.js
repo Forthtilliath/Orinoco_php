@@ -1,16 +1,12 @@
 const createCard = async (i, camera) => {
-    let id = monApi.getElementId('article', i); // 'cards_{{i}}'
+    let id = monApi.getElementId('article', i);
 
     // Si y'a plus d'un élément, on clone le premier élément
     if (i == 0) {
-        // On affiche le premier élément (le seul disponible dans le html)
         monApi.getElement('article', 0, '#').show('');
     } else {
-        // Clone le premier card
         let card = monApi.getElement('article', 0, '#').cloneNode(true);
-        // Ajoute au DOM
         monApi.getElement('parent').appendChild(card);
-        // Remplace les id cards_0 par l'id dynamique
         card.outerHTML = card.outerHTML.replaceAll(
             monApi.getElementId('article', 0),
             monApi.getElementId('article', i),
@@ -42,7 +38,6 @@ const createCard = async (i, camera) => {
 
 const showCards = () => {
     let i = 0;
-    // Vérifier si le json est chargé
     if (monApi.ListeProduits.length > 0) {
         for (let unProduit of monApi.ListeProduits) {
             createCard(i, unProduit);

@@ -1,6 +1,5 @@
 const editCard = async (camera) => {
-    // Id de l'article (dans le code)
-    let id = monApi.getElementId('article', 0); // 'cards_{{i}}'
+    let id = monApi.getElementId('article', 0);
 
     let img = monApi.getElement('image', id);
     // Récupération des données en mettant la fonction + le nom attribué dans l'api
@@ -31,11 +30,7 @@ const showCard = (cameras) => {
     }
 };
 
-let datas = {};
-
 function loadDatasFromLocal() {
-    console.log('Liste des produits', monApi.ListeProduits);
-    console.log('Id du produit', monApi.idProduitToShow);
     monApi.ListeProduits.some((e) => e.id === monApi.idProduitToShow);
     console.log(monApi.ListeProduits.some((e) => e.id === monApi.idProduitToShow));
     if (monApi.ListeProduits.length > 0) {
@@ -46,8 +41,6 @@ function loadDatasFromLocal() {
 function loadDatasFromServer() {}
 
 const loadDatas = async () => {
-    // Récupère le param get pour l'id de l'objet afin d'avoir une fiche produit
-    //let $id = getQueryString('id'); // NOTE Définit dans le php
     const datas = monApi.isLocal() ? loadDatasFromLocal() : loadDatasFromServer();
     showCard(datas);
 };
