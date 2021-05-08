@@ -43,8 +43,6 @@ class Api {
          */
         this.delaiAlert = 5000;
 
-        this.idProduitToShow = '';
-
         this.listScripts = [];
 
         this.router = new Router();
@@ -97,17 +95,19 @@ class Api {
      */
     createListeners() {
         $('nav a').on('click', this.clickLien);
+        $('#mini-bascket a').on('click', this.clickLien);
         
         // comportement du panier au survol pour affichage de son contenu
         let timeout;
 
         $('#bt_panier').on({
             mouseenter: function () {
+                monPanier.loadMiniBascket(); 
                 $('#mini-bascket').addClass('show');
             },
             mouseleave: function () {
                 timeout = setTimeout(function () {
-                // $('#mini-bascket').removeClass('show');
+                $('#mini-bascket').removeClass('show');
                 }, 200);
             },
         });
@@ -119,15 +119,15 @@ class Api {
                 clearTimeout(timeout);
             },
             mouseleave: function () {
-                // $('#mini-bascket').removeClass('show');
+                $('#mini-bascket').removeClass('show');
             },
         });
     }
 
     clickLien = (e) => {
         e.preventDefault();
-        this.idProduitToShow = e.currentTarget.getAttribute('data-js-product-id') ?? '';
-        monApi.router.changePage($(e.currentTarget).attr('href'));
+        let params = this.getProduit(e.currentTarget.getAttribute('data-js-product-id'));
+        monApi.router.changePage($(e.currentTarget).attr('href'), params);
     };
 
     loadDatas = () => {

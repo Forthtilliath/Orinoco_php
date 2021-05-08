@@ -147,9 +147,9 @@ class HTMLSelectElementExtends extends HTMLSelectElement {
      * Ajoute un tableau d'éléments en option au menu select
      * @param {String[]} values Tableau de valeurs
      */
-    addOptions(values) {
+    addOptions(values, selectedValue) {
         for (let value of values) {
-            this.addOption(value, value);
+            this.addOption(value, value, value === selectedValue);
         }
     }
 

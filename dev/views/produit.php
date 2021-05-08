@@ -10,7 +10,7 @@ $pageDescription = 'Produit desc';
         <div class="row g-4" id="list_cards">
             <div class="col" id="card_0">
                 <div class="card bg-tertiary">
-                    <input type="hidden" value="" name="id" id="card_0_id" />
+                    <input type="hidden" value="<?= $params['id'] ?>" name="id" id="card_0_id" />
                     <img src="" id="card_0_image" class="card-img-top card-img-300 card-img-sm-400 card-img-xl-500 object-fit-cover" alt="...">
                     <div class="card-body">
                         <h5 class="card-title" id="card_0_title"></h5>
@@ -52,6 +52,6 @@ $pageDescription = 'Produit desc';
 <script>
     $page = {
         title: '<?= $pageTitle ?>',
-        description: '<?= $pageDescription ?>'
+        description: '<?= addslashes($pageDescription) ?>'
     };
 </script>

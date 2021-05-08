@@ -9,7 +9,7 @@ class Panier {
     constructor(nameCookie, options = {}, api) {
         this.nameCookie = nameCookie;
         this.tabProduits = this.loadPanier();
-        this.total = 0;
+        this.total = this.calcTotal();
         this.nbProduits = this.calcNbProduits();
         this.options = options;
         this.quantityMax = 5; // TODO mettre une quantité max de 5 article present dans le panier
@@ -17,32 +17,20 @@ class Panier {
         this.timeout = null;
     }
 
-    calcNbProduits() {
-        // return this.tabProduits.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), 0);
-        // return this.tabProduits.reduce((a, b) => {
-        //     console.log(a);
-        //     ({ quantity: a.quantity + b.quantity })
-        // }, 0);
-
-        let sum = 0;
-        for (let produit of this.tabProduits) {
-            sum += produit.quantity;
-        }
-        return sum;
+    get Total() {
+        return this.total;
     }
 
     get NbProduits() {
-        // return this.tabProduits.reduce((a, b) => ({ quantity: a.quantity + b.quantity }), 0);
-        // return this.tabProduits.reduce((a, b) => {
-        //     console.log(a);
-        //     ({ quantity: a.quantity + b.quantity })
-        // }, 0);
+        return this.nbProduits;
+    }
 
-        let sum = 0;
-        for (let produit of this.tabProduits) {
-            sum += produit.quantity;
-        }
-        return sum;
+    calcNbProduits() {
+        return this.tabProduits.reduce((a, b) => a + b.quantity, 0);
+    }
+
+    calcTotal() {
+        return this.tabProduits.reduce((a, b) => a + b.quantity * b.price, 0);
     }
 
     /**
@@ -54,7 +42,6 @@ class Panier {
 
         let id = this.api.getElementId('article', ''); // cards_
         // Ensemble des cards sauf l'article 0
-        //let allCardsExceptFirst = document.querySelectorAll(`article[id^=${id}]:not(#${this.api.getElementId('article', 0)})`);
         let allCardsExceptFirst = document.querySelectorAll(`article[id^=${id}]:not(:first-child)`);
 
         // Cache l'element 0
@@ -65,9 +52,8 @@ class Panier {
 
     /** Ajoute un écouteur pour savoir si le storage a ét modifié */
     createListener = () => {
-        // window.addEventListener('storage', () => {
-        document.addEventListener(
-            'localDataStorage',
+        window.addEventListener(
+            'storage',
             () => {
                 console.log('event');
                 this.resetPanier();
@@ -140,15 +126,16 @@ class Panier {
                 // On affiche le premier élément (le seul disponible dans le html)
                 // this.api.getElement('article', 0, '#').show();
             } else {
-                // Clone le premier card
-                let card = this.api.getElement('article', 0, '#').cloneNode(true);
-                // Ajoute au DOM
-                this.api.getElement('parent').appendChild(card);
-                // Remplace les id cards_0 par l'id dynamique
-                card.outerHTML = card.outerHTML.replaceAll(
-                    this.api.getElementId('article', 0),
-                    this.api.getElementId('article', i),
-                );
+                // // Clone le premier card
+                // let card = this.api.getElement('article', 0, '#').cloneNode(true);
+                // // Ajoute au DOM
+                // this.api.getElement('parent').appendChild(card);
+                // // Remplace les id cards_0 par l'id dynamique
+                // card.outerHTML = card.outerHTML.replaceAll(
+                //     this.api.getElementId('article', 0),
+                //     this.api.getElementId('article', i),
+                // );
+                createNewCard(i);
             }
 
             this.api.getElement('idProduit', id).value = this.tabProduits[i].id;
@@ -170,12 +157,15 @@ class Panier {
                 this.tabProduits[i].quantity > this.quantityMax ? this.quantityMax : this.tabProduits[i].quantity;
             // Si premier élément, on génère les options
             if (i == 0) {
-                for (let n = 1; n <= this.quantityMax; n++) {
-                    selectQuantity.addOption(n, n, quantityInSelect == n);
-                }
+                // for (let n = 1; n <= this.quantityMax; n++) {
+                //     selectQuantity.addOption(n, n, quantityInSelect == n);
+                // }
+                this.api
+                    .getElement('quantity', id)
+                    .addOptions(getArrayWithValues(1, this.quantityMax), quantityInSelect);
             } else {
                 // Parcours toutes les quantités jusqu'à trouver celle choisit
-                for (let n = 1, nmax = selectQuantity.length; n <= nmax; n++) {
+                for (let n = 1; n <= selectQuantity.length; n++) {
                     if (quantityInSelect == n) {
                         selectQuantity[n - 1].selected = true;
                         break;
@@ -190,8 +180,6 @@ class Panier {
             selectQuantity.addEventListener('change', this.editQuantityProduit);
             let buttonRemove = this.api.getElement('btRemove', id);
             buttonRemove.addEventListener('click', (e) => {
-                console.log('bt remov');
-                // Sans cela, la page se réactualise en cliquant sur le bouton supprimer
                 e.preventDefault();
             });
         }
@@ -202,7 +190,8 @@ class Panier {
 
     /**
      * Modifie la quantité de l'article dans le panier
-     * @param {Event} e
+     * Page : panier
+     * @param {Event} e Select du produit dont la quantité a été modifié
      */
     editQuantityProduit = (e) => {
         // Récupère le numéro de l'article via le numéro du button
@@ -235,7 +224,9 @@ class Panier {
         // Mise a jour du total
         this.api.getElement('total', id).textContent = this.total.numberFormat();
 
-        $('#bt_panier').attr('data-items', this.nbProduits);
+        // $('#bt_panier').attr('data-items', this.nbProduits);
+        this.setDisplayMiniBascket();
+        // this.loadMiniBascket();
 
         // Met à jour le panier
         this.setCookie();
@@ -246,7 +237,6 @@ class Panier {
      * @param {HTMLElement} target Element à l'origine de l'appel de la méthode
      */
     removeProduit = (target) => {
-        console.log('remove');
         let articleID = target.getAttribute('id').numberID();
 
         // Récupère le numéro de l'article via l'id du button
@@ -286,6 +276,10 @@ class Panier {
         this.setDisplayPanier();
     };
 
+    /**
+     * Ajoute un produit au panier
+     * @param {Event} e
+     */
     setPanier = (e) => {
         // Stop l'event du lien
         e.preventDefault();
@@ -378,7 +372,9 @@ class Panier {
             this.total += parseInt(quantity.value) * produit.Prix;
         }
         this.tabProduits.sort(this.sortProductsById);
-        $('#bt_panier').attr('data-items', this.nbProduits);
+        // $('#bt_panier').attr('data-items', this.nbProduits);
+        this.setDisplayMiniBascket();
+        // this.loadMiniBascket(); 
         // Met à jour le panier
         this.setCookie();
     };
@@ -421,7 +417,6 @@ class Panier {
     loadMiniBascket = () => {
         $('#mini-bascket ul li').remove();
         for (let produit of this.tabProduits) {
-            console.log(produit);
             $('#mini-bascket ul').append(
                 this.createElemMiniBascket(
                     produit.name,
@@ -433,7 +428,6 @@ class Panier {
                 ),
             );
         }
-        // monApi.getElement('total')
         $('#mini-bascket-nbproduits').text(monPanier.NbProduits);
         $('#mini-bascket-total').text(monPanier.total.numberFormat());
     };
@@ -459,5 +453,19 @@ class Panier {
                         $('<div>').text(prix),
                     ),
             );
+    };
+
+    setDisplayMiniBascketNbProduits = () => {
+        $('#bt_panier').attr('data-items', this.NbProduits);
+        $('#mini-bascket-nbproduits').text(this.NbProduits);
+    };
+
+    setDisplayMiniBascketTotal = () => {
+        $('#mini-bascket-total').text(this.Total.numberFormat());
+    };
+
+    setDisplayMiniBascket = () => {
+        this.setDisplayMiniBascketNbProduits();
+        this.setDisplayMiniBascketTotal();
     };
 }

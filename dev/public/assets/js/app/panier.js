@@ -1,28 +1,18 @@
 window['showPanier'] = () => {
     monPanier.setDisplayPanier();
     monPanier.display();
-    // Crée un écouteur pour savoir si le panier est modifié (sur cette page ou une autre)
     monPanier.createListener();
-
-    // Variable pour contenir le bouton supprimer
     let bt_supprimer_target = null;
-    // Se déclenche lorsque le modal s'ouvre
+
     $('#modalConfirmRemove').on('show.bs.modal', function (e) {
-        console.log('button', e);
-        // Stocke le bouton Supprimer sur lequel l'utilisateur a cliqué
         bt_supprimer_target = e.relatedTarget;
-        // Récupère l'id de l'élément
         let id = monApi.getElementId('article', bt_supprimer_target.getAttribute('id').numberID());
-        // Modifie le contenue du modal
         $(e.target).find('#modal-body-article').text(monApi.getElement('nom', id).textContent);
         $(e.target).find('#modal-body-lentilles').text(monApi.getElement('lentilles', id).textContent);
     });
 
     $('#modalConfirmRemoveValid').on('click', function () {
-        console.log('bt remov valid');
-        // Retire l'article du panier
         monPanier.removeProduit(bt_supprimer_target);
-        // Réinitialise la variable contenant le bouton cliqué
         bt_supprimer_target = null;
     });
 };

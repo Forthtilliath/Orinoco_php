@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "serv": "nodemon dev/server.js",
-    "launch php": "php -S localhost:8000 -t dev/public",
+    "launch": "concurrently --names \"SERV,PHP\" -c \"bgBlue,bgGreen\" \"npm:launch-serv\" \"npm:launch-php\"",
+    "launch-serv": "nodemon dev/server.js",
+    "launch-php": "php -S localhost:8000 -t dev/public",
     "app": "gulp app",
     "build": "gulp build",
     "dist": "gulp dist",
-    "comp autoload": "composer dump-autoload"
+    "comp-autoload": "composer dump-autoload"
   },
   "author": "Forth",
   "license": "MIT",
@@ -44,6 +45,7 @@
     "@prettier/plugin-php": "^0.16.2",
     "@types/uuid": "^8.3.0",
     "chalk": "^4.1.0",
+    "concurrently": "^6.0.2",
     "d": "^1.0.1",
     "gulp-file-include": "^2.3.0",
     "gulp-useref": "^5.0.0",

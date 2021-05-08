@@ -18,31 +18,12 @@ const editCard = async (camera) => {
 };
 
 // la fonction loadPage a ces données mise dans la fonction camera.
-const showCard = (cameras) => {
-    // Si un seul élément
-    let id = monApi.router.getUri().split('/').splice(-1)[0];
-    let produit = monApi.getProduit(id);
-
-    if (produit instanceof Array) {
+const showCard = (produit) => {
+    if (produit instanceof Camera) {
         editCard(produit);
     } else {
         console.log('Produit non trouvé');
     }
-};
-
-function loadDatasFromLocal() {
-    monApi.ListeProduits.some((e) => e.id === monApi.idProduitToShow);
-    console.log(monApi.ListeProduits.some((e) => e.id === monApi.idProduitToShow));
-    if (monApi.ListeProduits.length > 0) {
-        $id = monApi.idProduitToShow;
-    }
-}
-
-function loadDatasFromServer() {}
-
-const loadDatas = async () => {
-    const datas = monApi.isLocal() ? loadDatasFromLocal() : loadDatasFromServer();
-    showCard(datas);
 };
 
 window['showCard'] = showCard;

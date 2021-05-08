@@ -1,8 +1,6 @@
 <?php
 $pageTitle = 'Orinoco - Panier - Le e-commerce moins cher que gratuit !';
 $pageDescription = '';
-$pageMessageTitle = 'Dernière Etape !';
-$pageMessageDescription = 'Votre commande est si proche, encore un petit pas à faire.';
 ?>
 
 <h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Affichage du panier</span></h1>
@@ -113,6 +111,6 @@ $pageMessageDescription = 'Votre commande est si proche, encore un petit pas à 
 <script>
     $page = {
         title: '<?= $pageTitle ?>',
-        description: '<?= $pageDescription ?>'
+        description: '<?= addslashes($pageDescription) ?>'
     };
 </script>

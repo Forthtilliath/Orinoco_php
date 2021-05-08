@@ -1,16 +1,23 @@
-const createCard = async (i, camera) => {
+/**
+ *
+ * @param {number} i Indice de la carte
+ * @param {object} camera Objet Camera
+ * @param {string} camera.Stock Id de l'article
+ * @param {number} camera.Stock Quantité en stock de l'article
+ * @param {string} camera.Image URL vers l'image de l'article
+ * @param {string} camera.Nom Nom de l'article
+ * @param {string} camera.Description Description de l'article
+ * @param {string[]} camera.Lentilles Lentilles de l'article
+ * @param {number} camera.Prix Prix de l'article
+ */
+const createCard = (i, camera) => {
     let id = monApi.getElementId('article', i);
 
-    // Si y'a plus d'un élément, on clone le premier élément
     if (i == 0) {
-        monApi.getElement('article', 0, '#').show('');
+        // monApi.getElement('article', 0, '#').show('');
+        monApi.getElement('quantity', id).addOptions(getArrayWithValues(1, camera.Stock));
     } else {
-        let card = monApi.getElement('article', 0, '#').cloneNode(true);
-        monApi.getElement('parent').appendChild(card);
-        card.outerHTML = card.outerHTML.replaceAll(
-            monApi.getElementId('article', 0),
-            monApi.getElementId('article', i),
-        );
+        createNewCard(i);
     }
 
     let img = monApi.getElement('image', id);
@@ -23,13 +30,10 @@ const createCard = async (i, camera) => {
     monApi.getElement('description', id).textContent = camera.Description;
     monApi.getElement('lentilles', id).removeOptions();
     monApi.getElement('lentilles', id).addOptions(camera.Lentilles);
-    // Ajoute les options allant de 1 à camera.Stock
-    if (i == 0) monApi.getElement('quantity', id).addOptions(getArrayWithValues(1, camera.Stock));
     monApi.getElement('prix', id).textContent = camera.Prix.numberFormat();
     monApi.getElements('lienProduit', id).forEach((element) => {
         element.href = monApi.goToProduct(camera.Id);
         element.setAttribute('data-js-product-id', camera.Id);
-        // element.addEventListener('click', monApi.clickLienProduit);
     });
 
     // Ajout de l'evenement sur le bouton Ajouter au panier
@@ -37,11 +41,10 @@ const createCard = async (i, camera) => {
 };
 
 const showCards = () => {
-    let i = 0;
     if (monApi.ListeProduits.length > 0) {
+        let i = 0;
         for (let unProduit of monApi.ListeProduits) {
-            createCard(i, unProduit);
-            i++;
+            createCard(i++, unProduit);
         }
     } else {
         // TODO Afficher un message sur le site si aucun article n'est disponible

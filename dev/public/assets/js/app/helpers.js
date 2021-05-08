@@ -97,3 +97,13 @@ const getThumbnail = (original, newHeight) => {
 
     return canvas;
 };
+
+/**
+ * Crée une nouvelle card à partir de la card_0 et l'ajoute au dom
+ * @param {number} i Indice de la nouvelle card
+ */
+const createNewCard = (i) => {
+    let card = monApi.getElement('article', 0, '#').cloneNode(true);
+    monApi.getElement('parent').appendChild(card);
+    card.outerHTML = card.outerHTML.replaceAll(monApi.getElementId('article', 0), monApi.getElementId('article', i));
+}

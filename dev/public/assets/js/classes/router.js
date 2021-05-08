@@ -76,26 +76,28 @@ class Router {
         $('html, body').animate({ scrollTop: 0 }, 'fast');
         let routeName = this.getPageName(lien);
         var jqxhr = $.get(lien, (data) => {
-            // Récupère le contenu de la page et l'insère dans la page actuelle
-            $('#pageContent').html($(data).filter('#pageContent').html());
-
-            // Changer url sans reload
             history.pushState(null, routeName, lien);
-            document.title = $page.title;
-            $('meta[name="description"]').attr('content', $page.description);
-
-            executeFunctionByName(this.getMainFunction(routeName), window, args);
+            this.setPageContent($(data).filter('#pageContent').html());
+            this.setPageTitle($page.title);
+            this.setPageDescription($page.description);
+            executeFunctionByName(this.getMainFunction(routeName), window, ...args);
             $('#pageContent a').on('click', monApi.clickLien);
         });
-        jqxhr
-            .done(function () {
-                //alert( "second success" );
-            })
-            .fail(function () {
-                //alert( "error" );
-            })
-            .always(function () {
-                //alert( "finished" );
-            });
+        // jqxhr
+        //     .done(function () {})
+        //     .fail(function () {})
+        //     .always(function () {});
+    }
+
+    setPageTitle(title) {
+        document.title = title;
+    }
+
+    setPageDescription(description) {
+        $('meta[name="description"]').attr('content', description);
+    }
+
+    setPageContent(content) {
+        $('#pageContent').html(content);
     }
 }

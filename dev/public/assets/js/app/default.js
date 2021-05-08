@@ -13,7 +13,11 @@ window.onload = () => {
             monRouter.done(() => {
                 let routeName = monApi.router.getCurrentPageName();
                 if (routeName !== undefined) {
-                    executeFunctionByName(monApi.router.getMainFunction(routeName), window);
+                    executeFunctionByName(
+                        monApi.router.getMainFunction(routeName),
+                        window,
+                        monApi.getProduit($('#card_0_id').val()),
+                    );
                     $('#pageContent a').on('click', monApi.clickLien);
                 } else {
                     monApi.router.changePage('/404');

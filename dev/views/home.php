@@ -74,6 +74,6 @@ $pageDescription = "";
 <script>
     $page = {
         title: '<?= $pageTitle ?>',
-        description: '<?= $pageDescription ?>'
+        description: '<?= addslashes($pageDescription) ?>'
     };
 </script>
