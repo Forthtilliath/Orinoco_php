@@ -21,9 +21,15 @@
             "mainFunction": "showPanier"
         },
         {
-            "name": "panier_confirmation",
-            "pattern": "/order",
-            "path": "panier_confirmation",
+            "name": "commande",
+            "pattern": "/commande",
+            "path": "commande",
+            "mainFunction": ""
+        },
+        {
+            "name": "commande_confirmation",
+            "pattern": "/commande_confirmation",
+            "path": "commande_confirmation",
             "mainFunction": ""
         },
         {

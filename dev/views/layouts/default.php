@@ -19,7 +19,7 @@
             box-shadow: rgb(82 88 92) 0px 0px 5px;
         }
 
-        #mini-bascket {
+        #mini-basket {
             position: fixed;
             z-index: 1031;
             width: 300px;
@@ -36,7 +36,7 @@
             transform-origin: top right;
         }
 
-        #mini-bascket.show {
+        #mini-basket.show {
             transform: scale(1);
         }
     </style>
@@ -58,13 +58,13 @@
         </nav>
     </header>
     <!-- https://www.alphapole.com/ -->
-    <div id="mini-bascket" class="bg-tertiary border border-primary">
-        <div class="d-flex justify-content-between px-2 py-1 border-1 border-bottom"><span>Mon panier</span> <span><span id="mini-bascket-nbproduits"></span> article(s)</span></div>
+    <div id="mini-basket" class="bg-tertiary border border-primary">
+        <div class="d-flex justify-content-between px-2 py-1 border-1 border-bottom"><span>Mon panier</span> <span><span id="mini-basket-nbproduits"></span> article(s)</span></div>
 
         <ul class="px-2 list-unstyled mb-1 overflow-auto" style="max-height:500px"></ul>
 
         <div class="px-3 pb-1">
-            <div class="d-flex justify-content-between px-2 py-1 fw-bold"><span>Sous-total</span> <span id="mini-bascket-total"></span></div>
+            <div class="d-flex justify-content-between px-2 py-1 fw-bold"><span>Sous-total</span> <span id="mini-basket-total"></span></div>
             <a class="" href="/panier" aria-label="Panier" id="link_panier">
                 <button type="button" class="btn btn-quaternary my-1 w-100 border-primary"><i class="bi bi-basket"></i><span class="ps-3">Voir le panier</span></button>
             </a>

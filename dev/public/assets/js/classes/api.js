@@ -95,31 +95,31 @@ class Api {
      */
     createListeners() {
         $('nav a').on('click', this.clickLien);
-        $('#mini-bascket a').on('click', this.clickLien);
-        
+        $('#mini-basket a').on('click', this.clickLien);
+
         // comportement du panier au survol pour affichage de son contenu
         let timeout;
 
         $('#bt_panier').on({
             mouseenter: function () {
-                monPanier.loadMiniBascket(); 
-                $('#mini-bascket').addClass('show');
+                monPanier.loadMiniBascket();
+                $('#mini-basket').addClass('show');
             },
             mouseleave: function () {
                 timeout = setTimeout(function () {
-                $('#mini-bascket').removeClass('show');
+                    $('#mini-basket').removeClass('show');
                 }, 200);
             },
         });
 
         // laisse le contenu ouvert à son survol
         // le cache quand la souris sort
-        $('#mini-bascket').on({
+        $('#mini-basket').on({
             mouseenter: function () {
                 clearTimeout(timeout);
             },
             mouseleave: function () {
-                $('#mini-bascket').removeClass('show');
+                $('#mini-basket').removeClass('show');
             },
         });
     }

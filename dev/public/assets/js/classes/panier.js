@@ -374,7 +374,7 @@ class Panier {
         this.tabProduits.sort(this.sortProductsById);
         // $('#bt_panier').attr('data-items', this.nbProduits);
         this.setDisplayMiniBascket();
-        // this.loadMiniBascket(); 
+        // this.loadMiniBascket();
         // Met à jour le panier
         this.setCookie();
     };
@@ -415,9 +415,9 @@ class Panier {
     };
 
     loadMiniBascket = () => {
-        $('#mini-bascket ul li').remove();
+        $('#mini-basket ul li').remove();
         for (let produit of this.tabProduits) {
-            $('#mini-bascket ul').append(
+            $('#mini-basket ul').append(
                 this.createElemMiniBascket(
                     produit.name,
                     produit.quantity,
@@ -428,8 +428,8 @@ class Panier {
                 ),
             );
         }
-        $('#mini-bascket-nbproduits').text(monPanier.NbProduits);
-        $('#mini-bascket-total').text(monPanier.total.numberFormat());
+        $('#mini-basket-nbproduits').text(monPanier.NbProduits);
+        $('#mini-basket-total').text(monPanier.total.numberFormat());
     };
 
     createElemMiniBascket = (name, quantity, lentille, prix, srcimg, url) => {
@@ -447,9 +447,12 @@ class Panier {
                             .css({ fontSize: '0.8rem' })
                             .append($('<a>').attr('href', url).text(name)),
                         $('<div>')
-                            .addClass('lh-sm')
+                            .addClass('lh-sm d-flex justify-content-between')
                             .css({ fontSize: '0.8rem' })
-                            .text(`${lentille} - Quantité : ${quantity}`),
+                            .append(
+                                $('<span>').text(`Lentille : ${lentille},`),
+                                $('<span>').text(`Quantité : ${quantity}`),
+                            ),
                         $('<div>').text(prix),
                     ),
             );
@@ -457,11 +460,11 @@ class Panier {
 
     setDisplayMiniBascketNbProduits = () => {
         $('#bt_panier').attr('data-items', this.NbProduits);
-        $('#mini-bascket-nbproduits').text(this.NbProduits);
+        $('#mini-basket-nbproduits').text(this.NbProduits);
     };
 
     setDisplayMiniBascketTotal = () => {
-        $('#mini-bascket-total').text(this.Total.numberFormat());
+        $('#mini-basket-total').text(this.Total.numberFormat());
     };
 
     setDisplayMiniBascket = () => {

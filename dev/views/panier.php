@@ -81,6 +81,10 @@ $pageDescription = '';
                 <div id="cards_total" class="badge bg-primary text-wrap fs-5" style="width: 6rem"></div>
             </div>
         </div>
+    </div>
+    <div class=" text-end">
+            <a href="/commande" class="btn btn-quaternary border-primary">Valider la commande</a>
+    </div>
 </section>
 
 <!-- Modal Bouton Supprimer -->
