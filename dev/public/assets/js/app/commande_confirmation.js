@@ -1,48 +1,46 @@
 // let doc = new jsPDF('p', 'pt', 'letter');
 // let doc = new jsPDF();
+let genOrder = null;
+
+const getPdfName = () => {
+    let date = new Date();
+    let date_str =
+        date.getFullYear() +
+        ('0' + (date.getMonth() + 1)).slice(-2) +
+        ('0' + date.getDate()).slice(-2) +
+        '_' +
+        ('0' + date.getHours()).slice(-2) +
+        ('0' + date.getMinutes()).slice(-2);
+    return 'Orinoco_Facture_' + date_str + '.pdf';
+};
 
 const generatePdf = () => {
-    // doc.fromHTML($('#contentPdf')[0], 15, 15, {
-    //     width: 800,
-    //     elementHandlers: {
-    //         '#editor': function (element, renderer) {
-    //             return true;
-    //         },
-    //     },
-    // });
+    let header = ['Article', 'Lentille', 'Prix unitaire', 'Quantité', 'Prix'];
+    let datas = [];
 
-    // doc.autoTable({ html: '#tab_products' });
-    // let date = new Date();
-    // let date_str =
-    //     date.getFullYear() +
-    //     ('0' + (date.getMonth() + 1)).slice(-2) +
-    //     ('0' + date.getDate()).slice(-2) +
-    //     '_' +
-    //     ('0' + date.getHours()).slice(-2) +
-    //     ('0' + date.getMinutes()).slice(-2);
-    // doc.save('Orinoco_Facture_' + date_str + '.pdf');
-    var columns = ['ID', 'Name', 'Country'];
-    var rows = [
-        [1, 'Shaw', 'Tanzania'],
-        [2, 'Nelson', 'Kazakhstan'],
-        [3, 'Garcia', 'Madagascar'],
-    ];
+    for (let produit of genOrder.products) {
+        datas.push([
+            produit.name,
+            produit.lense,
+            (produit.price / 100).jqNumberFormat(),
+            produit.quantity,
+            ((produit.price / 100) * produit.quantity).jqNumberFormat(),
+        ]);
+    }
 
-    // Only pt supported (not mm or in)
-    let doc = new jsPDF('p', 'pt');
-    doc.autoTable(columns, rows);
-    doc.save('table.pdf');
+    let doc = new jsPDF();
+    doc.autoTable(header, datas);
+    doc.save(getPdfName());
 };
 
 const orderSuccess = (order) => {
+    genOrder = order;
     $('#order-success #order-contact-name').text(order.contact.firstName);
     $('#order-success #order-contact-email').text(order.contact.email);
     $('#order-success #order-orderId').text(order.orderId);
     $('#order-success').removeClass('d-none').addClass('d-block');
 
     for (let produit of order.products) {
-        let prix_unit = produit.price / 100;
-        let prix_total = (produit.price / 100) * produit.quantity;
         $('#tab_products tbody').append(
             $('<tr>').append(
                 $('<td>').text(produit.name),

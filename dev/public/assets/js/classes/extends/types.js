@@ -52,4 +52,8 @@ Object.assign(Number.prototype, {
             minimumFractionDigits: 0,
         }).format(this);
     },
+
+    jqNumberFormat(minimumFractionDigits = 0, decimalSeparator = ',', thousandSeparator = ' ') {
+        return $.number(this, minimumFractionDigits, decimalSeparator, thousandSeparator) + ' €';
+    },
 });

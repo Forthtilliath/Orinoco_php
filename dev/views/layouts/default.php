@@ -103,6 +103,7 @@
 
     <!-- Début scripts -->
     <script src="/assets/js/libs/jquery.min.js"></script>
+    <script src="/assets/js/libs/jquery.number.js"></script>
     <script src="/assets/js/libs/bootstrap-v5.0.min.js"></script>
     <script src="/assets/js/libs/jspdf.min.js"></script>
     <!-- <script src="/assets/js/libs/jspdf.plugin.autotable.js"></script> -->

@@ -49,6 +49,8 @@
     "d": "^1.0.1",
     "gulp-file-include": "^2.3.0",
     "gulp-useref": "^5.0.0",
+    "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.14",
     "node-sass": "^5.0.0",
     "prettier": "^2.2.1"
   },
