@@ -12,11 +12,7 @@ class Router {
     }
 
     getPageName(uri) {
-        // NOTE Fonctionne pas pour produit (regex)
         for (let route of this.router.routes) {
-            // TODO Regex avec pattern
-            // if (route.pattern === uri) return route.name;
-            // /produit/[id:id]
             let rbracket = new RegExp(/(?<param>\[(?<id>\w+:\w+)\])/g);
             let pattern = route.pattern;
 
@@ -45,7 +41,6 @@ class Router {
                 }
                 newpattern = newpattern.replace(m[0], regex);
             }
-            // newpattern = '^' + newpattern + '$';
             if (new RegExp(`^${newpattern}$`, 'm').test(uri)) {
                 return route.name;
             }

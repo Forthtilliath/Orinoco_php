@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "launch": "concurrently --names \"SERV,PHP\" -c \"bgBlue,bgGreen\" \"npm:launch-serv\" \"npm:launch-php\"",
+    "launch": "concurrently --names \"SERV,PHP\" -c \"bgBlue,bgRed\" \"npm:launch-serv\" \"npm:launch-php\"",
     "launch-serv": "nodemon dev/server.js",
     "launch-php": "php -S localhost:8000 -t dev/public",
     "app": "gulp app",

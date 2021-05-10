@@ -14,6 +14,10 @@ function executeFunctionByName(functionName, context = window /*, args */) {
     for (var i = 0; i < namespaces.length; i++) {
         context = context[namespaces[i]];
     }
+    if (typeof context[func] === 'undefined') {
+        console.error(`La fonction ${func} ne fait pas partie du context !`);
+        return;
+    }
     return context[func].apply(context, args);
 }
 
@@ -106,4 +110,17 @@ const createNewCard = (i) => {
     let card = monApi.getElement('article', 0, '#').cloneNode(true);
     monApi.getElement('parent').appendChild(card);
     card.outerHTML = card.outerHTML.replaceAll(monApi.getElementId('article', 0), monApi.getElementId('article', i));
-}
+};
+
+const hide = (elem, classe = 'd-flex') => {
+    elem.removeClass(classe).addClass('d-none');
+};
+
+const show = (elem, classe = 'd-flex') => {
+    elem.removeClass('d-none').addClass(classe);
+};
+
+const hideAndShow = (elemToHide, elemToShow, classToHide = 'd-flex', classToShow = 'd-flex') => {
+    hide(elemToHide, classToHide);
+    show(elemToShow, classToShow);
+};

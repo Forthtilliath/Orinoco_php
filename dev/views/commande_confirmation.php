@@ -1,32 +1,68 @@
 <?php
 $pageTitle = 'Orinoco - Bon de commande - Le e-commerce moins cher que gratuit !';
 $pageDescription = '';
-$pageMessageTitle = '';
-$pageMessageDescription = '';
 ?>
 
-<section class="container mt-3 mb-3 bg-white opacity-change">
-    <div class="row justify-content-center pt-5 pb-5">
-        <div class="text-center">
-            <h1 class="text-responsive-3">Confirmation de votre commande n°</h1>
-            <h2 class="text-responsive-3" id="order_number"></h2>
+<div id="order-success" class="container d-none">
+    <h1 class="text-center page-title rounded bg-success py-2">Merci pour votre commande</h1>
+
+    <section class="mt-3 mb-3 bg-tertiary rounded p-3">
+        <div class="row row-cols-1 justify-content-center text-center">
+            <div class="col">
+                <img width="300" src="/images/order-confirmation-1000_1000.jpg" />
+                <h2 class="fw-bold">Merci <span id="order-contact-name"></span>,</h2>
+                <h3>A bientot !</h3>
+            </div>
+            <div class="col-auto my-2 border border-primary rounded p-2">
+                <div id="order-orderId"></div>
+                <div class="h4 text-muted">Numéro de la commande</div>
+            </div>
+            <div class="col my-2">
+                <div class="text-responsive-2">Un e-mail de confirmation a été envoyé à <span id="order-contact-email"></span></div>
+                <?php date_default_timezone_set('Europe/Paris'); ?>
+                <div>Votre commande a été effectuée à <?= date('H\hi'); ?>. Des questions ? Contactez-nous depuis le lien en bas de votre page.</div>
+            </div>
+            <div class="col my-2">
+                <div>
+                    <button type="button" class="btn btn-quaternary border-primary" onclick="generatePdf()">
+                        <i class="bi bi-save pe-2"></i>Télécharger ma facture
+                    </button>
+                </div>
+            </div>
+            <div></div>
         </div>
-    </div>
-    <div class="row justify-content-center pt-2 pb-2">
-        <p class="text-responsive-2">Nous vous remercions pour votre confiance.</p>
-    </div>
-    <div class="row justify-content-center pt-2 pb-2">
-        <p class="text-responsive-2">Votre commande sera expediée dans les plus bref délais !</p>
-    </div>
-    <div class="row justify-content-center text-center pt-2 pb-5">
-        <p class="text-responsive-2">
-            Pour toute demande complémentaire, veuillez nous contacter depuis le lien "contactez-nous" en bas de
-            votre page.
-        </p>
-    </div>
-</section>
+    </section>
+    <section class="bg-tertiary" id="contentPdf">
+        <table id="tab_products" class="table table-striped">
+            <colgroup>
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+                <col width="20%">
+            </colgroup>
+            <thead>
+                <tr class='warning'>
+                    <th>Article</th>
+                    <th>Lentille</th>
+                    <th>Prix unité</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </section>
+</div>
 
-<?php ob_start(); ?>
-<script src="/assets/js/app/order-confirmation.js"></script>
-<?php $pageScripts = ob_get_clean();
-?>
+<div id="order-fail" class="container d-none">
+    <h1 class="text-center page-title rounded bg-danger">Une erreur inattendue est survenue</h1>
+</div>
+
+<script>
+    $page = {
+        title: '<?= $pageTitle ?>',
+        description: '<?= addslashes($pageDescription) ?>'
+    };
+</script>

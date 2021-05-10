@@ -24,13 +24,13 @@
             "name": "commande",
             "pattern": "/commande",
             "path": "commande",
-            "mainFunction": ""
+            "mainFunction": "formChecker"
         },
         {
             "name": "commande_confirmation",
             "pattern": "/commande_confirmation",
             "path": "commande_confirmation",
-            "mainFunction": ""
+            "mainFunction": "loadOrderConfirmation"
         },
         {
             "name": "404",

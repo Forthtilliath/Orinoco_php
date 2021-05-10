@@ -1,5 +1,4 @@
 let monApi = new Api('panier', '/assets/js/datas/cameras.json', 'http://localhost:3000/api/cameras/');
-// Initialisation du chargement des routes
 let monRouter = monApi.router.loadRoutes();
 let monPanier = monApi.getPanier();
 

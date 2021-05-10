@@ -6,9 +6,9 @@ $pageDescription = '';
 <h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Affichage du panier</span></h1>
 <section id="list_alerts"></section>
 
-<section class="container d-none" id="panier_vide">
+<section class="container d-none mt-4" id="panier_vide">
     <div class="justify-content-center">
-        <div class="row justify-content-center mt-4">
+        <div class="row justify-content-center">
             <div class="col-md-6 card mb-4 bg-tertiary">
                 <img src="/images/basket.png" class="card-img-top" alt="" />
                 <div class="card-body">
@@ -24,7 +24,7 @@ $pageDescription = '';
     </div>
 </section>
 
-<section class="container d-none" id="list_cards">
+<section class="container d-none mt-4" id="list_cards">
     <exp-article class="row mb-3 g-md-1" id="card_0">
         <input type="hidden" value="" name="id" id="card_0_id" />
         <div class="col-md-3 col-lg-2 bg-tertiary p-0 border-md"><img src="images/spinning-circles.svg" id="card_0_image" class="card-img-top card-img-250 card-img-md-150 object-fit-cover" alt="..."></div>
@@ -83,7 +83,7 @@ $pageDescription = '';
         </div>
     </div>
     <div class=" text-end">
-            <a href="/commande" class="btn btn-quaternary border-primary">Valider la commande</a>
+        <a href="/commande" class="btn btn-quaternary border-primary">Continuer la commande</a>
     </div>
 </section>
 

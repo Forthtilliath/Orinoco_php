@@ -14,15 +14,12 @@ const createCard = (i, camera) => {
     let id = monApi.getElementId('article', i);
 
     if (i == 0) {
-        // monApi.getElement('article', 0, '#').show('');
         monApi.getElement('quantity', id).addOptions(getArrayWithValues(1, camera.Stock));
     } else {
         createNewCard(i);
     }
 
-    let img = monApi.getElement('image', id);
-    // Récupération des données en mettant la fonction + le nom attribué dans l'api
-    img.setAttribute('src', monApi.isLocal() ? camera.Image.replace('http://localhost:3000/', '') : camera.Image);
+    monApi.getElement('image', id).setAttribute('src', camera.Image);
     //img.onload = () => img.replaceWith(getThumbnail(img, 200));
 
     monApi.getElement('idProduit', id).value = camera.Id;
@@ -46,9 +43,9 @@ const showCards = () => {
         for (let unProduit of monApi.ListeProduits) {
             createCard(i++, unProduit);
         }
+        hideAndShow($('#no_products'), $('#list_cards'));
     } else {
-        // TODO Afficher un message sur le site si aucun article n'est disponible
-        console.error('Erreur');
+        hideAndShow($('#list_cards'), $('#no_products'));
     }
 };
 

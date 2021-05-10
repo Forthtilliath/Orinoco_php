@@ -5,62 +5,45 @@ $pageDescription = '';
 
 <h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Validation de votre commande</span></h1>
 
-<section class="container-sm bg-tertiary" id="commande" style="max-width:800px">
-    <h1>Formulaires</h1>
-    <form class="needs-validation" novalidate>
+<section class="container-sm bg-tertiary rounded mt-4 p-3" id="commande" style="max-width:800px">
+    <h2>Vos coordonnées</h2>
+    <form class="needs-validation" id='formContact' novalidate>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="prenom">Prénom</label>
-                <input type="text" class="form-control" id="prenom" placeholder="Pierre" required pattern="[A-Za-z \-]*">
+                <input type="text" class="form-control" id="prenom" placeholder="Prénom" required pattern="[A-Za-z \-]+">
                 <div class="valid-feedback">Ok !</div>
                 <div class="invalid-feedback">Valeur incorrecte</div>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="nom">Nom de famille</label>
-                <input type="text" class="form-control" id="nom" placeholder="Giraud" required pattern="[A-Za-z \-]*">
+                <input type="text" class="form-control" id="nom" placeholder="Nom de famille" required pattern="[A-Za-z \-]+">
                 <div class="valid-feedback">Ok !</div>
                 <div class="invalid-feedback">Valeur incorrecte</div>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="adresse">Adresse</label>
-                <input type="text" class="form-control" id="adresse" placeholder="Adresse" required>
+                <input type="text" class="form-control" id="adresse" placeholder="Adresse" required pattern="[A-Za-z0-9,. \-]+">
                 <div class="valid-feedback">Ok !</div>
                 <div class="invalid-feedback">Valeur incorrecte</div>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="ville">Ville</label>
-                <input type="text" class="form-control" id="ville" placeholder="Ville" required>
+                <input type="text" class="form-control" id="ville" placeholder="Ville" required pattern="[A-Za-z \-]+">
                 <div class="valid-feedback">Ok !</div>
                 <div class="invalid-feedback">Valeur incorrecte</div>
             </div>
             <div class="col mb-3">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" id="email" placeholder="Email" required>
+                <input type="email" class="form-control" id="email" placeholder="Email" required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
                 <div class="valid-feedback">Ok !</div>
                 <div class="invalid-feedback">Valeur incorrecte</div>
             </div>
         </div>
-        <button class="btn btn-primary" type="submit">Envoyer</button>
+        <div class=" text-end">
+            <button class="btn btn-primary" type="submit">Valider la commande</button>
+        </div>
     </form>
-    <script>
-        /*La fonction principale de ce script est d'empêcher l'envoi du formulaire si un champ a été mal rempli
-         *et d'appliquer les styles de validation aux différents éléments de formulaire*/
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                let forms = document.getElementsByClassName('needs-validation');
-                let validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-    </script>
 </section>
 
 

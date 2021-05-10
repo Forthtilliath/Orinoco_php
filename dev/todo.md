@@ -9,7 +9,8 @@
   - [x] Nombre d'articles à calculer 
   - [x] Style bouton supprimer
   - [x] Panier vide
-  - [ ] Check calcul nb produit
+  - [x] Check calcul nb produit
+  - [ ] Calcul du total
 
 ## All pages
   - [x] Chargement de la page
@@ -25,12 +26,14 @@
     - [ ] Images : new Images() au chargement de la page
     - [x] Maj title & description
   - [x] Automatiser les calculs de la quantité max par le stock
-  - [ ] Hover du bouton panier qui affiche le contenu
+  - [x] Hover du bouton panier qui affiche le contenu
   - [ ] Image loader à modifier (vérifier si image existe ou pas)
   - [x] Enregistrer les pages !!!
   - [ ] Bouton panier
-    - [ ] Rendre dynamique la quantité de produits
-    - [ ] 
+    - [x] Rendre dynamique la quantité de produits
+    - [ ] Maj nbprod & total à optimiser
+  - [ ] Faire fonctionner le bouton précédent et suivant
+  - [ ] Page et desc : php => js
 
 ## JS
     - [-] Finir le fichier prototype.js

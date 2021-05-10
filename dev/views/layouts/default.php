@@ -57,7 +57,7 @@
             </div>
         </nav>
     </header>
-    <!-- https://www.alphapole.com/ -->
+
     <div id="mini-basket" class="bg-tertiary border border-primary">
         <div class="d-flex justify-content-between px-2 py-1 border-1 border-bottom"><span>Mon panier</span> <span><span id="mini-basket-nbproduits"></span> article(s)</span></div>
 
@@ -104,6 +104,9 @@
     <!-- Début scripts -->
     <script src="/assets/js/libs/jquery.min.js"></script>
     <script src="/assets/js/libs/bootstrap-v5.0.min.js"></script>
+    <script src="/assets/js/libs/jspdf.min.js"></script>
+    <!-- <script src="/assets/js/libs/jspdf.plugin.autotable.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.js"></script>
     <script src="/assets/js/classes/extends/html.js"></script>
     <script src="/assets/js/classes/extends/types.js"></script>
     <script src="/assets/js/classes/extends/storage.js"></script>
@@ -117,6 +120,8 @@
     <script src="/assets/js/app/home.js"></script>
     <script src="/assets/js/app/produit.js"></script>
     <script src="/assets/js/app/panier.js"></script>
+    <script src="/assets/js/app/commande.js"></script>
+    <script src="/assets/js/app/commande_confirmation.js"></script>
     <script src="/assets/js/app/default.js"></script>
     <!-- Fin scripts -->
 </body>

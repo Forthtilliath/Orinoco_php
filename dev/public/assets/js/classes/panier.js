@@ -33,6 +33,12 @@ class Panier {
         return this.tabProduits.reduce((a, b) => a + b.quantity * b.price, 0);
     }
 
+    reset = () => {
+        this.nbProduits = 0;
+        this.total = 0;
+        this.tabProduits = [];
+    }
+
     /**
      * Réinitialise le panier
      */
@@ -46,6 +52,7 @@ class Panier {
 
         // Cache l'element 0
         this.api.getElement('article', 0, '#').hide();
+        this.setDisplayMiniBascketNbProduits();
         // Supprime tous les autres
         allCardsExceptFirst.forEach((elem) => elem.remove());
     };
@@ -55,7 +62,6 @@ class Panier {
         window.addEventListener(
             'storage',
             () => {
-                console.log('event');
                 this.resetPanier();
                 this.setDisplayPanier();
                 this.display();
@@ -110,8 +116,9 @@ class Panier {
             elemsToShow = this.api.options.elemsBasketEmpty;
             elemsToHide = this.api.options.elemsBasketFull;
         }
-        $(elemsToShow.join(',')).removeClass('d-none').addClass('d-block');
-        $(elemsToHide.join(',')).removeClass('d-block').addClass('d-none');
+        // $(elemsToShow.join(',')).removeClass('d-none').addClass('d-block');
+        // $(elemsToHide.join(',')).removeClass('d-block').addClass('d-none');
+        hideAndShow($(elemsToHide.join(',')), $(elemsToShow.join(',')), 'd-block', 'd-block');
     };
 
     /**
@@ -126,15 +133,6 @@ class Panier {
                 // On affiche le premier élément (le seul disponible dans le html)
                 // this.api.getElement('article', 0, '#').show();
             } else {
-                // // Clone le premier card
-                // let card = this.api.getElement('article', 0, '#').cloneNode(true);
-                // // Ajoute au DOM
-                // this.api.getElement('parent').appendChild(card);
-                // // Remplace les id cards_0 par l'id dynamique
-                // card.outerHTML = card.outerHTML.replaceAll(
-                //     this.api.getElementId('article', 0),
-                //     this.api.getElementId('article', i),
-                // );
                 createNewCard(i);
             }
 
@@ -157,9 +155,6 @@ class Panier {
                 this.tabProduits[i].quantity > this.quantityMax ? this.quantityMax : this.tabProduits[i].quantity;
             // Si premier élément, on génère les options
             if (i == 0) {
-                // for (let n = 1; n <= this.quantityMax; n++) {
-                //     selectQuantity.addOption(n, n, quantityInSelect == n);
-                // }
                 this.api
                     .getElement('quantity', id)
                     .addOptions(getArrayWithValues(1, this.quantityMax), quantityInSelect);
@@ -175,7 +170,6 @@ class Panier {
 
             let subTotal = quantityInSelect * this.tabProduits[i].price;
             this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
-            this.total += subTotal;
 
             selectQuantity.addEventListener('change', this.editQuantityProduit);
             let buttonRemove = this.api.getElement('btRemove', id);
@@ -185,7 +179,7 @@ class Panier {
         }
 
         this.api.getElement('nbarticles').textContent = this.nbProduits;
-        this.api.getElement('total').textContent = this.total.numberFormat();
+        this.api.getElement('total').textContent = this.calcTotal().numberFormat();
     };
 
     /**
@@ -194,41 +188,28 @@ class Panier {
      * @param {Event} e Select du produit dont la quantité a été modifié
      */
     editQuantityProduit = (e) => {
-        // Récupère le numéro de l'article via le numéro du button
         let articleID = e.target.getAttribute('id').numberID();
-        // Récupère l'id de l'article via le numéro
-        let id = this.api.getElementId('article', articleID); // 'cards_{{i}}'
+        let id = this.api.getElementId('article', articleID);
 
-        // Récupère la position de l'article dans le panier à l'aide de son id et de la lentille
         let pos = this.getPosition(
             this.api.getElement('idProduit', id).value,
             this.api.getElement('lentilles', id).textContent,
         );
 
-        // Retire l'ancienne quantité
+        // MAJ Quantité
         this.nbProduits -= this.tabProduits[pos].quantity;
-        // Met à jour la quantité dans le panier
         this.tabProduits[pos].quantity = parseInt(this.api.getElement('quantity', id).value);
-        // Ajoute la nouvelle quantité
         this.nbProduits += this.tabProduits[pos].quantity;
-        // Mise à jour du nombre de produits
         this.api.getElement('nbarticles').textContent = this.nbProduits;
 
-        // Retire l'ancien sous-total du total
+        // MAJ Total
         this.total -= this.api.getElement('sousTotal', id).textContent.reverseNumberFormat();
-        // Calcul le nouveau sous-total
         let subTotal = this.tabProduits[pos].quantity * this.tabProduits[pos].price;
         this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
-        // Calcul le nouveau total
         this.total += subTotal;
-        // Mise a jour du total
         this.api.getElement('total', id).textContent = this.total.numberFormat();
 
-        // $('#bt_panier').attr('data-items', this.nbProduits);
-        this.setDisplayMiniBascket();
-        // this.loadMiniBascket();
-
-        // Met à jour le panier
+        this.setDisplayMiniBascketNbProduits();
         this.setCookie();
     };
 
@@ -303,13 +284,11 @@ class Panier {
             return false;
         }
 
-        // Si aucun des deux, on affiche une erreur et on stop l'ajout dans le panier
         if (!produit.Lentilles.includes(lenses.value) || !quantity.isPositiveNumberAndMax(produit.Stock)) {
             this.api.createAlert('danger', 'Valeur incorrecte !', 'Veuillez sélectionner une valeur correcte.');
             return false;
         }
 
-        // Remet à jour le contenu du panier avant d'ajouter les nouveaux éléments
         this.tabProduits = this.loadPanier();
 
         // Récupère la position de l'article dans le panier
@@ -333,8 +312,6 @@ class Panier {
                         'Stock insuffisant !',
                         `Seulement ${n} ${a} été ajouté dans le panier.`,
                     );
-                    this.nbProduits += n;
-                    this.total += n * produit.Prix;
                 } else {
                     let s = parseInt(quantity.value) == 1 ? '' : 's';
                     let a = parseInt(quantity.value) == 1 ? 'a' : 'ont';
@@ -343,8 +320,6 @@ class Panier {
                         `Produit${s} ajouté${s}`,
                         `Le${s} produit${s} ${a} été correctement ajouté dans le panier.`,
                     );
-                    this.nbProduits += parseInt(quantity.value);
-                    this.total += parseInt(quantity.value) * produit.Prix;
                 }
             }
         } else {
@@ -368,14 +343,11 @@ class Panier {
                 `Produit${s} ajouté${s}`,
                 `Le${s} produit${s} ${a} été correctement ajouté dans le panier.`,
             );
-            this.nbProduits += parseInt(quantity.value);
-            this.total += parseInt(quantity.value) * produit.Prix;
         }
         this.tabProduits.sort(this.sortProductsById);
-        // $('#bt_panier').attr('data-items', this.nbProduits);
-        this.setDisplayMiniBascket();
-        // this.loadMiniBascket();
-        // Met à jour le panier
+        this.nbProduits = this.calcNbProduits();
+        this.total = this.calcTotal();
+        this.setDisplayMiniBascketNbProduits();
         this.setCookie();
     };
 
@@ -422,14 +394,14 @@ class Panier {
                     produit.name,
                     produit.quantity,
                     produit.lenses,
-                    produit.price.numberFormat(),
+                    (produit.price * produit.quantity).numberFormat(),
                     produit.img,
                     monApi.goToProduct(produit.id),
                 ),
             );
         }
         $('#mini-basket-nbproduits').text(monPanier.NbProduits);
-        $('#mini-basket-total').text(monPanier.total.numberFormat());
+        $('#mini-basket-total').text(monPanier.calcTotal().numberFormat());
     };
 
     createElemMiniBascket = (name, quantity, lentille, prix, srcimg, url) => {
@@ -460,15 +432,15 @@ class Panier {
 
     setDisplayMiniBascketNbProduits = () => {
         $('#bt_panier').attr('data-items', this.NbProduits);
-        $('#mini-basket-nbproduits').text(this.NbProduits);
+        // $('#mini-basket-nbproduits').text(this.NbProduits);
     };
 
-    setDisplayMiniBascketTotal = () => {
-        $('#mini-basket-total').text(this.Total.numberFormat());
-    };
+    // setDisplayMiniBascketTotal = () => {
+    //     $('#mini-basket-total').text(this.Total.numberFormat());
+    // };
 
-    setDisplayMiniBascket = () => {
-        this.setDisplayMiniBascketNbProduits();
-        this.setDisplayMiniBascketTotal();
-    };
+    // setDisplayMiniBascket = () => {
+    //     this.setDisplayMiniBascketNbProduits();
+    //     this.setDisplayMiniBascketTotal();
+    // };
 }
