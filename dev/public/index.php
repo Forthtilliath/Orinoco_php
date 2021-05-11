@@ -1,6 +1,7 @@
 <?php
 require '../../vendor/autoload.php';
 
+define('DEBUG', false);
 define('DEBUG_TIME', microtime(true));
 
 $whoops = new \Whoops\Run();

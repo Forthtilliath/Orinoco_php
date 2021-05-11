@@ -80,20 +80,20 @@
             <div>&Oslash;rinoco &copy; 2021 Forth</div>
             <div>Tout droits réservés</div>
             <div>
-                <hr />
             </div>
-            <div>
-                <span class="d-inline">Affichage : </span>
-                <span class="d-inline d-xxs-none">XSS (&lt; 300px) </span>
-                <span class="d-none d-xxs-inline d-xs-none">Extremly small (xxs) (&ge; 300px)</span>
-                <span class="d-none d-xs-inline d-sm-none">Extra small (xs) (&ge; 500px)</span>
-                <span class="d-none d-sm-inline d-md-none">Small (sm) (&ge; 576px)</span>
-                <span class="d-none d-md-inline d-lg-none">Medium (md) (&ge; 768px)</span>
-                <span class="d-none d-lg-inline d-xl-none">Large (lg) (&ge; 992px)</span>
-                <span class="d-none d-xl-inline d-xxl-none">X-Large (xl) (&ge; 1200px)</span>
-                <span class="d-none d-xxl-inline">XX-Large (xxl) (&ge; 1400px)</span>
-            </div>
-            <?php if (defined('DEBUG_TIME')) : ?>
+            <?php if (defined('DEBUG') && DEBUG) : ?>
+                <div>
+                    <hr />
+                    <span class="d-inline">Affichage : </span>
+                    <span class="d-inline d-xxs-none">XSS (&lt; 300px) </span>
+                    <span class="d-none d-xxs-inline d-xs-none">Extremly small (xxs) (&ge; 300px)</span>
+                    <span class="d-none d-xs-inline d-sm-none">Extra small (xs) (&ge; 500px)</span>
+                    <span class="d-none d-sm-inline d-md-none">Small (sm) (&ge; 576px)</span>
+                    <span class="d-none d-md-inline d-lg-none">Medium (md) (&ge; 768px)</span>
+                    <span class="d-none d-lg-inline d-xl-none">Large (lg) (&ge; 992px)</span>
+                    <span class="d-none d-xl-inline d-xxl-none">X-Large (xl) (&ge; 1200px)</span>
+                    <span class="d-none d-xxl-inline">XX-Large (xxl) (&ge; 1400px)</span>
+                </div>
                 <div>
                     Page générée en <?= round(1000 * (microtime(true) - DEBUG_TIME)) ?>ms
                 </div>
