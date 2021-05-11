@@ -40,19 +40,8 @@ const orderSuccess = (order) => {
     $('#order-success #order-orderId').text(order.orderId);
     $('#order-success').removeClass('d-none').addClass('d-block');
 
-    for (let produit of order.products) {
-        $('#tab_products tbody').append(
-            $('<tr>').append(
-                $('<td>').text(produit.name),
-                $('<td>').text(produit.lense),
-                $('<td>').text(prix_unit.numberFormat()),
-                $('<td>').text(produit.quantity),
-                $('<td>').text(prix_total.numberFormat()),
-            ),
-        );
-    }
-
     monPanier.reset();
+    monPanier.setDisplayMiniBascketNbProduits();
     localStorage.removeItem(monApi.cookieName);
 };
 

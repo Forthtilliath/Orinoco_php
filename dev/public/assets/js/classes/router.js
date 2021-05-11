@@ -2,6 +2,20 @@ class Router {
     constructor() {
         this.router = {};
         //this.loadRoutes();
+        this.addEventOnHistory();
+    }
+
+    addEventOnHistory() {
+        window.onpopstate = (event) => {
+            let params = [];
+            if (event.state) {
+                if (Camera.hasInstance(Object.values(event.state))) {
+                    params.push(new Camera(...Camera.fromObject(event.state)));
+                }
+            }
+
+            this.changePage(this.getUri(), ...params);
+        };
     }
 
     loadRoutes() {
@@ -71,7 +85,15 @@ class Router {
         $('html, body').animate({ scrollTop: 0 }, 'fast');
         let routeName = this.getPageName(lien);
         var jqxhr = $.get(lien, (data) => {
-            history.pushState(null, routeName, lien);
+            /**
+             * pushState :
+             *  datas =>
+             * {
+             *     0: Camera
+             * }
+             */
+            let datas = args[0] ? { ...args } : {};
+            history.pushState(datas[0], routeName, lien);
             this.setPageContent($(data).filter('#pageContent').html());
             this.setPageTitle($page.title);
             this.setPageDescription($page.description);

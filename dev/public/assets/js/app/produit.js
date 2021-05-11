@@ -3,7 +3,7 @@ const editCard = async (camera) => {
 
     let img = monApi.getElement('image', id);
     // Récupération des données en mettant la fonction + le nom attribué dans l'api
-    img.setAttribute('src', monApi.isLocal() ? camera.Image.replace('http://localhost:3000/', '') : camera.Image);
+    img.setAttribute('src', camera.Image);
 
     monApi.getElement('idProduit', id).value = camera.Id;
     monApi.getElement('nom', id).textContent = camera.Nom;

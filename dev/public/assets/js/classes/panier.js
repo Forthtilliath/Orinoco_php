@@ -37,7 +37,7 @@ class Panier {
         this.nbProduits = 0;
         this.total = 0;
         this.tabProduits = [];
-    }
+    };
 
     /**
      * Réinitialise le panier
@@ -139,9 +139,7 @@ class Panier {
             this.api.getElement('idProduit', id).value = this.tabProduits[i].id;
             this.api.getElement('lentilles', id).textContent = this.tabProduits[i].lenses;
             this.api.getElement('prix', id).textContent = this.tabProduits[i].price.numberFormat();
-            this.api.getElement('image', id).src = this.api.localServer
-                ? this.tabProduits[i].img.replace('http://localhost:3000/', '')
-                : this.tabProduits[i].img;
+            this.api.getElement('image', id).src = this.tabProduits[i].img;
             // TODO Si image existe, ajouter la classe object-fit-cover (object-fit-none)
             this.api.getElement('nom', id).textContent = this.tabProduits[i].name;
             // this.api.getElement('linknom', id).href = this.api.goToProduct(this.tabProduits[i].id);
@@ -388,17 +386,23 @@ class Panier {
 
     loadMiniBascket = () => {
         $('#mini-basket ul li').remove();
-        for (let produit of this.tabProduits) {
+        if (monPanier.NbProduits == 0) {
             $('#mini-basket ul').append(
-                this.createElemMiniBascket(
-                    produit.name,
-                    produit.quantity,
-                    produit.lenses,
-                    (produit.price * produit.quantity).numberFormat(),
-                    produit.img,
-                    monApi.goToProduct(produit.id),
-                ),
+                $('<li>').addClass('border-1 border-bottom pb-1 mt-1 w-100 d-table text-center').text('Votre panier est vide !'),
             );
+        } else {
+            for (let produit of this.tabProduits) {
+                $('#mini-basket ul').append(
+                    this.createElemMiniBascket(
+                        produit.name,
+                        produit.quantity,
+                        produit.lenses,
+                        (produit.price * produit.quantity).numberFormat(),
+                        produit.img,
+                        monApi.goToProduct(produit.id),
+                    ),
+                );
+            }
         }
         $('#mini-basket-nbproduits').text(monPanier.NbProduits);
         $('#mini-basket-total').text(monPanier.calcTotal().numberFormat());

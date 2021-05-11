@@ -1,6 +1,6 @@
 // recupération des données du ou des produits depuis l api
 class Api {
-    constructor(cookieName, urlLocal, urlServer) {
+    constructor(cookieName, url) {
         /**
          * @type {string} Nom du cookie utilisé dans l'API
          */
@@ -19,21 +19,9 @@ class Api {
          */
         this.listeProduits = [];
         /**
-         * @type {string} URL locale du fichier de données
-         */
-        this.urlLocal = urlLocal;
-        /**
-         * @type {string} URL distance du fichier de données
-         */
-        this.urlServer = urlServer;
-        /**
-         * @type {boolean} Permet de savoir quelle URL utiliser sur l'API
-         */
-        this.localServer = false;
-        /**
          * @type {string} URL du fichier de données
          */
-        this.url = this.localServer ? this.urlLocal : this.urlServer;
+        this.url = url;
         /**
          * @type {number} ID de timeout de l'alert
          */
@@ -82,10 +70,6 @@ class Api {
         this.url += id;
     }
 
-    isLocal() {
-        return this.localServer;
-    }
-
     isAllLoaded() {
         return this.router.loaded;
     }
@@ -108,7 +92,7 @@ class Api {
             mouseleave: function () {
                 timeout = setTimeout(function () {
                     $('#mini-basket').removeClass('show');
-                }, 200);
+                }, 500);
             },
         });
 
@@ -179,6 +163,7 @@ class Api {
                     uneCamera.description,
                     uneCamera.price / 100,
                     uneCamera.imageUrl,
+                    defaultStockMax,
                     uneCamera.lenses,
                 ),
             );

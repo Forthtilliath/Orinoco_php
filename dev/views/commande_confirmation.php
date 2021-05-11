@@ -32,28 +32,6 @@ $pageDescription = '';
             <div></div>
         </div>
     </section>
-    <section class="bg-tertiary" id="contentPdf">
-        <table id="tab_products" class="table table-striped">
-            <colgroup>
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-                <col width="20%">
-            </colgroup>
-            <thead>
-                <tr class='warning'>
-                    <th>Article</th>
-                    <th>Lentille</th>
-                    <th>Prix unité</th>
-                    <th>Quantité</th>
-                    <th>Prix</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </section>
 </div>
 
 <div id="order-fail" class="container d-none">

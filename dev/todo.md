@@ -10,7 +10,7 @@
   - [x] Style bouton supprimer
   - [x] Panier vide
   - [x] Check calcul nb produit
-  - [ ] Calcul du total
+  - [x] Calcul du total
 
 ## All pages
   - [x] Chargement de la page
@@ -29,10 +29,10 @@
   - [x] Hover du bouton panier qui affiche le contenu
   - [ ] Image loader à modifier (vérifier si image existe ou pas)
   - [x] Enregistrer les pages !!!
-  - [ ] Bouton panier
+  - [x] Bouton panier
     - [x] Rendre dynamique la quantité de produits
-    - [ ] Maj nbprod & total à optimiser
-  - [ ] Faire fonctionner le bouton précédent et suivant
+    - [x] Maj nbprod & total à optimiser
+  - [x] Faire fonctionner le bouton précédent et suivant
   - [ ] Page et desc : php => js
 
 ## JS
