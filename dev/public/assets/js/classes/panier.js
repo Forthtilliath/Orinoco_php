@@ -1,31 +1,4 @@
 /**
- * TODO List
- * [x] Ajouter dans le panier depuis la page produit
- * [x] Bouton supprimer : Supprime un élément du panier
- *  [x] Si plus d'article, set styles
- * [x] Ajout dans le panier :
- *  [x] Vérifier si qté & lentilles non vide
- *  [x] Si produit existe déjà avec même lentille
- * [x] Set quantité => set panier
- *  [x] réaliser les sous totaux dynamique
- *  [x] realiser le total dynamique
- * [x] realiser la boucle pour les cartes dans la page order afficher et dupliquer
- * [x] Si panier vide
- *  [x] disable la partie form  ou le boutton a voir suivant style de page
- *  [x] Masquer article par défaut
- * [ ] Vérifier les qté avant envoi
- * [v] Adapter les id de la page produit avec home
- * [x] Ajouter une span de notification d'ajout de l'article ds le panier
- * [x] Ajouter un modal de suppression du panier
- * [x] Lien en cliquant sur le nom du produit sur le panier
- * [ ] Page index & produit
- *  [x] Prendre en compte un système de stock (5 maxi par article)
- *  [ ] Au chargement, adapter le menu select à la quantité restante disponible
- *  [ ] Lorsqu'un article est ajouté au panier => modifie le menu select
- *  [x] Afficher un message si Out of stock
- */
-
-/**
  *
  */
 class Panier {
@@ -36,13 +9,35 @@ class Panier {
     constructor(nameCookie, options = {}, api) {
         this.nameCookie = nameCookie;
         this.tabProduits = this.loadPanier();
-        this.total = 0;
-        this.nbProduits = 0;
+        this.total = this.calcTotal();
+        this.nbProduits = this.calcNbProduits();
         this.options = options;
         this.quantityMax = 5; // TODO mettre une quantité max de 5 article present dans le panier
         this.api = api;
         this.timeout = null;
     }
+
+    get Total() {
+        return this.total;
+    }
+
+    get NbProduits() {
+        return this.nbProduits;
+    }
+
+    calcNbProduits() {
+        return this.tabProduits.reduce((a, b) => a + b.quantity, 0);
+    }
+
+    calcTotal() {
+        return this.tabProduits.reduce((a, b) => a + b.quantity * b.price, 0);
+    }
+
+    reset = () => {
+        this.nbProduits = 0;
+        this.total = 0;
+        this.tabProduits = [];
+    };
 
     /**
      * Réinitialise le panier
@@ -53,22 +48,26 @@ class Panier {
 
         let id = this.api.getElementId('article', ''); // cards_
         // Ensemble des cards sauf l'article 0
-        //let allCardsExceptFirst = document.querySelectorAll(`article[id^=${id}]:not(#${this.api.getElementId('article', 0)})`);
         let allCardsExceptFirst = document.querySelectorAll(`article[id^=${id}]:not(:first-child)`);
 
         // Cache l'element 0
         this.api.getElement('article', 0, '#').hide();
+        this.setDisplayMiniBascketNbProduits();
         // Supprime tous les autres
         allCardsExceptFirst.forEach((elem) => elem.remove());
     };
 
     /** Ajoute un écouteur pour savoir si le storage a ét modifié */
     createListener = () => {
-        window.addEventListener('storage', () => {
-            this.resetPanier();
-            this.setDisplayPanier();
-            this.display();
-        });
+        window.addEventListener(
+            'storage',
+            () => {
+                this.resetPanier();
+                this.setDisplayPanier();
+                this.display();
+            },
+            false,
+        );
     };
 
     /**
@@ -111,14 +110,15 @@ class Panier {
         let elemsToShow = []; // Tableau des éléments que l'on souhaite afficher
         let elemsToHide = []; // Tableau des éléments que l'on souhaite masquer
         if (this.tabProduits.length > 0) {
-            elemsToShow = this.options.elemsBasketFull;
-            elemsToHide = this.options.elemsBasketEmpty;
+            elemsToShow = this.api.options.elemsBasketFull;
+            elemsToHide = this.api.options.elemsBasketEmpty;
         } else {
-            elemsToShow = this.options.elemsBasketEmpty;
-            elemsToHide = this.options.elemsBasketFull;
+            elemsToShow = this.api.options.elemsBasketEmpty;
+            elemsToHide = this.api.options.elemsBasketFull;
         }
-        elemsToShow.forEach((elem) => document.getElementById(elem).show());
-        elemsToHide.forEach((elem) => document.getElementById(elem).hide());
+        // $(elemsToShow.join(',')).removeClass('d-none').addClass('d-block');
+        // $(elemsToHide.join(',')).removeClass('d-block').addClass('d-none');
+        hideAndShow($(elemsToHide.join(',')), $(elemsToShow.join(',')), 'd-block', 'd-block');
     };
 
     /**
@@ -131,27 +131,21 @@ class Panier {
             // Si y'a plus d'un élément, on clone le premier élément
             if (i == 0) {
                 // On affiche le premier élément (le seul disponible dans le html)
-                this.api.getElement('article', 0, '#').show();
+                // this.api.getElement('article', 0, '#').show();
             } else {
-                // Clone le premier card
-                let card = this.api.getElement('article', 0, '#').cloneNode(true);
-                // Ajoute au DOM
-                this.api.getElement('parent').appendChild(card);
-                // Remplace les id cards_0 par l'id dynamique
-                card.outerHTML = card.outerHTML.replaceAll(
-                    this.api.getElementId('article', 0),
-                    this.api.getElementId('article', i),
-                );
+                createNewCard(i);
             }
 
             this.api.getElement('idProduit', id).value = this.tabProduits[i].id;
             this.api.getElement('lentilles', id).textContent = this.tabProduits[i].lenses;
-            this.api.getElement('prix', id).textContent = this.tabProduits[i].price;
-            this.api.getElement('image', id).src = this.api.localServer
-                ? this.tabProduits[i].img.replace('http://localhost:3000/', '')
-                : this.tabProduits[i].img;
+            this.api.getElement('prix', id).textContent = this.tabProduits[i].price.numberFormat();
+            this.api.getElement('image', id).src = this.tabProduits[i].img;
+            // TODO Si image existe, ajouter la classe object-fit-cover (object-fit-none)
             this.api.getElement('nom', id).textContent = this.tabProduits[i].name;
-            this.api.getElement('linknom', id).href = this.api.goToProduct(this.tabProduits[i].id);
+            // this.api.getElement('linknom', id).href = this.api.goToProduct(this.tabProduits[i].id);
+            this.api.getElement('lienProduit', id).href = this.api.goToProduct(this.tabProduits[i].id);
+            this.api.getElement('lienProduit', id).setAttribute('data-js-product-id', this.tabProduits[i].id);
+            this.api.getElement('lienProduit', id).addEventListener('click', this.api.clickLienProduit);
 
             let selectQuantity = this.api.getElement('quantity', id);
             // Récupère la quantité choisit, sachant qu'elle est cappé à quantityMax
@@ -159,82 +153,69 @@ class Panier {
                 this.tabProduits[i].quantity > this.quantityMax ? this.quantityMax : this.tabProduits[i].quantity;
             // Si premier élément, on génère les options
             if (i == 0) {
-                for (let n = 1; n <= this.quantityMax; n++) {
-                    selectQuantity.addOption(n, n, quantityInSelect == n);
-                }
+                this.api
+                    .getElement('quantity', id)
+                    .addOptions(getArrayWithValues(1, this.quantityMax), quantityInSelect);
             } else {
                 // Parcours toutes les quantités jusqu'à trouver celle choisit
-                for (let n = 1, nmax = selectQuantity.length; n <= nmax; n++) {
+                for (let n = 1; n <= selectQuantity.length; n++) {
                     if (quantityInSelect == n) {
                         selectQuantity[n - 1].selected = true;
                         break;
                     }
                 }
             }
-            this.nbProduits += this.tabProduits[i].quantity;
 
-            let subTotal = quantityInSelect * this.tabProduits[i].price.reverseNumberFormat();
+            let subTotal = quantityInSelect * this.tabProduits[i].price;
             this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
-            this.total += subTotal;
 
             selectQuantity.addEventListener('change', this.editQuantityProduit);
             let buttonRemove = this.api.getElement('btRemove', id);
             buttonRemove.addEventListener('click', (e) => {
-                console.log("bt remov");
-                // Sans cela, la page se réactualise en cliquant sur le bouton supprimer
                 e.preventDefault();
             });
         }
 
         this.api.getElement('nbarticles').textContent = this.nbProduits;
-        this.api.getElement('total').textContent = this.total.numberFormat();
+        this.api.getElement('total').textContent = this.calcTotal().numberFormat();
     };
 
     /**
      * Modifie la quantité de l'article dans le panier
-     * @param {Event} e
+     * Page : panier
+     * @param {Event} e Select du produit dont la quantité a été modifié
      */
     editQuantityProduit = (e) => {
-        // Récupère le numéro de l'article via le numéro du button
         let articleID = e.target.getAttribute('id').numberID();
-        // Récupère l'id de l'article via le numéro
-        let id = this.api.getElementId('article', articleID); // 'cards_{{i}}'
+        let id = this.api.getElementId('article', articleID);
 
-        // Récupère la position de l'article dans le panier à l'aide de son id et de la lentille
         let pos = this.getPosition(
             this.api.getElement('idProduit', id).value,
             this.api.getElement('lentilles', id).textContent,
         );
 
-        // Retire l'ancienne quantité
+        // MAJ Quantité
         this.nbProduits -= this.tabProduits[pos].quantity;
-        // Met à jour la quantité dans le panier
         this.tabProduits[pos].quantity = parseInt(this.api.getElement('quantity', id).value);
-        // Ajoute la nouvelle quantité
         this.nbProduits += this.tabProduits[pos].quantity;
-        // Mise à jour du nombre de produits
         this.api.getElement('nbarticles').textContent = this.nbProduits;
 
-        // Retire l'ancien sous-total du total
+        // MAJ Total
         this.total -= this.api.getElement('sousTotal', id).textContent.reverseNumberFormat();
-        // Calcul le nouveau sous-total
-        let subTotal = this.tabProduits[pos].quantity * this.tabProduits[pos].price.reverseNumberFormat();
+        let subTotal = this.tabProduits[pos].quantity * this.tabProduits[pos].price;
         this.api.getElement('sousTotal', id).textContent = subTotal.numberFormat();
-        // Calcul le nouveau total
         this.total += subTotal;
-        // Mise a jour du total
         this.api.getElement('total', id).textContent = this.total.numberFormat();
 
-        // Met à jour le panier
+        this.setDisplayMiniBascketNbProduits();
         this.setCookie();
-    };;
+    };
 
     /**
      * Supprime un élément du panier
      * @param {HTMLElement} target Element à l'origine de l'appel de la méthode
      */
     removeProduit = (target) => {
-        console.log('remove');
         let articleID = target.getAttribute('id').numberID();
 
         // Récupère le numéro de l'article via l'id du button
@@ -255,6 +236,7 @@ class Panier {
         this.tabProduits.splice(pos, 1);
 
         // Mise a jour du prix à la supression par la soustraction du sous-total au total
+        // this.api.getProduit(idArt.value);
         this.total -= this.api.getElement('sousTotal', id).textContent.reverseNumberFormat();
         this.api.getElement('total', id).textContent = this.total.numberFormat();
 
@@ -269,70 +251,60 @@ class Panier {
             this.api.getElement('article', articleID, '#').remove();
         }
         // Met à jour la page s'il n'y a plus d'éléments dans le panier
+        $('#bt_panier').attr('data-items', this.nbProduits);
         this.setDisplayPanier();
-    };;
+    };
 
+    /**
+     * Ajoute un produit au panier
+     * @param {Event} e
+     */
     setPanier = (e) => {
         // Stop l'event du lien
         e.preventDefault();
 
-        let form = e.target;
-        console.log(form);
-
-        //let bt = this.lastEvent.action == 'remove' ? this.lastEvent.target : null;
-        //let articleID = form.numberID();
-        let articleID = form.getAttribute('id').numberID();
-        console.log(articleID);
-        console.log(this);
-        console.log(this.api.getElementId('article', articleID));
-
         // Récupère le numéro de l'article via l'id du button
-        let id = this.api.getElementId('article', articleID);
+        let id = this.api.getElementId('article', e.target.getAttribute('id').numberID());
 
         // Vérifie si une lentille et une quantité ont été sélectionnées
         let idArt = this.api.getElement('idProduit', id);
         let lenses = this.api.getElement('lentilles', id);
         let quantity = this.api.getElement('quantity', id);
-        let name = this.api.getElement('nom', id);
-        let price = this.api.getElement('prix', id);
-        let img = this.api.getElement('image', id);
-        let canvas = this.api.getElement('canvas', id);
-        let error = false;
 
-        // On vérifie qu'une lentille a été sélectionnée
-        // TODO Check value in array
-        error = lenses.checkSelectValue('');
+        let produit = this.api.getProduit(idArt.value);
 
-        // On vérifie qu'une quantité a été sélectionnée
-        error = quantity.checkSelectValue(0);
+        if (typeof produit === 'undefined') {
+            this.api.createAlert(
+                'danger',
+                'Identifiant du produit introuvable !',
+                'Une erreur est survenue. Veuillez nous excuser pour la gêne occasionnée.',
+            );
+            return false;
+        }
 
-        // Si aucun des deux, on affiche une erreur et on stop l'ajout dans le panier
-        if (error) {
+        if (!produit.Lentilles.includes(lenses.value) || !quantity.isPositiveNumberAndMax(produit.Stock)) {
             this.api.createAlert('danger', 'Valeur incorrecte !', 'Veuillez sélectionner une valeur correcte.');
             return false;
         }
 
-        // Remet à jour le contenu du panier avant d'ajouter les nouveaux éléments
         this.tabProduits = this.loadPanier();
 
         // Récupère la position de l'article dans le panier
         let pos = this.getPosition(idArt.value, lenses.value);
         // Si l'article est déjà dans le panier
         if (pos >= 0) {
-            if (this.tabProduits[pos]['quantity'] == 5) {
+            if (this.tabProduits[pos]['quantity'] == produit.Stock) {
                 this.api.createAlert(
                     'danger',
                     'Rupture de stock !',
-                    "Le produit que vous souhaitez ajouté n'est plus en stock.",
+                    "Le produit que vous souhaitez ajouter n'est plus en stock.",
                 );
             } else {
-                let prevQty = this.tabProduits[pos]['quantity'];
                 this.tabProduits[pos]['quantity'] += parseInt(quantity.value); // 6 = 4 + 2
-                if (this.tabProduits[pos]['quantity'] > 5 /** produit.Stock */) {
-                    // Affiche un msg
-                    let n = parseInt(quantity.value) - this.tabProduits[pos]['quantity'] + 5;
+                if (this.tabProduits[pos]['quantity'] > produit.Stock) {
+                    let n = parseInt(quantity.value) - this.tabProduits[pos]['quantity'] + produit.Stock;
                     let a = n == 1 ? 'a' : 'ont';
-                    this.tabProduits[pos]['quantity'] = 5;
+                    this.tabProduits[pos]['quantity'] = produit.Stock;
                     this.api.createAlert(
                         'warning',
                         'Stock insuffisant !',
@@ -350,15 +322,12 @@ class Panier {
             }
         } else {
             // Création d'un objet pour stocker les éléments du panier
-            let imgsrc;
-            if (canvas === null) imgsrc = img.getAttribute('src');
-            else imgsrc = canvas.getAttribute('data-src');
             // prettier-ignore
             let donneesPanier = {
                 id      : idArt.value,
-                img     : imgsrc,
-                name    : name.textContent,
-                price   : price.textContent,
+                img     : produit.Image,
+                name    : produit.Nom,
+                price   : produit.Prix,
                 quantity: parseInt(quantity.value),
                 lenses  : lenses.value,
             };
@@ -373,8 +342,17 @@ class Panier {
                 `Le${s} produit${s} ${a} été correctement ajouté dans le panier.`,
             );
         }
-        // Met à jour le panier
+        this.tabProduits.sort(this.sortProductsById);
+        this.nbProduits = this.calcNbProduits();
+        this.total = this.calcTotal();
+        this.setDisplayMiniBascketNbProduits();
         this.setCookie();
+    };
+
+    sortProductsById = (a, b) => {
+        let idProduitA = a.id;
+        let idProduitB = b.id;
+        return idProduitA < idProduitB ? -1 : idProduitA > idProduitB ? 1 : 0;
     };
 
     /**
@@ -405,4 +383,68 @@ class Panier {
         }
         return tab;
     };
+
+    loadMiniBascket = () => {
+        $('#mini-basket ul li').remove();
+        if (monPanier.NbProduits == 0) {
+            $('#mini-basket ul').append(
+                $('<li>').addClass('border-1 border-bottom pb-1 mt-1 w-100 d-table text-center').text('Votre panier est vide !'),
+            );
+        } else {
+            for (let produit of this.tabProduits) {
+                $('#mini-basket ul').append(
+                    this.createElemMiniBascket(
+                        produit.name,
+                        produit.quantity,
+                        produit.lenses,
+                        (produit.price * produit.quantity).numberFormat(),
+                        produit.img,
+                        monApi.goToProduct(produit.id),
+                    ),
+                );
+            }
+        }
+        $('#mini-basket-nbproduits').text(monPanier.NbProduits);
+        $('#mini-basket-total').text(monPanier.calcTotal().numberFormat());
+    };
+
+    createElemMiniBascket = (name, quantity, lentille, prix, srcimg, url) => {
+        return $('<li>')
+            .addClass('border-1 border-bottom pb-1 mt-1 w-100 d-table')
+            .append(
+                $('<img>')
+                    .attr({ width: 50, height: 50, src: srcimg })
+                    .addClass('h-auto d-table-cell me-2 align-middle object-fit-cover card-img-50'),
+                $('<div>')
+                    .addClass('d-table-cell w-100 align-middle')
+                    .append(
+                        $('<div>')
+                            .addClass('lh-sm fw-bold')
+                            .css({ fontSize: '0.8rem' })
+                            .append($('<a>').attr('href', url).text(name)),
+                        $('<div>')
+                            .addClass('lh-sm d-flex justify-content-between')
+                            .css({ fontSize: '0.8rem' })
+                            .append(
+                                $('<span>').text(`Lentille : ${lentille},`),
+                                $('<span>').text(`Quantité : ${quantity}`),
+                            ),
+                        $('<div>').text(prix),
+                    ),
+            );
+    };
+
+    setDisplayMiniBascketNbProduits = () => {
+        $('#bt_panier').attr('data-items', this.NbProduits);
+        // $('#mini-basket-nbproduits').text(this.NbProduits);
+    };
+
+    // setDisplayMiniBascketTotal = () => {
+    //     $('#mini-basket-total').text(this.Total.numberFormat());
+    // };
+
+    // setDisplayMiniBascket = () => {
+    //     this.setDisplayMiniBascketNbProduits();
+    //     this.setDisplayMiniBascketTotal();
+    // };
 }

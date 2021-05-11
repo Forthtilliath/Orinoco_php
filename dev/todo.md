@@ -7,11 +7,36 @@
 ## Page panier
   - [x] Faire fonctionner tous les boutons
   - [x] Nombre d'articles à calculer 
+  - [x] Style bouton supprimer
+  - [x] Panier vide
+  - [x] Check calcul nb produit
+  - [x] Calcul du total
 
 ## All pages
-  - [ ] Chargement de la page
-  - [ ] Faire en sorte de ne pas full recharge la page à chaque changement de page
-  - [ ] Automatiser les calculs de la quantité max par le stock
+  - [x] Chargement de la page
+  - [x] Faire en sorte de ne pas full recharge la page à chaque changement de page
+    - [x] Page index
+      - [x] Ne charger le json qu'une seule fois
+      - [x] Eviter des doublons d'articles
+    - [x] Page produit
+      - [x] Récupérer l'id du produit
+    - [x] Page panier
+      - [x] Savoir pourquoi des doublons arrivent
+      - [x] Trier panier
+    - [ ] Images : new Images() au chargement de la page
+    - [x] Maj title & description
+  - [x] Automatiser les calculs de la quantité max par le stock
+  - [x] Hover du bouton panier qui affiche le contenu
+  - [ ] Image loader à modifier (vérifier si image existe ou pas)
+  - [x] Enregistrer les pages !!!
+  - [x] Bouton panier
+    - [x] Rendre dynamique la quantité de produits
+    - [x] Maj nbprod & total à optimiser
+  - [x] Faire fonctionner le bouton précédent et suivant
+  - [ ] Page et desc : php => js
+
+## JS
+    - [-] Finir le fichier prototype.js
 
 ## CSS
   - [x] Compiler moi-même le bootstrap : [Bootstrap Customise Optimize](https://getbootstrap.com/docs/5.0/customize/optimize/) - [jQuery plugins v3.4](https://getbootstrap.com/docs/3.4/customize/)

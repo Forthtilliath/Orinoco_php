@@ -55,13 +55,13 @@ $pixel: 1px;
 }
 
 // Génère des classes pour la taille des images
-$inc_height: 50;
-@for $i from 1 through 10 {
-    .card-img-#{$inc_height*$i} {
-        height: $inc_height * $i * $pixel;
-        object-fit: cover;
-    }
-}
+// $inc_height: 50;
+// @for $i from 1 through 10 {
+//     .card-img-#{$inc_height*$i} {
+//         height: $inc_height * $i * $pixel;
+//         object-fit: cover;
+//     }
+// }
 
 // Adapte la taille du menu select du panier
 @media (min-width: 300px) {
@@ -78,5 +78,28 @@ $inc_height: 50;
 
     .d-330-inline {
         display: inline !important;
+    }
+}
+
+header #bt_panier::before {
+    position: fixed;
+    top: 20px;
+    right: 56px;
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin: auto;
+    font-size: 10px;
+    color: #fff;
+    text-align: center;
+    content: attr(data-items);
+    background-color: #2d1d18;
+    border-radius: 10px;
+    border: 1px solid #2d1d18;
+    -webkit-transform: translateX(16px);
+    transform: translateX(16px);
+
+    @media (min-width: 576px) {
+        right: 117px;
     }
 }

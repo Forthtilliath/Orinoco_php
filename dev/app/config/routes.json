@@ -1,0 +1,48 @@
+{
+    "base": "../views",
+    "scripts": "/assets/js/",
+    "routes": [
+        {
+            "name": "home",
+            "pattern": "/",
+            "path": "home",
+            "mainFunction": "showCards"
+        },
+        {
+            "name": "produit",
+            "pattern": "/produit/[id:id]",
+            "path": "produit",
+            "mainFunction": "showCard"
+        },
+        {
+            "name": "panier",
+            "pattern": "/panier",
+            "path": "panier",
+            "mainFunction": "showPanier"
+        },
+        {
+            "name": "commande",
+            "pattern": "/commande",
+            "path": "commande",
+            "mainFunction": "formChecker"
+        },
+        {
+            "name": "commande_confirmation",
+            "pattern": "/commande_confirmation",
+            "path": "commande_confirmation",
+            "mainFunction": "loadOrderConfirmation"
+        },
+        {
+            "name": "404",
+            "pattern": "/404",
+            "path": "404",
+            "mainFunction": ""
+        },
+        {
+            "name": "404_json",
+            "pattern": "/404/json",
+            "path": "404_json",
+            "mainFunction": "putUrl"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 // recupération des données du ou des produits depuis l api
 class Api {
-    constructor(cookieName, urlLocal, urlServer) {
+    constructor(cookieName, url) {
         /**
          * @type {string} Nom du cookie utilisé dans l'API
          */
@@ -9,28 +9,19 @@ class Api {
          * Liste des options contenant l'id des éléments du panier
          */
         this.options = this.loadOptions();
-        // Créer le panier pour l'application
+        /**
+         * Créer le panier pour l'application
+         * @type {Panier}
+         */
         this.panier = new Panier(cookieName, this.getOptions(), this);
         /**
          * @type {Produit[]} Liste de l'ensemble des produits
          */
         this.listeProduits = [];
         /**
-         * @type {string} URL locale du fichier de données
-         */
-        this.urlLocal = urlLocal;
-        /**
-         * @type {string} URL distance du fichier de données
-         */
-        this.urlServer = urlServer;
-        /**
-         * @type {boolean} Permet de savoir quelle URL utiliser sur l'API
-         */
-        this.localServer = true;
-        /**
          * @type {string} URL du fichier de données
          */
-        this.url = this.localServer ? this.urlLocal : this.urlServer;
+        this.url = url;
         /**
          * @type {number} ID de timeout de l'alert
          */
@@ -39,6 +30,24 @@ class Api {
          * @type {number} Durée de l'alerte
          */
         this.delaiAlert = 5000;
+
+        this.listScripts = [];
+
+        this.router = new Router();
+
+        this.createListeners();
+    }
+
+    addScript(url) {
+        if (!this.listScripts.includes(url)) {
+            this.listScripts.push(url);
+            return true;
+        }
+        return false;
+    }
+
+    getProduit(id) {
+        return this.listeProduits.filter((produit) => produit.Id == id)[0];
     }
 
     get ListeProduits() {
@@ -61,36 +70,68 @@ class Api {
         this.url += id;
     }
 
-    isLocal() {
-        return this.localServer;
+    isAllLoaded() {
+        return this.router.loaded;
     }
 
     /**
-     * Ajoute un produit à la liste des produits de l'api
-     * @param {string} _type Type de produits (camera, furniture, teddy)
-     * @param {any[]} lesProduits Tableau contenant l'ensemble des produits
+     * Ajoute des events sur les liens présents dans la page par défaut
      */
-    addProduits = (type, lesProduits) => {
-        for (let unProduit of lesProduits) {
-            this.listeProduits.push(
-                new Produit(
-                    type,
-                    unProduit._id,
-                    unProduit.name,
-                    unProduit.description,
-                    unProduit.price / 100,
-                    unProduit.lenses,
-                    unProduit.imageUrl,
-                ),
-            );
-        }
+    createListeners() {
+        $('nav a').on('click', this.clickLien);
+        $('#mini-basket a').on('click', this.clickLien);
+
+        // comportement du panier au survol pour affichage de son contenu
+        let timeout;
+
+        $('#bt_panier').on({
+            mouseenter: function () {
+                monPanier.loadMiniBascket();
+                $('#mini-basket').addClass('show');
+            },
+            mouseleave: function () {
+                timeout = setTimeout(function () {
+                    $('#mini-basket').removeClass('show');
+                }, 500);
+            },
+        });
+
+        // laisse le contenu ouvert à son survol
+        // le cache quand la souris sort
+        $('#mini-basket').on({
+            mouseenter: function () {
+                clearTimeout(timeout);
+            },
+            mouseleave: function () {
+                $('#mini-basket').removeClass('show');
+            },
+        });
+    }
+
+    clickLien = (e) => {
+        e.preventDefault();
+        let params = this.getProduit(e.currentTarget.getAttribute('data-js-product-id'));
+        monApi.router.changePage($(e.currentTarget).attr('href'), params);
+    };
+
+    loadDatas = () => {
+        return new Promise(async (resolve, reject) => {
+            await this.getProductsFromJson()
+                .then((datas) => {
+                    this.addCameras(datas);
+                    resolve();
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     };
 
     /**
      * Récupère les articles via l'url choisit dans l'api
      * @returns {Promise} Promesse contenant le tableau des articles
      */
-    getProducts = () => {
+    getProductsFromJson = () => {
         return new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
             request.onreadystatechange = function () {
@@ -110,29 +151,39 @@ class Api {
     };
 
     /**
+     * Ajoute un produit à la liste des produits de l'api
+     * @param {any[]} lesProduits Tableau contenant l'ensemble des produits
+     */
+    addCameras = (lesProduits) => {
+        for (let uneCamera of lesProduits) {
+            this.listeProduits.push(
+                new Camera(
+                    uneCamera._id,
+                    uneCamera.name,
+                    uneCamera.description,
+                    uneCamera.price / 100,
+                    uneCamera.imageUrl,
+                    defaultStockMax,
+                    uneCamera.lenses,
+                ),
+            );
+        }
+    };
+
+    /**
      * Charge l'ensemble des options
      * @returns Objet contenant l'ensemble des options pour l'api
      */
     loadOptions = () => {
         return {
             // les élèments a voir quand le panier contient un article
-            /*elemsBasketFull: [
-                'order-title',
-                'order-total',
-                'order-modal-container',
-                'order-alert-contentfull',
-                'order-alert-title',
-            ],*/
-            elemsBasketFull: [],
+            elemsBasketFull: ['#list_cards', '#show_total'],
             // Les éléments à masquer lorsque le panier est vide
-            //elemsBasketEmpty: ['basket-empty', 'order-alert-contentempty'],
-            elemsBasketEmpty: [],
+            elemsBasketEmpty: ['#panier_vide'],
             // L'élément parent des éléments
             elemsParentId: '#list_cards',
             // Id distingant les éléments entre eux
             elemsIds: 'card_{{i}}',
-            elemsForms: '#{{id}} #{{id}}_form',
-            elemsMessage: '#{{id}} #{{id}}_select-msg',
             elemAlerts: '#list_alerts',
             elemsBasket: {
                 linknom: '#{{id}} h5 > a',
@@ -152,7 +203,10 @@ class Api {
                 total: '#cards_total',
                 nbarticles: '#cards_nbarticles',
                 // Ajouts
-                links: '#{{id}} a', // Liens index
+                lienProduit: '#{{id}} a', // Liens vers un produit
+                //
+                form: '#{{id}} #{{id}}_form',
+                message: '#{{id}} #{{id}}_select-msg',
             },
         };
     };
@@ -214,15 +268,15 @@ class Api {
             case 'parent':
                 id = this.options.elemsParentId;
                 break;
-            case 'form':
-                id = this.options.elemsForms.replaceAll('{{id}}', value);
-                break;
+            // case 'form':
+            //     id = this.options.elemsForms.replaceAll('{{id}}', value);
+            //     break;
             case 'article':
                 id = this.options.elemsIds.replaceAll('{{i}}', value);
                 break;
-            case 'message':
-                id = this.options.elemsMessage.replaceAll('{{id}}', value);
-                break;
+            // case 'message':
+            //     id = this.options.elemsMessage.replaceAll('{{id}}', value);
+            //     break;
             default:
                 id = this.options.elemsBasket[elementID].replaceAll('{{id}}', value);
         }
@@ -230,7 +284,7 @@ class Api {
     };
 
     goToProduct = (id) => {
-        return `/produit:${id}`;
+        return `/produit/${id}`;
     };
 
     /**

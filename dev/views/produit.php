@@ -1,18 +1,16 @@
 <?php
 $pageTitle = 'Orinoco - Page produit - Le e-commerce moins cher que gratuit !';
-$pageDescription = '';
-$pageMessageTitle = 'Voici votre article';
-$pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
+$pageDescription = 'Produit desc';
 ?>
 
-<h1 class="text-center page-title">Orinoco<span class="d-none d-xss-inline"> - Affichage d'un produit</span></h1>
+<h1 class="text-center page-title">Orinoco<span class="d-none d-xxs-inline"> - Affichage d'un produit</span></h1>
 <section id="list_alerts"></section>
 <section class="container-md">
     <div class="mt-3">
         <div class="row g-4" id="list_cards">
             <div class="col" id="card_0">
                 <div class="card bg-tertiary">
-                    <input type="hidden" value="" name="id" id="card_0_id" />
+                    <input type="hidden" value="<?= $params['id'] ?>" name="id" id="card_0_id" />
                     <img src="" id="card_0_image" class="card-img-top card-img-300 card-img-sm-400 card-img-xl-500 object-fit-cover" alt="...">
                     <div class="card-body">
                         <h5 class="card-title" id="card_0_title"></h5>
@@ -42,7 +40,7 @@ $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
                     </div>
                     <div class="card-body border-top border-quinary">
                         <div class="text-center">
-                            <a class="btn btn-primary text-senary w-100 w-sm-auto px-4" href="./">Retourner voir tous les articles</a>
+                            <a class="btn btn-primary text-senary w-100 w-sm-auto px-4" href="/">Retourner voir tous les articles</a>
                         </div>
                     </div>
                 </div>
@@ -51,9 +49,9 @@ $pageMessageDescription = 'Très bon choix ! Moins cher que gratuit !';
     </div>
 </section>
 
-<?php ob_start(); ?>
 <script>
-    let $id = '<?= $params['id']; ?>';
+    $page = {
+        title: '<?= $pageTitle ?>',
+        description: '<?= addslashes($pageDescription) ?>'
+    };
 </script>
-<script src="./assets/js/app/produit.js"></script>
-<?php $pageScripts = ob_get_clean(); ?>
